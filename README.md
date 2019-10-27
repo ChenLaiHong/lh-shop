@@ -1,6 +1,6 @@
 # lh-shop
-Dubbo+zookeeper+SpringBoot+Redis+MQ微服务架构商城<br>
-#技术选型<br>
+# Dubbo+zookeeper+SpringBoot+Redis+MQ微服务架构商城<br>
+## 技术选型<br>
 SpringBoot+SpringMVC+Spring+MyBatis+Dubbo+MySQL+JQuery+thymeleaf<br>
 分布式文件系统：FastDFS(淘宝)<br>
 搜索引擎技术：Solr<br>
