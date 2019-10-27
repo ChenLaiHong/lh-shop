@@ -1,0 +1,16 @@
+dubbo:
+  application:
+    name: product-Service
+  registry:
+    protocol: zookeeper
+    address: 47.102.212.171:2181
+server:
+  port: 8080
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/lh_shop
+    driver-class-name: com.mysql.jdbc.Driver
+    username: root
+    password: 123456
+
