@@ -6,4 +6,7 @@ dubbo:
     address: 47.102.212.171:2181
 server:
   port: 9090
+spring:
+  thymeleaf:
+    cache: false
 
