@@ -26,11 +26,6 @@ public class ProductTypeController {
     @Reference
     private IProductTypeService productTypeService;
 
-    //    @GetMapping("list")
-//    public List<ProductType> list(){
-//        return productTypeService.list();
-//    }
-//
     @GetMapping("list")
     public String list(Model model) {
         List<ProductType> list =transProductType(productTypeService.list()) ;
