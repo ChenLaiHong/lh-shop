@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lh</groupId>
-	<artifactId>lh-shop-background</artifactId>
+	<artifactId>fastdfs</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>lh-shop-background</name>
+	<name>fastdfs</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
@@ -21,38 +21,33 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
+		<!-- 添加fastdfs的依赖 -->
+		<dependency>
+			<groupId>com.github.tobato</groupId>
+			<artifactId>fastdfs-client</artifactId>
+			<version>1.26.1-RELEASE</version>
+		</dependency>
+
 
 		<dependency>
-			<groupId>com.lh</groupId>
-			<artifactId>lh-shop-product-api</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>RELEASE</version>
 		</dependency>
-
-
-		<!-- 添加dubbo的依赖 -->
-		<dependency>
-			<groupId>com.alibaba.boot</groupId>
-			<artifactId>dubbo-spring-boot-starter</artifactId>
-			<version>0.2.0</version>
-		</dependency>
-
-		<!--支持跳转,springboot推荐使用thymeleaf模板引擎-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-thymeleaf</artifactId>
-		</dependency>
-
-
-
-
 
 	</dependencies>
 
