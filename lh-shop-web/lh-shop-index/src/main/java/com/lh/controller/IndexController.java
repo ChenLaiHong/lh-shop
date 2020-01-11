@@ -21,6 +21,8 @@ public class IndexController {
     @RequestMapping("show")
     public String showIndex(Model model){
         List<ProductType> list = productTypeService.list();
+
+        //列表
         model.addAttribute("list",list);
         return "index";
     }
