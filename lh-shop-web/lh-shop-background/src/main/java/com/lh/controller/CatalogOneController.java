@@ -80,9 +80,7 @@ public class CatalogOneController {
 
     @RequestMapping("/toEdit")
     public ModelAndView toEdit(@RequestParam(value = "oneId", required = false) Integer oneId) throws Exception {
-
         CatalogOne catalogOne = catalogOneService.findById(oneId);
-
         ModelAndView mav = new ModelAndView();
         mav.addObject("oneId", oneId);
         mav.addObject("catalogOne", catalogOne);
