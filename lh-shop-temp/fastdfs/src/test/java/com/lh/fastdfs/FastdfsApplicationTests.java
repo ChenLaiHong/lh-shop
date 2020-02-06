@@ -23,19 +23,19 @@ public class FastdfsApplicationTests {
 
 	@Test
 	public void contextLoads() throws FileNotFoundException {
-		File file = new File("C:\\Users\\11856\\Pictures\\Saved Pictures\\11.png");
-		String fileName = file.getName();
-		String extName = fileName.substring(fileName.lastIndexOf(".")+1);
-		FileInputStream inputStream = new FileInputStream(file);
-		//
-		StorePath storePath = fastFileStorageClient.uploadFile(inputStream, file.length(), extName, null);
-		//
-		System.out.println(storePath.getGroup());
-		System.out.println(storePath.getPath());
-		System.out.println(storePath.getFullPath());
+//		File file = new File("C:\\Users\\11856\\Pictures\\Saved Pictures\\8.jpg");
+//		String fileName = file.getName();
+//		String extName = fileName.substring(fileName.lastIndexOf(".")+1);
+//		FileInputStream inputStream = new FileInputStream(file);
+//		//
+//		StorePath storePath = fastFileStorageClient.uploadFile(inputStream, file.length(), extName, null);
+//		//
+//		System.out.println(storePath.getGroup());
+//		System.out.println(storePath.getPath());
+//		System.out.println(storePath.getFullPath());
 
-		/*fastFileStorageClient.deleteFile("group1/M00/00/13/CiQICFyHXwWAOCG9AAB3KU8LPBU921.jpg");
-		System.out.println("删除成功！");*/
+	fastFileStorageClient.deleteFile("group1/M00/00/00/rBEaFF471NOAXcVJAAEfTRAexTA251.jpg");
+		System.out.println("删除成功！");
 	}
 
 }
