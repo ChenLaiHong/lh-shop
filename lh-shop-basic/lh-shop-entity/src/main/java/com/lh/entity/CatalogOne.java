@@ -2,6 +2,7 @@ package com.lh.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class CatalogOne implements Serializable {
     private Integer oneId;
@@ -13,6 +14,8 @@ public class CatalogOne implements Serializable {
     private Date updateTime;
 
     private Integer state;
+
+    private List<CatalogTwo> catalogTwoList;
 
     public Integer getOneId() {
         return oneId;
@@ -52,5 +55,25 @@ public class CatalogOne implements Serializable {
 
     public void setState(Integer state) {
         this.state = state;
+    }
+
+    public List<CatalogTwo> getCatalogTwoList() {
+        return catalogTwoList;
+    }
+
+    public void setCatalogTwoList(List<CatalogTwo> catalogTwoList) {
+        this.catalogTwoList = catalogTwoList;
+    }
+
+    public CatalogOne() {
+    }
+
+    public CatalogOne(Integer oneId, String oneName, String oneImage, Date updateTime, Integer state, List<CatalogTwo> catalogTwoList) {
+        this.oneId = oneId;
+        this.oneName = oneName;
+        this.oneImage = oneImage;
+        this.updateTime = updateTime;
+        this.state = state;
+        this.catalogTwoList = catalogTwoList;
     }
 }

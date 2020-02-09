@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lh.api.product.ICatalogOneService;
 import com.lh.entity.CatalogOne;
+import com.lh.entity.CatalogTwo;
 import com.lh.entity.PageBean;
 import com.lh.entity.Result;
 import com.lh.shop.common.util.ResponseUtil;
@@ -133,6 +134,17 @@ public class CatalogOneController {
         return mav;
     }
 
+    //添加二级
+    @RequestMapping("/ToAddTwo")
+    public ModelAndView ToAddTwo(@RequestParam(value = "oneId", required = false) Integer oneId) throws Exception {
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("btn_text", "添加二级");
+        mav.addObject("oneId", oneId);
+        mav.addObject("save_url", "/catalogTwo/add");
+        mav.setViewName("/admin/catalogTwoAddOrUpdate");
+        return mav;
+    }
     //删除
     @RequestMapping("/delete")
     public String delete(@RequestParam(value = "ids", required = false) String ids, HttpServletResponse response)

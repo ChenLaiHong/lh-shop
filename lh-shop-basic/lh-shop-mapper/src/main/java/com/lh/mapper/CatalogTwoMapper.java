@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.CatalogTwo;
 import com.lh.entity.CatalogTwoExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface CatalogTwoMapper {
@@ -27,4 +29,10 @@ public interface CatalogTwoMapper {
     int updateByPrimaryKeySelective(CatalogTwo record);
 
     int updateByPrimaryKey(CatalogTwo record);
+
+    List<CatalogTwo> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    void updateList(List list);
 }

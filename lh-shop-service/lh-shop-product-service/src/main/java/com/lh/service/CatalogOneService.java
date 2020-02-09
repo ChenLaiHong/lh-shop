@@ -23,9 +23,7 @@ import static com.lh.shop.common.util.StringUtil.StringIds;
  */
 @Component
 @Service
-
 public class CatalogOneService  implements ICatalogOneService {
-
 
 
     @Autowired
@@ -62,5 +60,12 @@ public class CatalogOneService  implements ICatalogOneService {
     @Override
     public void delete(String ids) {
         catalogOneMapper.updateList(StringIds(ids));
+    }
+
+    @Override
+    public List<CatalogOne> getAll() {
+        CatalogOneExample catalogOneExample = new CatalogOneExample();
+        catalogOneExample.createCriteria().andStateEqualTo(1);
+        return catalogOneMapper.selectByExample(catalogOneExample);
     }
 }

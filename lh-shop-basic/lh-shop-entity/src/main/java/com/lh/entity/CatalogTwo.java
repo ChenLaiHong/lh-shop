@@ -14,6 +14,8 @@ public class CatalogTwo implements Serializable {
 
     private Integer oneId;
 
+    private CatalogOne catalogOne;
+
     public Integer getTwoId() {
         return twoId;
     }
@@ -52,5 +54,25 @@ public class CatalogTwo implements Serializable {
 
     public void setOneId(Integer oneId) {
         this.oneId = oneId;
+    }
+
+    public CatalogOne getCatalogOne() {
+        return catalogOne;
+    }
+
+    public void setCatalogOne(CatalogOne catalogOne) {
+        this.catalogOne = catalogOne;
+    }
+
+    public CatalogTwo() {
+    }
+
+    public CatalogTwo(Integer twoId, String twoName, Date updateTime, Integer state, Integer oneId, CatalogOne catalogOne) {
+        this.twoId = twoId;
+        this.twoName = twoName;
+        this.updateTime = updateTime;
+        this.state = state;
+        this.oneId = oneId;
+        this.catalogOne = catalogOne;
     }
 }

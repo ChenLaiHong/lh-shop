@@ -7,6 +7,14 @@
     <result column="one_image" jdbcType="VARCHAR" property="oneImage" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
+
+    <collection ofType="com.lh.entity.CatalogTwo" property="catalogTwoList">
+      <id column="two_id" jdbcType="INTEGER" property="twoId" />
+      <result column="two_name" jdbcType="VARCHAR" property="twoName" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      <result column="one_id" jdbcType="INTEGER" property="oneId" />
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
