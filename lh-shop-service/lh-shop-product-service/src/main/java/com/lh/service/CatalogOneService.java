@@ -64,6 +64,7 @@ public class CatalogOneService  implements ICatalogOneService {
 
     @Override
     public List<CatalogOne> getAll() {
+
         CatalogOneExample catalogOneExample = new CatalogOneExample();
         catalogOneExample.createCriteria().andStateEqualTo(1);
         return catalogOneMapper.selectByExample(catalogOneExample);

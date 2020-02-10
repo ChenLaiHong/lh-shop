@@ -7,6 +7,9 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="two_id" jdbcType="INTEGER" property="twoId" />
+
+    <association property="catalogTwo" column="two_id" select="com.lh.mapper.CatalogTwoMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogTwo">
+    </association>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -208,4 +211,48 @@
       two_id = #{twoId,jdbcType=INTEGER}
     where three_id = #{threeId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+    select * from catalog_three
+    <where>
+      <if test="q!=null and q!=''">
+        and (three_name like #{q} )
+      </if>
+      and  state = 1 and two_id = #{twoId}
+    </where>
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+  </select>
+
+  <select id="getTotal" parameterType="Map" resultType="Integer">
+    select
+    count(*) from catalog_three
+    <where>
+      <if test="q!=null and q!=''">
+        and (three_name like #{q} )
+      </if>
+      and state = 1 and two_id = #{twoId}
+    </where>
+  </select>
+
+  <!--批量修改，逻辑删除
+ 1、这里修改的是某个字段的值，参数是int类型的集合
+2、如果你的是对象的集合，item.字段名 赋值就好了
+-->
+
+  <update id="updateList" parameterType="java.util.List" >
+    UPDATE catalog_three SET
+    state = 0
+    WHERE three_id in
+    <foreach collection="list" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </update>
+
+  <select id="selectThree" resultMap="BaseResultMap">
+     SELECT * FROM catalog_three
+      WHERE two_id = #{two_id}
+  </select>
 </mapper>

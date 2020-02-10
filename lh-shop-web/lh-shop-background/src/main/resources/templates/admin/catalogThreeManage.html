@@ -58,15 +58,15 @@
         w = 300;
         h = 300;
         checkWindow();
-        // 获取一级id
-        var oneId = $("#oneId").val();
+        // 获取二级id
+        var twoId = $("#twoId").val();
         layer.open({
             type: 2,
             title: '添加',
             shadeClose: true,
             shade: 0.8,
             area: [w+'px', h+'px'],
-            content: '/catalogTwo/toAdd?oneId='+oneId //iframe的url
+            content: '/catalogThree/toAdd?twoId='+twoId //iframe的url
         });
     }
 
@@ -82,7 +82,7 @@
             shadeClose: true,
             shade: 0.8,
             area: [w+'px', h+'px'],
-            content: '/catalogTwo/toEdit?twoId='+id //iframe的url
+            content: '/catalogThree/toEdit?threeId='+id //iframe的url
         });
     }
 
@@ -94,7 +94,7 @@
         var index = layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
-        $.post('/catalogTwo/delete',{ids:ids},function(result){
+        $.post('/catalogThree/delete',{ids:ids},function(result){
             if(result.success){
                 layer.closeAll();
                 layer.msg('删除成功');
@@ -115,7 +115,7 @@
         var ids = "";
         if(selected.data.length>0){
             $.each(selected.data,function(i,val){
-                ids = ids+val.twoId+",";
+                ids = ids+val.threeId+",";
             });
         }
         //去掉最后的逗号,
@@ -144,7 +144,7 @@
     //修改*******
     function table_edit_update(id,field,value){
         console.log("field是什么？"+field+"value是什么？"+value)
-        $.post('/catalogTwo/update?'+field+'='+value,{twoId:id},function(result){
+        $.post('/catalogThree/update?'+field+'='+value,{threeId:id},function(result){
             if(result.success){
                 layer.msg('修改成功');
             }else{
@@ -178,19 +178,18 @@
             <a class="layui-btn layui-btn-normal layui-btn-sm" onclick="reload_data()">查询</a>
         </div>
     </div>
-    <!-- 保存一级id，隐藏域 -->
-    <input type="hidden" id="oneId" name="oneId" th:value="${oneId}">
+    <!-- 保存二级id，隐藏域 -->
+    <input type="hidden" id="twoId" name="twoId" th:value="${twoId}">
     <table class="layui-hide"   id="table" lay-filter="table"></table>
     <script type="text/html" id="table_bar">
         <div class="layui-btn-group">
             <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
-            <a class="layui-btn layui-btn-xs" lay-event="findThree">查看三级</a>
         </div>
     </script>
 
     <script>
-        // 获取当前二级所属的一级Id
-        var oneId = $("#oneId").val();
+        // 获取当前三级所属的二级Id
+        var twoId = $("#twoId").val();
         layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
             'upload', 'element' ], function() {
             var laydate = layui.laydate //日期
@@ -203,15 +202,15 @@
                 , element = layui.element; //元素操作
             table.render({
                 elem: '#table'
-                ,url: '/catalogTwo/list',
+                ,url: '/catalogThree/list',
                 height: 'full-60',
-                where: {oneId: oneId},
+                where: {twoId: twoId},
                 cols: [
                     [
                         {checkbox: true, fixed: true}
-                        ,{field:'twoId', title: 'ID',width:20}
-                        ,{field:'twoName', title: '二级名称', width:200,align:"center", edit: 'text'}
-                        ,{title: '所属一级', width:200,align:"center",templet: '<div>{{format_one(d.catalogOne.oneName)}}</div>'}
+                        ,{field:'threeId', title: 'ID',width:20}
+                        ,{field:'threeName', title: '三级名称', width:200,align:"center", edit: 'text'}
+                        ,{title: '所属二级', width:200,align:"center",templet: '<div>{{format_one(d.catalogTwo.twoName)}}</div>'}
                         ,{field:'updateTime', title: '更新时间', width:160,align:"center"}
                         ,{fixed:'right', width:180,title: '操作',align:"center",  toolbar: '#table_bar'}
                     ]
@@ -229,14 +228,10 @@
                     , layEvent = obj.event; //获得 lay-event 对应的值
                 console.log('获得当前行数据'+data);
                 if (layEvent === 'del') {
-                    //layer.msg('查看操作' + data.id);
-                    console.log(data.twoId);
-                    del(data.twoId);
+                    console.log(data.threeId);
+                    del(data.threeId);
                 } else if (layEvent === 'edit') {
-//                    layer.msg('编辑操作' + data.noticeId);
-                    edit(data.twoId);
-                }else if (layEvent === 'findThree') {
-                    window.location.href="/catalogThree/page?twoId=" + data.twoId
+                    edit(data.threeId);
                 }
             });
 
@@ -245,8 +240,7 @@
                 var value = obj.value //得到修改后的值
                     ,data = obj.data //得到所在行所有键值
                     ,field = obj.field; //得到字段
-                //layer.msg('[ID: '+ data.id +'] ' + field + ' 字段更改为：'+ value);
-                table_edit_update(data.twoId,field,value);
+                table_edit_update(data.threeId,field,value);
             });
 
 

@@ -8,13 +8,14 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
 
-    <collection ofType="com.lh.entity.CatalogTwo" property="catalogTwoList">
+    <collection  property="catalogTwoList" column="one_id" select="com.lh.mapper.CatalogTwoMapper.selectTwo">
       <id column="two_id" jdbcType="INTEGER" property="twoId" />
       <result column="two_name" jdbcType="VARCHAR" property="twoName" />
       <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
       <result column="state" jdbcType="INTEGER" property="state" />
       <result column="one_id" jdbcType="INTEGER" property="oneId" />
     </collection>
+
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -216,7 +217,6 @@
       state = #{state,jdbcType=INTEGER}
     where one_id = #{oneId,jdbcType=INTEGER}
   </update>
-
 
 
   <select id="pageList" parameterType="Map" resultMap="BaseResultMap">

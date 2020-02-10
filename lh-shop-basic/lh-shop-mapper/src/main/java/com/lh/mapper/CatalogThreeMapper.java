@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.CatalogThree;
 import com.lh.entity.CatalogThreeExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface CatalogThreeMapper {
@@ -27,4 +29,10 @@ public interface CatalogThreeMapper {
     int updateByPrimaryKeySelective(CatalogThree record);
 
     int updateByPrimaryKey(CatalogThree record);
+
+    List<CatalogThree> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    void updateList(List list);
 }

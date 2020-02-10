@@ -161,11 +161,12 @@
     <script type="text/html" id="table_bar">
         <div class="layui-btn-group">
             <a  class="layui-btn layui-btn-xs" id="demo1" lay-event="edit">修改</a>
-            <a  class="layui-btn layui-btn-normal layui-btn-xs" lay-event="Two">查看二级</a>
+            <a  class="layui-btn layui-btn-normal layui-btn-xs" lay-event="findTwo">查看二级</a>
         </div>
     </script>
 
     <script>
+
         layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
             'upload', 'element' ], function() {
             var laydate = layui.laydate //日期
@@ -209,7 +210,6 @@
                 } else if (layEvent === 'edit') {
                     edit(data.oneId);
                 }else if (layEvent === 'findTwo') {
-
                     window.location.href="/catalogTwo/page?oneId=" + data.oneId
                 }
             });

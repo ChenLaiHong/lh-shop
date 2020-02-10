@@ -14,6 +14,8 @@ public class CatalogThree implements Serializable {
 
     private Integer twoId;
 
+    private CatalogTwo catalogTwo;
+
     public Integer getThreeId() {
         return threeId;
     }
@@ -52,5 +54,25 @@ public class CatalogThree implements Serializable {
 
     public void setTwoId(Integer twoId) {
         this.twoId = twoId;
+    }
+
+    public CatalogTwo getCatalogTwo() {
+        return catalogTwo;
+    }
+
+    public void setCatalogTwo(CatalogTwo catalogTwo) {
+        this.catalogTwo = catalogTwo;
+    }
+
+    public CatalogThree() {
+    }
+
+    public CatalogThree(Integer threeId, String threeName, Date updateTime, Integer state, Integer twoId, CatalogTwo catalogTwo) {
+        this.threeId = threeId;
+        this.threeName = threeName;
+        this.updateTime = updateTime;
+        this.state = state;
+        this.twoId = twoId;
+        this.catalogTwo = catalogTwo;
     }
 }

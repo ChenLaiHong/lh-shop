@@ -65,6 +65,7 @@ public class CatalogOne implements Serializable {
         this.catalogTwoList = catalogTwoList;
     }
 
+
     public CatalogOne() {
     }
 

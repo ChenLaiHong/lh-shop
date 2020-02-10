@@ -38,4 +38,5 @@ public interface CatalogOneMapper  {
     Integer getTotal(Map<String, Object> map);
 
     void updateList(List ints);
+
 }

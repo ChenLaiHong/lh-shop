@@ -7,8 +7,17 @@
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="one_id" jdbcType="INTEGER" property="oneId" />
+
     <association property="catalogOne" column="one_id" select="com.lh.mapper.CatalogOneMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogOne">
     </association>
+
+    <collection  property="catalogThreeList" column="two_id" select="com.lh.mapper.CatalogThreeMapper.selectThree">
+      <id column="three_id" jdbcType="INTEGER" property="threeId" />
+      <result column="three_name" jdbcType="VARCHAR" property="threeName" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      <result column="two_id" jdbcType="INTEGER" property="twoId" />
+    </collection>
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -211,6 +220,10 @@
     where two_id = #{twoId,jdbcType=INTEGER}
   </update>
 
+  <select id="selectTwo" resultMap="BaseResultMap">
+     SELECT * FROM catalog_two
+      WHERE one_id = #{one_id}
+  </select>
 
   <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
     select * from catalog_two
@@ -218,7 +231,7 @@
       <if test="q!=null and q!=''">
         and (two_name like #{q} )
       </if>
-      and  state = 1
+      and  state = 1 and one_id = #{oneId}
     </where>
     <if test="start!=null and size!=null">
       limit #{start},#{size}
@@ -232,7 +245,7 @@
       <if test="q!=null and q!=''">
         and (two_name like #{q} )
       </if>
-      and state = 1
+      and state = 1 and one_id = #{oneId}
     </where>
   </select>
 

@@ -23,16 +23,16 @@
                 shade: [0.1,'#fff'] //0.1透明度的白色背景
             });
 
-            if(app.twoName.length<1){
+            if(app.threeName.length<1){
                 layer.closeAll();//关闭loading
-                layer.msg('请输入二级名称!!!!!!');
+                layer.msg('请输入三级名称!!!!!!');
                 return ;
             }
             var save_url = document.getElementById("save_url").value;
-            var oneIdT = document.getElementById("oneIdT").value;
+            var twoIdT = document.getElementById("twoIdT").value;
             $.post(save_url,{
-                twoName:app.twoName
-                ,oneIdT:oneIdT
+                threeName:app.threeName
+                ,twoIdT:twoIdT
 
             },function(result){
                 if(result.success){
@@ -59,11 +59,11 @@
     <form class="layui-form layui-form-pane">
         <input type="hidden" id="save_url" th:value="${save_url}" >
         <!-- 保存一级id，隐藏域 -->
-        <input type="hidden"  id="oneIdT" th:value="${oneIdT}">
+        <input type="hidden"  id="twoIdT" th:value="${twoIdT}">
         <div class="layui-form-item">
-            <label class="layui-form-label" style="color: #00bbee">二级名称</label>
+            <label class="layui-form-label" style="color: #00bbee">三级名称</label>
             <div class="layui-input-block">
-                <input type="text" id="twoName" name="twoName" autocomplete="off" th:value="${catalogTwo !=null? catalogTwo.twoName:''}" v-model="twoName" placeholder="请输入二级名称" class="layui-input">
+                <input type="text" id="threeName" name="threeName" autocomplete="off" th:value="${catalogThree !=null? catalogThree.threeName:''}" v-model="threeName" placeholder="请输入三级名称" class="layui-input">
             </div>
         </div>
 

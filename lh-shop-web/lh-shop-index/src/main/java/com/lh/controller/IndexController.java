@@ -1,8 +1,8 @@
 package com.lh.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
-import com.lh.api.product.IProductTypeService;
-import com.lh.entity.ProductType;
+import com.lh.api.product.ICatalogOneService;
+import com.lh.entity.CatalogOne;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,11 +16,11 @@ import java.util.List;
 @RequestMapping("index")
 public class IndexController {
     @Reference
-    private IProductTypeService productTypeService;
+    private ICatalogOneService catalogOneService;
 
     @RequestMapping("show")
     public String showIndex(Model model){
-        List<ProductType> list = productTypeService.list();
+        List<CatalogOne> list = catalogOneService.getAll();
 
         //列表
         model.addAttribute("list",list);
