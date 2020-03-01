@@ -1,16 +1,23 @@
 package com.lh.entity;
 
+import com.google.gson.annotations.Expose;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class CatalogThree implements Serializable {
+
     private Integer threeId;
+
 
     private String threeName;
 
+
     private Date updateTime;
 
+
     private Integer state;
+
 
     private Integer twoId;
 

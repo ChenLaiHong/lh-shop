@@ -22,17 +22,17 @@
                 shade: [0.1,'#fff'] //0.1透明度的白色背景
             });
 
-            if(app.oneName.length<1){
+            if(app.bannerName.length<1){
                 layer.closeAll();//关闭loading
-                layer.msg('请输入一级名称!!!!!!');
+                layer.msg('请输入banner名称!!!!!!');
                 return ;
             }
 
             var save_url = document.getElementById("save_url").value;
             $.post(save_url,{
-                oneName:app.oneName,
+                bannerName:app.bannerName,
                 state:$("#state").val(),
-                oneImage:$("#oneImage").val()
+                bannerImage:$("#bannerImage").val()
 
             },function(result){
                 if(result.success){
@@ -58,15 +58,15 @@
 
 <body id="app">
 <div style="padding: 10px;">
-    <form class="layui-form layui-form-pane" action="/catalogOne/addOrUpdate" method="post" enctype="multipart/form-data">
-        <input type="hidden" id="oneId" name="oneId" th:value="${oneId}">
+    <form class="layui-form layui-form-pane" action="/banner/addOrUpdate" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="bannerId" name="bannerId" th:value="${bannerId}">
         <input type="hidden" id="newImg" name="newImg">
-        <input type="hidden" id="oneImage" name="oneImage" class="oneImage" th:value="${catalogOne !=null? catalogOne.oneImage:''}">
+        <input type="hidden" id="bannerImage" name="bannerImage" class="bannerImage" th:value="${banner !=null? banner.bannerImage:''}">
         <div class="layui-form-item">
-            <label class="layui-form-label" style="color: #00bbee">一级名称</label>
+            <label class="layui-form-label" style="color: #00bbee">banner名称</label>
             <div class="layui-input-block">
-                <input type="text" id="oneName" name="oneName" autocomplete="off"
-                       th:value="${catalogOne !=null? catalogOne.oneName:''}" v-model="oneName" placeholder="请输入名称"
+                <input type="text" id="bannerName" name="bannerName" autocomplete="off"
+                       th:value="${banner !=null? banner.bannerName:''}" v-model="bannerName" placeholder="请输入名称"
                        class="layui-input">
             </div>
         </div>
@@ -75,20 +75,20 @@
             <label class="layui-form-label" style="color: #00bbee">状态</label>
             <div class="layui-input-block">
                 <select name="state" id="state" lay-filter="state">
-                    <td th:if="${catalogOne == null}">
+                    <td th:if="${banner == null}">
                         <option value="0" >暂不使用</option>
                         <option value="1" selected="">正常使用</option>
                     </td>
-                    <td th:if="${catalogOne != null}">
-                        <option value="0" th:field="*{catalogOne.state}">暂不使用</option>
-                        <option value="1" th:field="*{catalogOne.state}">正常使用</option>
+                    <td th:if="${banner != null}">
+                        <option value="0" th:field="*{banner.state}">暂不使用</option>
+                        <option value="1" th:field="*{banner.state}">正常使用</option>
                     </td>
                 </select>
             </div>
         </div>
 
         <div class="layui-form-item">
-            <img id="pro_topPicShow" th:src="${catalogOne !=null? catalogOne.oneImage:''}" alt=" " style="height: 120px;width: 120px">
+            <img id="pro_topPicShow" th:src="${banner !=null? banner.bannerImage:''}" alt=" " style="height: 120px;width: 320px">
             <button type="button" class="layui-btn" id="uploadBtn1" onclick="upLoad1()">上传图片</button>
             <input id="pro_topPic" name="oneIoc" type="file" style="display: none">
         </div>

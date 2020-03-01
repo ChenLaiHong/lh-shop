@@ -1,6 +1,7 @@
 package com.lh.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.lh.api.product.ICatalogOneService;
 import com.lh.entity.CatalogOne;
 import com.lh.entity.CatalogOneExample;
@@ -24,7 +25,6 @@ import static com.lh.shop.common.util.StringUtil.StringIds;
 @Component
 @Service
 public class CatalogOneService  implements ICatalogOneService {
-
 
     @Autowired
     private CatalogOneMapper catalogOneMapper;

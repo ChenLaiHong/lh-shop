@@ -53,22 +53,22 @@
 
     //打开编辑窗口
     function edit(id){
-        window.location.href = "/catalogOne/toEdit?oneId="+id;
+        window.location.href = "/banner/toEdit?bannerId="+id;
         console.log("编辑的ID"+id);
     }
 
-    //添加二级
-    function addTwo(id){
-        w = 300;
+    //打开查看窗口
+    function look(id){
+        w = 400;
         h = 300;
         checkWindow();
         layer.open({
             type: 2,
-            title: '添加二级',
+            title: '查看',
             shadeClose: true,
             shade: 0.8,
             area: [w+'px', h+'px'],
-            content: '/catalogOne/ToAddTwo?oneId='+id //iframe的url
+            content: '/banner/toLook?bannerId='+id //iframe的url
         });
     }
 
@@ -79,7 +79,7 @@
         var index = layer.load(1, {
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
-        $.post('/catalogOne/delete',{ids:ids},function(result){
+        $.post('/banner/delete',{ids:ids},function(result){
             if(result.success){
                 layer.closeAll();
                 layer.msg('删除成功');
@@ -100,7 +100,7 @@
         var ids = "";
         if(selected.data.length>0){
             $.each(selected.data,function(i,val){
-                ids = ids+val.oneId+",";
+                ids = ids+val.bannerId+",";
             });
         }
         //去掉最后的逗号,
@@ -144,7 +144,7 @@
 
     <div class="layui-table-toolbar" style="margin-bottom: 3px;">
         <div class="layui-btn-group">
-            <a  href="/catalogOne/toAdd" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe654;</i>添加</a>
+            <a  href="/banner/toAdd" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe654;</i>添加</a>
             <button  type="button" class="layui-btn layui-btn-danger layui-btn-sm" onclick="delSelected()"><i class="layui-icon"></i>删除</button>
         </div>
 
@@ -159,10 +159,11 @@
 
     <table class="layui-hide"   id="table" lay-filter="table"></table>
 
+
     <script type="text/html" id="table_bar">
         <div class="layui-btn-group">
             <a  class="layui-btn layui-btn-xs" id="demo1" lay-event="edit">修改</a>
-            <a  class="layui-btn layui-btn-normal layui-btn-xs" lay-event="findTwo">查看二级</a>
+            <a  class="layui-btn layui-btn-xs" id="demo2" lay-event="look">查看</a>
         </div>
     </script>
 
@@ -180,14 +181,14 @@
                 , element = layui.element; //元素操作
             table.render({
                 elem: '#table'
-                ,url: '/catalogOne/list',
+                ,url: '/banner/list',
                 height: 'full-60',
                 cols: [
                     [
                     {checkbox: true, fixed: true}
-                    ,{field:'oneId', title: 'ID',width:20}
-                    ,{field:'oneName', title: '一级名称', width:200,align:"center"}
-                    ,{field:'oneImage', title: '一级图标', width:100,align:"center",templet:'<div><img src="{{ d.oneImage }}" style="height: 28px;width: 30px"></div>'}
+                    ,{field:'bannerId', title: 'ID',width:50}
+                    ,{field:'bannerName', title: 'banner名称', width:200,align:"center"}
+                    ,{field:'bannerImage', title: 'banner图', width:300,align:"center",templet:'<div><img src="{{ d.bannerImage }}" ></div>'}
                     ,{field:'state', title: '状态', width:100,align:"center", templet: '#format_state'}
                     ,{field:'updateTime', title: '更新时间', width:160,align:"center"}
                     ,{fixed:'right', width:180,title: '操作',align:"center",  toolbar: '#table_bar'}
@@ -206,12 +207,12 @@
                     , layEvent = obj.event; //获得 lay-event 对应的值
                 console.log('获得当前行数据'+data);
                 if (layEvent === 'del') {
-                    console.log(data.oneId);
-                    del(data.oneId);
+                    console.log(data.bannerId);
+                    del(data.bannerId);
                 } else if (layEvent === 'edit') {
-                    edit(data.oneId);
-                }else if (layEvent === 'findTwo') {
-                    window.location.href="/catalogTwo/page?oneId=" + data.oneId
+                    edit(data.bannerId);
+                }else if (layEvent === 'look') {
+                    look(data.bannerId);
                 }
             });
 

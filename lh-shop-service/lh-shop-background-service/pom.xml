@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.lh</groupId>
-	<artifactId>lh-shop-product-service</artifactId>
+	<artifactId>lh-shop-background-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>lh-shop-product-service</name>
 	<description>Demo project for Spring Boot</description>
@@ -28,6 +28,12 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.tobato</groupId>
+			<artifactId>fastdfs-client</artifactId>
+			<version>1.26.1-RELEASE</version>
 		</dependency>
 
 		<dependency>

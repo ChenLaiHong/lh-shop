@@ -1,10 +1,13 @@
 package com.lh.entity;
 
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+
 public class CatalogOne implements Serializable {
+
     private Integer oneId;
 
     private String oneName;
@@ -14,6 +17,7 @@ public class CatalogOne implements Serializable {
     private Date updateTime;
 
     private Integer state;
+
 
     private List<CatalogTwo> catalogTwoList;
 

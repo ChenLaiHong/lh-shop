@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lh.mapper.CatalogTwoMapper">
-  <resultMap id="BaseResultMap" type="com.lh.entity.CatalogTwo">
-    <id column="two_id" jdbcType="INTEGER" property="twoId" />
-    <result column="two_name" jdbcType="VARCHAR" property="twoName" />
+<mapper namespace="com.lh.mapper.HeadLinesMapper">
+  <resultMap id="BaseResultMap" type="com.lh.entity.HeadLines">
+    <id column="news_id" jdbcType="INTEGER" property="newsId" />
+    <result column="news_title" jdbcType="VARCHAR" property="newsTitle" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="one_id" jdbcType="INTEGER" property="oneId" />
-
-    <association property="catalogOne" column="one_id" select="com.lh.mapper.CatalogOneMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogOne">
-    </association>
-
-    <collection  property="catalogThreeList" column="two_id" select="com.lh.mapper.CatalogThreeMapper.selectThree">
-      <id column="three_id" jdbcType="INTEGER" property="threeId" />
-      <result column="three_name" jdbcType="VARCHAR" property="threeName" />
-      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-      <result column="state" jdbcType="INTEGER" property="state" />
-      <result column="two_id" jdbcType="INTEGER" property="twoId" />
-    </collection>
   </resultMap>
-
-  <resultMap id="TwoResultMap" type="com.lh.entity.CatalogTwo">
-    <id column="two_id" jdbcType="INTEGER" property="twoId" />
-    <result column="two_name" jdbcType="VARCHAR" property="twoName" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
-    <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="one_id" jdbcType="INTEGER" property="oneId" />
-
-    <association property="catalogOne" column="one_id" select="com.lh.mapper.CatalogOneMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogOne">
-    </association>
-
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lh.entity.HeadLines">
+    <result column="new_content" jdbcType="LONGVARCHAR" property="newContent" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -90,15 +70,20 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    two_id, two_name, update_time, state, one_id
+    news_id, news_title, image_url, update_time, state
   </sql>
-  <select id="selectByExample" parameterType="com.lh.entity.CatalogTwoExample" resultMap="BaseResultMap">
+  <sql id="Blob_Column_List">
+    new_content
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.lh.entity.HeadLinesExample" resultMap="ResultMapWithBLOBs">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from catalog_two
+    ,
+    <include refid="Blob_Column_List" />
+    from head_lines
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -106,36 +91,57 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="TwoResultMap">
-    select 
+  <select id="selectByExample" parameterType="com.lh.entity.HeadLinesExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
     <include refid="Base_Column_List" />
-    from catalog_two
-    where two_id = #{twoId,jdbcType=INTEGER}
+    from head_lines
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from head_lines
+    where news_id = #{newsId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from catalog_two
-    where two_id = #{twoId,jdbcType=INTEGER}
+    delete from head_lines
+    where news_id = #{newsId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.lh.entity.CatalogTwoExample">
-    delete from catalog_two
+  <delete id="deleteByExample" parameterType="com.lh.entity.HeadLinesExample">
+    delete from head_lines
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.lh.entity.CatalogTwo">
-    insert into catalog_two (two_id, two_name, update_time, 
-      state, one_id)
-    values (#{twoId,jdbcType=INTEGER}, #{twoName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=INTEGER}, #{oneId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.lh.entity.HeadLines">
+    insert into head_lines (news_id, news_title, image_url,
+    update_time, state, new_content
+    )
+    values (#{newsId,jdbcType=INTEGER}, #{newsTitle,jdbcType=VARCHAR}, #{imageUrl,jdbcType=VARCHAR},
+    #{updateTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER}, #{newContent,jdbcType=LONGVARCHAR}
+    )
   </insert>
-  <insert id="insertSelective" parameterType="com.lh.entity.CatalogTwo">
-    insert into catalog_two
+  <insert id="insertSelective" parameterType="com.lh.entity.HeadLines">
+    insert into head_lines
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="twoId != null">
-        two_id,
+      <if test="newsId != null">
+        news_id,
       </if>
-      <if test="twoName != null">
-        two_name,
+      <if test="newsTitle != null">
+        news_title,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
       </if>
       <if test="updateTime != null">
         update_time,
@@ -143,16 +149,19 @@
       <if test="state != null">
         state,
       </if>
-      <if test="oneId != null">
-        one_id,
+      <if test="newContent != null">
+        new_content,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="twoId != null">
-        #{twoId,jdbcType=INTEGER},
+      <if test="newsId != null">
+        #{newsId,jdbcType=INTEGER},
       </if>
-      <if test="twoName != null">
-        #{twoName,jdbcType=VARCHAR},
+      <if test="newsTitle != null">
+        #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         #{updateTime,jdbcType=TIMESTAMP},
@@ -160,25 +169,28 @@
       <if test="state != null">
         #{state,jdbcType=INTEGER},
       </if>
-      <if test="oneId != null">
-        #{oneId,jdbcType=INTEGER},
+      <if test="newContent != null">
+        #{newContent,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.lh.entity.CatalogTwoExample" resultType="java.lang.Long">
-    select count(*) from catalog_two
+  <select id="countByExample" parameterType="com.lh.entity.HeadLinesExample" resultType="java.lang.Long">
+    select count(*) from head_lines
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update catalog_two
+    update head_lines
     <set>
-      <if test="record.twoId != null">
-        two_id = #{record.twoId,jdbcType=INTEGER},
+      <if test="record.newsId != null">
+        news_id = #{record.newsId,jdbcType=INTEGER},
       </if>
-      <if test="record.twoName != null">
-        two_name = #{record.twoName,jdbcType=VARCHAR},
+      <if test="record.newsTitle != null">
+        news_title = #{record.newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.updateTime != null">
         update_time = #{record.updateTime,jdbcType=TIMESTAMP},
@@ -186,30 +198,45 @@
       <if test="record.state != null">
         state = #{record.state,jdbcType=INTEGER},
       </if>
-      <if test="record.oneId != null">
-        one_id = #{record.oneId,jdbcType=INTEGER},
+      <if test="record.newContent != null">
+        new_content = #{record.newContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByExample" parameterType="map">
-    update catalog_two
-    set two_id = #{record.twoId,jdbcType=INTEGER},
-      two_name = #{record.twoName,jdbcType=VARCHAR},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
-      state = #{record.state,jdbcType=INTEGER},
-      one_id = #{record.oneId,jdbcType=INTEGER}
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update head_lines
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+    news_title = #{record.newsTitle,jdbcType=VARCHAR},
+    image_url = #{record.imageUrl,jdbcType=VARCHAR},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    state = #{record.state,jdbcType=INTEGER},
+    new_content = #{record.newContent,jdbcType=LONGVARCHAR}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.CatalogTwo">
-    update catalog_two
+  <update id="updateByExample" parameterType="map">
+    update head_lines
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+    news_title = #{record.newsTitle,jdbcType=VARCHAR},
+    image_url = #{record.imageUrl,jdbcType=VARCHAR},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    state = #{record.state,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.HeadLines">
+    update head_lines
     <set>
-      <if test="twoName != null">
-        two_name = #{twoName,jdbcType=VARCHAR},
+      <if test="newsTitle != null">
+        news_title = #{newsTitle,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
         update_time = #{updateTime,jdbcType=TIMESTAMP},
@@ -217,33 +244,38 @@
       <if test="state != null">
         state = #{state,jdbcType=INTEGER},
       </if>
-      <if test="oneId != null">
-        one_id = #{oneId,jdbcType=INTEGER},
+      <if test="newContent != null">
+        new_content = #{newContent,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where two_id = #{twoId,jdbcType=INTEGER}
+    where news_id = #{newsId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.lh.entity.CatalogTwo">
-    update catalog_two
-    set two_name = #{twoName,jdbcType=VARCHAR},
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lh.entity.HeadLines">
+    update head_lines
+    set news_title = #{newsTitle,jdbcType=VARCHAR},
+    image_url = #{imageUrl,jdbcType=VARCHAR},
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+    state = #{state,jdbcType=INTEGER},
+    new_content = #{newContent,jdbcType=LONGVARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lh.entity.HeadLines">
+    update head_lines
+    set news_title = #{newsTitle,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=TIMESTAMP},
-      state = #{state,jdbcType=INTEGER},
-      one_id = #{oneId,jdbcType=INTEGER}
-    where two_id = #{twoId,jdbcType=INTEGER}
+      state = #{state,jdbcType=INTEGER}
+    where news_id = #{newsId,jdbcType=INTEGER}
   </update>
 
-  <select id="selectTwo" resultMap="BaseResultMap">
-     SELECT * FROM catalog_two
-      WHERE one_id = #{one_id}
-  </select>
 
-  <select id="pageList" parameterType="Map" resultMap="TwoResultMap">
-    select * from catalog_two
+  <select id="pageList" parameterType="Map" resultMap="ResultMapWithBLOBs">
+    select * from head_lines
     <where>
       <if test="q!=null and q!=''">
-        and (two_name like #{q} )
+        and (news_title like #{q} )
       </if>
-      and  state = 1 and one_id = #{oneId}
+      and  state = 1
     </where>
     <if test="start!=null and size!=null">
       limit #{start},#{size}
@@ -252,12 +284,12 @@
 
   <select id="getTotal" parameterType="Map" resultType="Integer">
     select
-    count(*) from catalog_two
+    count(*) from head_lines
     <where>
       <if test="q!=null and q!=''">
-        and (two_name like #{q} )
+        and (news_title like #{q} )
       </if>
-      and state = 1 and one_id = #{oneId}
+      and state = 1
     </where>
   </select>
 
@@ -266,13 +298,14 @@
 2、如果你的是对象的集合，item.字段名 赋值就好了
 -->
 
-
   <update id="updateList" parameterType="java.util.List" >
-    UPDATE catalog_two SET
+    UPDATE head_lines SET
     state = 0
-    WHERE two_id in
+    WHERE news_id in
     <foreach collection="list" open="(" close=")" item="id" separator=",">
       #{id}
     </foreach>
   </update>
+
+
 </mapper>

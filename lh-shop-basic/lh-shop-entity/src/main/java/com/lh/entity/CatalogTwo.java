@@ -1,8 +1,11 @@
 package com.lh.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 
 public class CatalogTwo implements Serializable {
     private Integer twoId;
@@ -76,6 +79,15 @@ public class CatalogTwo implements Serializable {
     }
 
     public CatalogTwo() {
+    }
+
+    public CatalogTwo(Integer twoId, String twoName, Date updateTime, Integer state, Integer oneId, CatalogOne catalogOne) {
+        this.twoId = twoId;
+        this.twoName = twoName;
+        this.updateTime = updateTime;
+        this.state = state;
+        this.oneId = oneId;
+        this.catalogOne = catalogOne;
     }
 
     public CatalogTwo(Integer twoId, String twoName, Date updateTime, Integer state, Integer oneId, CatalogOne catalogOne, List<CatalogThree> catalogThreeList) {

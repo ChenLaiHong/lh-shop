@@ -17,6 +17,15 @@
     </collection>
 
   </resultMap>
+  <resultMap id="ListResultMap" type="com.lh.entity.CatalogOne">
+    <id column="one_id" jdbcType="INTEGER" property="oneId" />
+    <result column="one_name" jdbcType="VARCHAR" property="oneName" />
+    <result column="one_image" jdbcType="VARCHAR" property="oneImage" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+
+
+  </resultMap>
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -92,7 +101,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ListResultMap">
     select 
     <include refid="Base_Column_List" />
     from catalog_one
@@ -219,7 +228,7 @@
   </update>
 
 
-  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+  <select id="pageList" parameterType="Map" resultMap="ListResultMap">
     select * from catalog_one
     <where>
       <if test="q!=null and q!=''">

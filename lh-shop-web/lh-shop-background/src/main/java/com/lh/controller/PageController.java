@@ -9,8 +9,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 public class PageController {
 
+    //商品分类管理
     @RequestMapping("/toCatalogOne")
     public String toCrew(){
         return "/admin/catalogOneManage";
+    }
+
+    //Banner图管理
+    @RequestMapping("/toBanner")
+    public String toBanner(){
+        return "/admin/bannerManage";
+    }
+
+    //新闻头条管理
+    @RequestMapping("/toHeadLines")
+    public String toHeadLines(){
+        return "/admin/headLinesManage";
     }
 }

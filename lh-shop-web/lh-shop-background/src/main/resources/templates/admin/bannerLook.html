@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+    <!-- 加入移动布局 -->
+    <meta name="viewport"	content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
+    <!-- 加入移动布局 -->
+
+    <!--添加  vue.js 支持加载-->
+    <script src="/js/vue.min.js"></script>
+    <script	src="/layui/layui/layui.js"></script>
+    <link href="/layui/layui/css/layui.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <!--添加  vue.js 支持加载-->
+
+    <style>
+        html, body {
+        }
+        .layui-form-item {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body id="app">
+<div style="padding: 10px;">
+    <form class="layui-form layui-form-pane">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">Banner名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="bannerName" name="bannerName" autocomplete="off" th:value="${banner.bannerName}" class="layui-input" readonly="readonly">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <img id="pro_topPicShow" th:src="${banner !=null? banner.bannerImage:''}" alt=" " style="height: 120px;width: 320px">
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">状态</label>
+            <div class="layui-input-block">
+                <select name="state" id="state" lay-filter="state" disabled="disabled">
+                    <td th:if="${banner != null}">
+                        <option value="0" th:field="*{banner.state}">暂不使用</option>
+                        <option value="1" th:field="*{banner.state}">正常使用</option>
+                    </td>
+                </select>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+<script>
+    layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
+        'upload', 'element' ], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element; //元素操作
+    });
+</script>
+
+
+
+</body>
+</html>

@@ -11,6 +11,8 @@ public class LhShopBackgroundApplicationTests {
 
 	@Test
 	public void contextLoads() {
+
+
 	}
 
 }

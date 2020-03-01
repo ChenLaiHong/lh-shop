@@ -1,0 +1,157 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- 加入移动布局 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <!-- 加入移动布局 -->
+
+    <!--添加  vue.js 支持加载-->
+    <script src="/js/vue.min.js"></script>
+    <script src="/layui/layui/layui.js"></script>
+    <script src="https://unpkg.com/wangeditor@3.1.1/release/wangEditor.min.js"></script>
+    <link href="/layui/layui/css/layui.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <!--添加  vue.js 支持加载-->
+
+    <script>
+
+        function save(){
+            var index = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+
+            if(app.newsTitle.length<1){
+                layer.closeAll();//关闭loading
+                layer.msg('请输入新闻标题!!!!!!');
+                return ;
+            }
+
+            var save_url = document.getElementById("save_url").value;
+            var newContent = editor.txt.html();
+            var imgs = newContent.match(/<img[^>]+>/g);
+            if(imgs == null){
+                imgs = ""
+            }
+            var newsId = document.getElementById("newsId").value;
+            var images = document.getElementById("imageUrl").value;
+            $.post(save_url,{
+                newsTitle:app.newsTitle,
+                state:$("#state").val(),
+                newContent:newContent,
+                newsId:newsId,
+                imageUrl:imgs.toString(),
+                images:images
+            },function(result){
+
+
+            },'json');
+            window.parent.closeDlg("执行成功");
+        }
+
+    </script>
+    <style>
+        html, body {
+        }
+        .layui-form-item {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body id="app">
+<div style="padding: 10px;">
+    <form class="layui-form layui-form-pane" >
+        <input type="hidden" id="save_url" th:value="${save_url}" >
+        <input type="hidden" id="newsId" name="newsId" th:value="${newsId}">
+        <input type="hidden" id="imageUrl" name="newsId" th:value="${imageUrl}">
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">新闻标题</label>
+            <div class="layui-input-block">
+                <input type="text" id="newsTitle" name="newsTitle" autocomplete="off"
+                       th:value="${headLines !=null? headLines.newsTitle:''}" v-model="newsTitle" placeholder="请输入新闻标题"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">状态</label>
+            <div class="layui-input-block">
+                <select name="state" id="state" lay-filter="state">
+                    <td th:if="${headLines == null}">
+                        <option value="0" >暂不使用</option>
+                        <option value="1" selected="">正常使用</option>
+                    </td>
+                    <td th:if="${headLines != null}">
+                        <option value="0" th:field="*{headLines.state}">暂不使用</option>
+                        <option value="1" th:field="*{headLines.state}">正常使用</option>
+                    </td>
+                </select>
+            </div>
+        </div>
+
+
+            <div id="editor">
+                <span th:utext="${headLines !=null? headLines.newContent:''}"></span>
+            </div>
+
+    </form>
+    <div class="site-demo-button" style="margin-top: 20px;">
+        <button id="save" onclick="save()" class="layui-btn site-demo-layedit" data-type="content" th:text="${btn_text}"></button>
+    </div>
+
+</div>
+
+
+<script>
+    layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
+        'upload', 'element','jquery' ], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element; //元素操作
+        var $ = layui.jquery;
+
+    });
+
+</script>
+<script>
+    var app = new Vue({
+        el : '#app',
+        data : {
+        }
+    });
+</script>
+<script type="text/javascript">
+    var E = window.wangEditor;
+    var editor = new E('#editor');
+
+    // 自定义菜单配置
+    editor.customConfig.menus = [
+        'head',  // 标题
+        'bold',  // 粗体
+        'fontSize',  // 字号
+        'fontName',  // 字体
+        'italic',  // 斜体
+        'underline',  // 下划线
+        'foreColor',  // 文字颜色
+        'link',  // 插入链接
+        'justify',  // 对齐方式
+        'image',  // 插入图片
+        'undo',  // 撤销
+        'redo'  // 重复
+    ],
+        // 配置服务器端地址
+        editor.customConfig.uploadImgServer = '/file/multiUpload';
+        editor.customConfig.uploadFileName = 'files';
+    editor.create();
+</script>
+
+
+</body>
+</html>
