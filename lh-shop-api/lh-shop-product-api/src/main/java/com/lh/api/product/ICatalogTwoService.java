@@ -20,4 +20,8 @@ public interface ICatalogTwoService {
     int update(CatalogTwo catalogTwo);
 
     void delete(String ids);
+
+    List<CatalogTwo> selectTwoByOneId(Integer oneId);
+
+    List<CatalogTwo> getTwo();
 }

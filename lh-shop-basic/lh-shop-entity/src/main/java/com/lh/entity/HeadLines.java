@@ -10,6 +10,7 @@ public class HeadLines implements Serializable {
 
     private String imageUrl;
 
+    //数据库没有此字段，临时存储新的图片地址
     private String images;
 
     private Date updateTime;

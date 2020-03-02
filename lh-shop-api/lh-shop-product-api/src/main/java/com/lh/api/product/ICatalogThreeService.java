@@ -21,4 +21,8 @@ public interface ICatalogThreeService {
     int update(CatalogThree catalogThree);
 
     void delete(String ids);
+
+    List<CatalogThree> selectThreeBytwoId(Integer twoId);
+
+    List<CatalogThree> getThree();
 }

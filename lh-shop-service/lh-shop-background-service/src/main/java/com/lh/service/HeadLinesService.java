@@ -54,13 +54,8 @@ public class HeadLinesService implements IHeadLinesService {
 
     @Override
     public int update(HeadLines headLines) {
-        List resultN = findPath(headLines.getImageUrl().split(","));
-        List resultO = findPath(headLines.getImages().split(","));
-        for(int i=0;i<resultO.size();i++){
-            if(resultN.contains(resultO.get(i)) == false){
-                fastFileStorageClient.deleteFile(String.valueOf(resultO.get(i)));
-            }
-        }
+
+        headLines.setImageUrl(headLines.getImageUrl());
         headLines.setUpdateTime(new Date());
         return headLinesMapper.updateByPrimaryKeyWithBLOBs(headLines);
     }

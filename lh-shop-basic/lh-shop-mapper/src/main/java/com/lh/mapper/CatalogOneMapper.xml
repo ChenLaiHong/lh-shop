@@ -23,8 +23,6 @@
     <result column="one_image" jdbcType="VARCHAR" property="oneImage" />
     <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
     <result column="state" jdbcType="INTEGER" property="state" />
-
-
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -229,17 +227,17 @@
 
 
   <select id="pageList" parameterType="Map" resultMap="ListResultMap">
-    select * from catalog_one
-    <where>
-      <if test="q!=null and q!=''">
-        and (one_name like #{q} )
-      </if>
-      and  state = 1
-    </where>
-    <if test="start!=null and size!=null">
-      limit #{start},#{size}
+  select * from catalog_one
+  <where>
+    <if test="q!=null and q!=''">
+      and (one_name like #{q} )
     </if>
-  </select>
+    and  state = 1
+  </where>
+  <if test="start!=null and size!=null">
+    limit #{start},#{size}
+  </if>
+</select>
 
   <select id="getTotal" parameterType="Map" resultType="Integer">
     select
@@ -251,6 +249,14 @@
       and state = 1
     </where>
   </select>
+
+  <select id="getOne" parameterType="Map" resultMap="ListResultMap">
+    select * from catalog_one
+    <where>
+      state = 1
+    </where>
+  </select>
+
 
   <!--批量修改，逻辑删除
  1、这里修改的是某个字段的值，参数是int类型的集合

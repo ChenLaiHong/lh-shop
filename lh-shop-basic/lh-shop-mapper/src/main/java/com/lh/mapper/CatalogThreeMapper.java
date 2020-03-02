@@ -35,4 +35,8 @@ public interface CatalogThreeMapper {
     Integer getTotal(Map<String, Object> map);
 
     void updateList(List list);
+
+    List<CatalogThree> selectByTwoId(Integer twoId);
+
+
 }

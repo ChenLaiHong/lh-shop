@@ -29,8 +29,6 @@ public class FileController {
 
     @RequestMapping("upload")
     @ResponseBody
-    //8082 8080
-    //@CrossOrigin(origins = "http://localhost:8080")
     public ResultBean upload(MultipartFile file){
         System.out.println(file+"!!!!!!!!!!");
         //1.获取到文件对象，将文件对象上传FastDFS上

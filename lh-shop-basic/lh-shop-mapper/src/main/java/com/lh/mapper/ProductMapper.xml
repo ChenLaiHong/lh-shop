@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.mapper.ProductMapper">
+  <resultMap id="BaseResultMap" type="com.lh.entity.Product">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_one_image" jdbcType="VARCHAR" property="productOneImage" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="product_state" jdbcType="INTEGER" property="productState" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="three_id" jdbcType="INTEGER" property="threeId" />
+
+    <association property="catalogThree" column="three_id" select="com.lh.mapper.CatalogThreeMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogThree">
+    </association>
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lh.entity.Product">
+    <result column="product_detail" jdbcType="LONGVARCHAR" property="productDetail" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    product_id, product_name, product_one_image, images, shop_price, product_state, update_time,
+    three_id
+  </sql>
+  <sql id="Blob_Column_List">
+    product_detail
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="com.lh.entity.ProductExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="com.lh.entity.ProductExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from product
+    where product_id = #{productId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product
+    where product_id = #{productId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lh.entity.ProductExample">
+    delete from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lh.entity.Product">
+    insert into product (product_id, product_name, product_one_image,
+    images, shop_price, product_state,
+    update_time, three_id, product_detail
+    )
+    values (#{productId,jdbcType=INTEGER}, #{productName,jdbcType=VARCHAR}, #{productOneImage,jdbcType=VARCHAR},
+    #{images,jdbcType=VARCHAR}, #{shopPrice,jdbcType=DECIMAL}, #{productState,jdbcType=INTEGER},
+    #{updateTime,jdbcType=TIMESTAMP}, #{threeId,jdbcType=INTEGER}, #{productDetail,jdbcType=LONGVARCHAR}
+    )
+  </insert>
+  <insert id="insertSelective" parameterType="com.lh.entity.Product">
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productOneImage != null">
+        product_one_image,
+      </if>
+      <if test="images != null">
+        images,
+      </if>
+      <if test="shopPrice != null">
+        shop_price,
+      </if>
+      <if test="productState != null">
+        product_state,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="threeId != null">
+        three_id,
+      </if>
+      <if test="productDetail != null">
+        product_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productOneImage != null">
+        #{productOneImage,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPrice != null">
+        #{shopPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productState != null">
+        #{productState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="threeId != null">
+        #{threeId,jdbcType=INTEGER},
+      </if>
+      <if test="productDetail != null">
+        #{productDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lh.entity.ProductExample" resultType="java.lang.Long">
+    select count(*) from product
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product
+    <set>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productName != null">
+        product_name = #{record.productName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.productOneImage != null">
+        product_one_image = #{record.productOneImage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.images != null">
+        images = #{record.images,jdbcType=VARCHAR},
+      </if>
+      <if test="record.shopPrice != null">
+        shop_price = #{record.shopPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.productState != null">
+        product_state = #{record.productState,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.threeId != null">
+        three_id = #{record.threeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.productDetail != null">
+        product_detail = #{record.productDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update product
+    set product_id = #{record.productId,jdbcType=INTEGER},
+    product_name = #{record.productName,jdbcType=VARCHAR},
+    product_one_image = #{record.productOneImage,jdbcType=VARCHAR},
+    images = #{record.images,jdbcType=VARCHAR},
+    shop_price = #{record.shopPrice,jdbcType=DECIMAL},
+    product_state = #{record.productState,jdbcType=INTEGER},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    three_id = #{record.threeId,jdbcType=INTEGER},
+    product_detail = #{record.productDetail,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product
+    set product_id = #{record.productId,jdbcType=INTEGER},
+    product_name = #{record.productName,jdbcType=VARCHAR},
+    product_one_image = #{record.productOneImage,jdbcType=VARCHAR},
+    images = #{record.images,jdbcType=VARCHAR},
+    shop_price = #{record.shopPrice,jdbcType=DECIMAL},
+    product_state = #{record.productState,jdbcType=INTEGER},
+    update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    three_id = #{record.threeId,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.Product">
+    update product
+    <set>
+      <if test="productName != null">
+        product_name = #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productOneImage != null">
+        product_one_image = #{productOneImage,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        images = #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPrice != null">
+        shop_price = #{shopPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productState != null">
+        product_state = #{productState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="threeId != null">
+        three_id = #{threeId,jdbcType=INTEGER},
+      </if>
+      <if test="productDetail != null">
+        product_detail = #{productDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.lh.entity.Product">
+    update product
+    set product_name = #{productName,jdbcType=VARCHAR},
+    product_one_image = #{productOneImage,jdbcType=VARCHAR},
+    images = #{images,jdbcType=VARCHAR},
+    shop_price = #{shopPrice,jdbcType=DECIMAL},
+    product_state = #{productState,jdbcType=INTEGER},
+    update_time = #{updateTime,jdbcType=TIMESTAMP},
+    three_id = #{threeId,jdbcType=INTEGER},
+    product_detail = #{productDetail,jdbcType=LONGVARCHAR}
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lh.entity.Product">
+    update product
+    set product_name = #{productName,jdbcType=VARCHAR},
+      product_one_image = #{productOneImage,jdbcType=VARCHAR},
+      images = #{images,jdbcType=VARCHAR},
+      shop_price = #{shopPrice,jdbcType=DECIMAL},
+      product_state = #{productState,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP},
+      three_id = #{threeId,jdbcType=INTEGER}
+    where product_id = #{productId,jdbcType=INTEGER}
+  </update>
+
+
+  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+    select * from product
+    <where>
+      <if test="q!=null and q!=''">
+        and (product_name like #{q} )
+      </if>
+      and  product_state = 1
+    </where>
+    ORDER BY update_time DESC
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+  </select>
+
+  <select id="getTotal" parameterType="Map" resultType="Integer">
+    select
+    count(*) from product
+    <where>
+      <if test="q!=null and q!=''">
+        and (product_name like #{q} )
+      </if>
+      and product_state = 1
+    </where>
+    ORDER BY update_time DESC
+  </select>
+
+  <!--批量修改，逻辑删除
+ 1、这里修改的是某个字段的值，参数是int类型的集合
+2、如果你的是对象的集合，item.字段名 赋值就好了
+-->
+
+
+  <update id="updateList" parameterType="java.util.List" >
+    UPDATE product SET
+    state = 0
+    WHERE product_id in
+    <foreach collection="list" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </update>
+</mapper>

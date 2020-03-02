@@ -1,13 +1,18 @@
 package com.lh.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.lh.api.product.ICatalogOneService;
 import com.lh.api.product.ICatalogTwoService;
+import com.lh.api.product.IProductImageService;
+import com.lh.api.product.IProductService;
 import com.lh.entity.*;
 import com.lh.shop.common.util.ResponseUtil;
 import com.lh.shop.common.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -27,18 +32,24 @@ import static com.lh.shop.common.util.ResponseUtil.res;
  * Created by laiHom on 2020/2/4.
  */
 @Controller
-@RequestMapping("catalogTwo")
-public class CatalogTwoController {
+@RequestMapping("productImage")
+public class ImageController {
+
+    @Value("${image.server}")
+    private String image_server;
+
+    @Autowired
+    private FastFileStorageClient fastFileStorageClient;
 
     @Reference
-    private ICatalogOneService catalogOneService;
+    private IProductService productService;
 
     @Reference
-    private ICatalogTwoService catalogTwoService;
+    private IProductImageService productImageService;
 
 
     @RequestMapping("/list")
-    public String list(@RequestParam("oneId") Integer oneId,
+    public String list(@RequestParam("productId") Integer productId,
                        @RequestParam(value = "page", required = false) String page,
                        @RequestParam(value = "limit", required = false) String rows,
                        @RequestParam(value = "q", required = false) String q,
@@ -47,11 +58,11 @@ public class CatalogTwoController {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("start", pageBean.getStart());
         map.put("size", pageBean.getPageSize());
-        map.put("oneId", oneId);
+        map.put("productId", productId);
         map.put("q", StringUtil.formatLike(q));
 
-        List<CatalogTwo> list = catalogTwoService.pageList(map);
-        Integer total = catalogTwoService.getTotal(map);
+        List<ProductImage> list = productImageService.pageList(map);
+        Integer total = productImageService.getTotal(map);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
 
         map.clear();
@@ -65,42 +76,52 @@ public class CatalogTwoController {
 
 
     @RequestMapping("/toAdd")
-    public ModelAndView toAdd(@RequestParam(value="oneId") Integer oneId) throws Exception {
+    public ModelAndView toAdd(@RequestParam(value="productId") Integer productId) throws Exception {
 
         ModelAndView mav = new ModelAndView();
         mav.addObject("btn_text", "添加");
-        mav.addObject("twoId", 0);
-        mav.addObject("oneIdT", oneId);
-        mav.addObject("save_url", "/catalogTwo/add");
-        mav.setViewName("/admin/catalogTwoAddOrUpdate");
+        mav.addObject("id", 0);
+        mav.addObject("productId", productId);
+        mav.addObject("OImageUrl", "");
+        mav.addObject("save_url", "/productImage/add");
+        mav.setViewName("/admin/productImageAddOrUpdate");
         return mav;
     }
     @RequestMapping("/add")
-    public String add(CatalogTwo catalogTwo, @RequestParam(value="oneIdT") Integer oneId, HttpServletResponse response) throws Exception {
+    public String add(ProductImage productImage,
+                      @RequestParam(value="OImageUrl") String OImageUrl,
+                      HttpServletResponse response) throws Exception {
 
-        catalogTwo.setOneId(oneId);
-        int resultTotal = catalogTwoService.add(catalogTwo);
+        int resultTotal = productImageService.add(productImage);
         Gson gson = new Gson();
         ResponseUtil.write(response, gson.toJson(res(resultTotal)));
         return null;
     }
 
     @RequestMapping("/toEdit")
-    public ModelAndView toEdit(@RequestParam(value = "twoId", required = false) Integer twoId) throws Exception {
-        CatalogTwo catalogTwo = catalogTwoService.findById(twoId);
+    public ModelAndView toEdit(@RequestParam(value = "id", required = false) Integer id) throws Exception {
+        ProductImage productImage = productImageService.findById(id);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("twoId", twoId);
-        mav.addObject("catalogTwo", catalogTwo);
+        mav.addObject("id", id);
+        mav.addObject("productImage", productImage);
+        mav.addObject("OImageUrl", productImage.getImageUrl());
         mav.addObject("btn_text", "修改");
-        mav.addObject("save_url", "/catalogTwo/update?twoId="+twoId);
-        mav.setViewName("/admin/catalogTwoAddOrUpdate");
+        mav.addObject("save_url", "/productImage/update?id="+id);
+        mav.setViewName("/admin/productImageAddOrUpdate");
         return mav;
     }
 
     @RequestMapping("/update")
-    public String update(CatalogTwo catalogTwo, HttpServletResponse response) throws Exception {
+    public String update(ProductImage productImage,
+                         @RequestParam(value="OImageUrl") String OImageUrl,
+                         HttpServletResponse response) throws Exception {
 
-        int resultTotal = catalogTwoService.update(catalogTwo);
+        if(OImageUrl != productImage.getImageUrl() && OImageUrl.length()>0){
+            String groupPath = OImageUrl.substring(image_server.length(), OImageUrl.length());
+            fastFileStorageClient.deleteFile(groupPath);
+        }
+
+        int resultTotal = productImageService.update(productImage);
         Gson gson = new Gson();
         ResponseUtil.write(response, gson.toJson(res(resultTotal)));
         return null;
@@ -112,26 +133,23 @@ public class CatalogTwoController {
             throws Exception {
         Gson gson = new Gson();
         Result result = new Result();
-        catalogTwoService.delete(ids);
+        productImageService.delete(ids);
         result.setSuccess(true);
         ResponseUtil.write(response, gson.toJson(result));
         return null;
     }
 
     /**
-     * 前往二级管理页
+     * 前往商品图片管理页
      * @return
      */
     @RequestMapping(value = "/page")
-    public String twoPage(@RequestParam("oneId") Integer oneId, Model model) {
-        model.addAttribute("oneId", oneId);
-        return "/admin/catalogTwoManage";
+    public String twoPage(@RequestParam("productId") Integer productId, Model model) {
+        Product product = productService.findById(productId);
+        model.addAttribute("productId", productId);
+        model.addAttribute("product", product);
+        return "/admin/productImageManage";
     }
 
-    @ResponseBody
-    @PostMapping("/getTwo")
-    public List<CatalogTwo> getTwo(Integer oneId) {
-        List<CatalogTwo> catalogTwoList = catalogTwoService.selectTwoByOneId(oneId);
-        return catalogTwoList;
-    }
+
 }

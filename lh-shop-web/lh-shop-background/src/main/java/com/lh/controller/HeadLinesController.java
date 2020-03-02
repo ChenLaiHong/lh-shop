@@ -11,6 +11,7 @@ import com.lh.entity.Result;
 import com.lh.shop.common.util.ResponseUtil;
 import com.lh.shop.common.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,6 +30,9 @@ import static com.lh.shop.common.util.StringUtil.findPath;
 @Controller
 @RequestMapping("headLines")
 public class HeadLinesController {
+
+    @Value("${image.server}")
+    private String image_server;
 
     @Autowired
     private FastFileStorageClient fastFileStorageClient;
@@ -95,6 +99,29 @@ public class HeadLinesController {
         if (newsId == 0) {
             resultTotal = headLinesService.add(headLines);
         } else {
+
+            String groupPath = null;
+            //当旧的有值
+            if(headLines.getImages().length() != 0 ){
+                List resultO = findPath(headLines.getImages().split(","));
+                //当新的有值时
+                if(headLines.getImageUrl().length() != 0){
+                    List resultN = findPath(headLines.getImageUrl().split(","));
+                    for(int i=0;i<resultO.size();i++){
+                        if(resultN.contains(resultO.get(i)) == false){
+                            groupPath = String.valueOf(resultO.get(i)).substring(image_server.length(), String.valueOf(resultO.get(i)).length());
+                            fastFileStorageClient.deleteFile(groupPath);
+                        }
+                    }
+                    //当新的没有值，那就把旧的里面的值删除
+                }else {
+                    for(int i =0;i<resultO.size();i++){
+                        groupPath = String.valueOf(resultO.get(i)).substring(image_server.length(), String.valueOf(resultO.get(i)).length());
+                        System.out.println(groupPath+"输出地址。。。。。。。。");
+                        fastFileStorageClient.deleteFile(groupPath);
+                    }
+                }
+            }
 
             resultTotal = headLinesService.update(headLines);
         }

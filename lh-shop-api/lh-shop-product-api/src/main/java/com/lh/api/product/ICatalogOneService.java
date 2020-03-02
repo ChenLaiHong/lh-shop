@@ -23,4 +23,6 @@ public interface ICatalogOneService  {
     void delete(String ids);
 
     List<CatalogOne> getAll();
+
+    List<CatalogOne> getOne();
 }

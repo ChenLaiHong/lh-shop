@@ -23,7 +23,7 @@ public class FastdfsApplicationTests {
 
 	@Test
 	public void contextLoads() throws FileNotFoundException {
-//		File file = new File("C:\\Users\\11856\\Pictures\\Saved Pictures\\8.jpg");
+//		File file = new File("E:\\addImage.png");
 //		String fileName = file.getName();
 //		String extName = fileName.substring(fileName.lastIndexOf(".")+1);
 //		FileInputStream inputStream = new FileInputStream(file);
@@ -33,8 +33,8 @@ public class FastdfsApplicationTests {
 //		System.out.println(storePath.getGroup());
 //		System.out.println(storePath.getPath());
 //		System.out.println(storePath.getFullPath());
-
-	fastFileStorageClient.deleteFile("group1/M00/00/00/rBEaFF471NOAXcVJAAEfTRAexTA251.jpg");
+//
+	fastFileStorageClient.deleteFile("group1/M00/00/00/rBEaFF5b2gqAYE-IAAAB99cNec8702.png");
 		System.out.println("删除成功！");
 	}
 

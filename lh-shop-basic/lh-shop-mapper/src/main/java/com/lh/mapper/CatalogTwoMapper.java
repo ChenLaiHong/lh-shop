@@ -35,4 +35,9 @@ public interface CatalogTwoMapper {
     Integer getTotal(Map<String, Object> map);
 
     void updateList(List list);
+
+    List<CatalogTwo> selectTwoByOneId(Integer oneId);
+
+
+    List<CatalogTwo> getTwo();
 }

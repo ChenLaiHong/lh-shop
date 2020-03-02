@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lh.mapper.ProductSpecsMapper">
+  <resultMap id="BaseResultMap" type="com.lh.entity.ProductSpecs">
+    <id column="specs_id" jdbcType="INTEGER" property="specsId" />
+    <result column="specs_name" jdbcType="VARCHAR" property="specsName" />
+    <result column="specs_price" jdbcType="DECIMAL" property="specsPrice" />
+    <result column="specs_stock" jdbcType="INTEGER" property="specsStock" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    specs_id, specs_name, specs_price, specs_stock, product_id, state, update_time
+  </sql>
+  <select id="selectByExample" parameterType="com.lh.entity.ProductSpecsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from product_specs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from product_specs
+    where specs_id = #{specsId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from product_specs
+    where specs_id = #{specsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.lh.entity.ProductSpecsExample">
+    delete from product_specs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.lh.entity.ProductSpecs">
+    insert into product_specs (specs_id, specs_name, specs_price, 
+      specs_stock, product_id, state, 
+      update_time)
+    values (#{specsId,jdbcType=INTEGER}, #{specsName,jdbcType=VARCHAR}, #{specsPrice,jdbcType=DECIMAL}, 
+      #{specsStock,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{state,jdbcType=INTEGER}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.lh.entity.ProductSpecs">
+    insert into product_specs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="specsId != null">
+        specs_id,
+      </if>
+      <if test="specsName != null">
+        specs_name,
+      </if>
+      <if test="specsPrice != null">
+        specs_price,
+      </if>
+      <if test="specsStock != null">
+        specs_stock,
+      </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="specsId != null">
+        #{specsId,jdbcType=INTEGER},
+      </if>
+      <if test="specsName != null">
+        #{specsName,jdbcType=VARCHAR},
+      </if>
+      <if test="specsPrice != null">
+        #{specsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="specsStock != null">
+        #{specsStock,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.lh.entity.ProductSpecsExample" resultType="java.lang.Long">
+    select count(*) from product_specs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update product_specs
+    <set>
+      <if test="record.specsId != null">
+        specs_id = #{record.specsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.specsName != null">
+        specs_name = #{record.specsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.specsPrice != null">
+        specs_price = #{record.specsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="record.specsStock != null">
+        specs_stock = #{record.specsStock,jdbcType=INTEGER},
+      </if>
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=INTEGER},
+      </if>
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
+      </if>
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update product_specs
+    set specs_id = #{record.specsId,jdbcType=INTEGER},
+      specs_name = #{record.specsName,jdbcType=VARCHAR},
+      specs_price = #{record.specsPrice,jdbcType=DECIMAL},
+      specs_stock = #{record.specsStock,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      state = #{record.state,jdbcType=INTEGER},
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.ProductSpecs">
+    update product_specs
+    <set>
+      <if test="specsName != null">
+        specs_name = #{specsName,jdbcType=VARCHAR},
+      </if>
+      <if test="specsPrice != null">
+        specs_price = #{specsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="specsStock != null">
+        specs_stock = #{specsStock,jdbcType=INTEGER},
+      </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where specs_id = #{specsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.lh.entity.ProductSpecs">
+    update product_specs
+    set specs_name = #{specsName,jdbcType=VARCHAR},
+      specs_price = #{specsPrice,jdbcType=DECIMAL},
+      specs_stock = #{specsStock,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      state = #{state,jdbcType=INTEGER},
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where specs_id = #{specsId,jdbcType=INTEGER}
+  </update>
+</mapper>

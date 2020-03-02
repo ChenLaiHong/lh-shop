@@ -53,4 +53,15 @@ public class CatalogTwoService implements ICatalogTwoService{
     public void delete(String ids) {
         catalogTwoMapper.updateList(StringIds(ids));
     }
+
+    @Override
+    public List<CatalogTwo> selectTwoByOneId(Integer oneId) {
+        return catalogTwoMapper.selectTwoByOneId(oneId);
+    }
+
+    @Override
+    public List<CatalogTwo> getTwo() {
+        return catalogTwoMapper.getTwo();
+    }
+
 }

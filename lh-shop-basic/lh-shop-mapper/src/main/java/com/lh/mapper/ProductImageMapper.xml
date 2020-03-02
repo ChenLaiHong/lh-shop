@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lh.mapper.CatalogThreeMapper">
-  <resultMap id="BaseResultMap" type="com.lh.entity.CatalogThree">
-    <id column="three_id" jdbcType="INTEGER" property="threeId" />
-    <result column="three_name" jdbcType="VARCHAR" property="threeName" />
-    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+<mapper namespace="com.lh.mapper.ProductImageMapper">
+  <resultMap id="BaseResultMap" type="com.lh.entity.ProductImage">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="image_name" jdbcType="VARCHAR" property="imageName" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
     <result column="state" jdbcType="INTEGER" property="state" />
-    <result column="two_id" jdbcType="INTEGER" property="twoId" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
 
-    <association property="catalogTwo" column="two_id" select="com.lh.mapper.CatalogTwoMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogTwo">
+    <association property="product" column="product_id" select="com.lh.mapper.ProductMapper.selectByPrimaryKey" javaType="com.lh.entity.Product">
     </association>
   </resultMap>
   <sql id="Example_Where_Clause">
@@ -70,15 +71,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    three_id, three_name, update_time, state, two_id
+    id, product_id, image_name, image_url, state, update_time
   </sql>
-  <select id="selectByExample" parameterType="com.lh.entity.CatalogThreeExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.lh.entity.ProductImageExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from catalog_three
+    from product_image
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -89,85 +90,96 @@
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
-    from catalog_three
-    where three_id = #{threeId,jdbcType=INTEGER}
+    from product_image
+    where id = #{id,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from catalog_three
-    where three_id = #{threeId,jdbcType=INTEGER}
+    delete from product_image
+    where id = #{id,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.lh.entity.CatalogThreeExample">
-    delete from catalog_three
+  <delete id="deleteByExample" parameterType="com.lh.entity.ProductImageExample">
+    delete from product_image
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.lh.entity.CatalogThree">
-    insert into catalog_three (three_id, three_name, update_time, 
-      state, two_id)
-    values (#{threeId,jdbcType=INTEGER}, #{threeName,jdbcType=VARCHAR}, #{updateTime,jdbcType=TIMESTAMP}, 
-      #{state,jdbcType=INTEGER}, #{twoId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.lh.entity.ProductImage">
+    insert into product_image (id, product_id, image_name, 
+      image_url, state, update_time
+      )
+    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=BIGINT}, #{imageName,jdbcType=VARCHAR}, 
+      #{imageUrl,jdbcType=VARCHAR}, #{state,jdbcType=INTEGER}, #{updateTime,jdbcType=TIMESTAMP}
+      )
   </insert>
-  <insert id="insertSelective" parameterType="com.lh.entity.CatalogThree">
-    insert into catalog_three
+  <insert id="insertSelective" parameterType="com.lh.entity.ProductImage">
+    insert into product_image
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="threeId != null">
-        three_id,
+      <if test="id != null">
+        id,
       </if>
-      <if test="threeName != null">
-        three_name,
+      <if test="productId != null">
+        product_id,
       </if>
-      <if test="updateTime != null">
-        update_time,
+      <if test="imageName != null">
+        image_name,
+      </if>
+      <if test="imageUrl != null">
+        image_url,
       </if>
       <if test="state != null">
         state,
       </if>
-      <if test="twoId != null">
-        two_id,
+      <if test="updateTime != null">
+        update_time,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="threeId != null">
-        #{threeId,jdbcType=INTEGER},
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
       </if>
-      <if test="threeName != null">
-        #{threeName,jdbcType=VARCHAR},
+      <if test="productId != null">
+        #{productId,jdbcType=BIGINT},
       </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
+      <if test="imageName != null">
+        #{imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="state != null">
         #{state,jdbcType=INTEGER},
       </if>
-      <if test="twoId != null">
-        #{twoId,jdbcType=INTEGER},
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.lh.entity.CatalogThreeExample" resultType="java.lang.Long">
-    select count(*) from catalog_three
+  <select id="countByExample" parameterType="com.lh.entity.ProductImageExample" resultType="java.lang.Long">
+    select count(*) from product_image
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update catalog_three
+    update product_image
     <set>
-      <if test="record.threeId != null">
-        three_id = #{record.threeId,jdbcType=INTEGER},
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=INTEGER},
       </if>
-      <if test="record.threeName != null">
-        three_name = #{record.threeName,jdbcType=VARCHAR},
+      <if test="record.productId != null">
+        product_id = #{record.productId,jdbcType=BIGINT},
       </if>
-      <if test="record.updateTime != null">
-        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+      <if test="record.imageName != null">
+        image_name = #{record.imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.imageUrl != null">
+        image_url = #{record.imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="record.state != null">
         state = #{record.state,jdbcType=INTEGER},
       </if>
-      <if test="record.twoId != null">
-        two_id = #{record.twoId,jdbcType=INTEGER},
+      <if test="record.updateTime != null">
+        update_time = #{record.updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
     <if test="_parameter != null">
@@ -175,51 +187,56 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update catalog_three
-    set three_id = #{record.threeId,jdbcType=INTEGER},
-      three_name = #{record.threeName,jdbcType=VARCHAR},
-      update_time = #{record.updateTime,jdbcType=TIMESTAMP},
+    update product_image
+    set id = #{record.id,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=BIGINT},
+      image_name = #{record.imageName,jdbcType=VARCHAR},
+      image_url = #{record.imageUrl,jdbcType=VARCHAR},
       state = #{record.state,jdbcType=INTEGER},
-      two_id = #{record.twoId,jdbcType=INTEGER}
+      update_time = #{record.updateTime,jdbcType=TIMESTAMP}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.CatalogThree">
-    update catalog_three
+  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.ProductImage">
+    update product_image
     <set>
-      <if test="threeName != null">
-        three_name = #{threeName,jdbcType=VARCHAR},
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=BIGINT},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      <if test="imageName != null">
+        image_name = #{imageName,jdbcType=VARCHAR},
+      </if>
+      <if test="imageUrl != null">
+        image_url = #{imageUrl,jdbcType=VARCHAR},
       </if>
       <if test="state != null">
         state = #{state,jdbcType=INTEGER},
       </if>
-      <if test="twoId != null">
-        two_id = #{twoId,jdbcType=INTEGER},
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </set>
-    where three_id = #{threeId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.lh.entity.CatalogThree">
-    update catalog_three
-    set three_name = #{threeName,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=TIMESTAMP},
+  <update id="updateByPrimaryKey" parameterType="com.lh.entity.ProductImage">
+    update product_image
+    set product_id = #{productId,jdbcType=BIGINT},
+      image_name = #{imageName,jdbcType=VARCHAR},
+      image_url = #{imageUrl,jdbcType=VARCHAR},
       state = #{state,jdbcType=INTEGER},
-      two_id = #{twoId,jdbcType=INTEGER}
-    where three_id = #{threeId,jdbcType=INTEGER}
+      update_time = #{updateTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
   </update>
 
 
   <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
-    select * from catalog_three
+    select * from product_image
     <where>
       <if test="q!=null and q!=''">
-        and (three_name like #{q} )
+        and (image_name like #{q} )
       </if>
-      and  state = 1 and two_id = #{twoId}
+      and  state = 1 and product_id = #{productId}
     </where>
     <if test="start!=null and size!=null">
       limit #{start},#{size}
@@ -228,19 +245,13 @@
 
   <select id="getTotal" parameterType="Map" resultType="Integer">
     select
-    count(*) from catalog_three
+    count(*) from product_image
     <where>
       <if test="q!=null and q!=''">
-        and (three_name like #{q} )
+        and (image_name like #{q} )
       </if>
-      and state = 1 and two_id = #{twoId}
+      and state = 1 and product_id = #{productId}
     </where>
-  </select>
-
-
-  <select id="selectByTwoId" resultMap="BaseResultMap">
-    SELECT * FROM catalog_three
-    WHERE two_id = #{twoId}
   </select>
 
   <!--批量修改，逻辑删除
@@ -248,17 +259,13 @@
 2、如果你的是对象的集合，item.字段名 赋值就好了
 -->
 
+
   <update id="updateList" parameterType="java.util.List" >
-    UPDATE catalog_three SET
+    UPDATE product_image SET
     state = 0
-    WHERE three_id in
+    WHERE id in
     <foreach collection="list" open="(" close=")" item="id" separator=",">
       #{id}
     </foreach>
   </update>
-
-  <select id="selectThree" resultMap="BaseResultMap">
-     SELECT * FROM catalog_three
-      WHERE two_id = #{two_id}
-  </select>
 </mapper>

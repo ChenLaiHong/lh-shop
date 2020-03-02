@@ -1,0 +1,219 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <!-- 加入移动布局 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <!-- 加入移动布局 -->
+
+    <!--添加  vue.js 支持加载-->
+    <script src="/js/vue.min.js"></script>
+    <script src="/layui/layui/layui.js"></script>
+    <link href="/layui/layui/css/layui.css" rel="stylesheet"/>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <!--添加  vue.js 支持加载-->
+
+    <script>
+
+        function save(){
+            var index = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+
+            if(app.oneName.length<1){
+                layer.closeAll();//关闭loading
+                layer.msg('请输入一级名称!!!!!!');
+                return ;
+            }
+
+            var save_url = document.getElementById("save_url").value;
+            $.post(save_url,{
+                oneName:app.oneName,
+                state:$("#state").val(),
+                oneImage:$("#oneImage").val()
+
+            },function(result){
+                if(result.success){
+                    //调用 父窗口的  关闭所有窗口 并且刷新 页面
+                    window.parent.closeDlg(result.msg);
+                }else{
+                    layer.closeAll();//关闭loading
+                    layer.msg(result.msg);
+                }
+            },'json');
+
+        }
+
+    </script>
+    <style>
+        html, body {
+        }
+        .layui-form-item {
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+
+<body id="app">
+<div style="padding: 10px;">
+    <form class="layui-form layui-form-pane" action="/product/addOrUpdate" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="productId" name="productId" th:value="${productId}">
+        <!--<input type="hidden" id="newImg" name="newImg">-->
+        <!--<input type="hidden" id="oneImage" name="oneImage" class="oneImage" th:value="${product !=null? product.oneImage:''}">-->
+
+        <div class="layui-form-item" >
+            <label class="layui-form-label" style="color: #00bbee">选择类别</label>
+            <div class="layui-input-inline">
+                <select name="first" id="first" lay-filter="first">
+                    <option value="0">一级分类</option>
+                    <option th:each="one:${catalogOneList}"
+                            th:value="${one.oneId}" th:text="${one.oneName}"></option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="two" id="two" lay-filter="two">
+                    <option value="0"></option>
+                </select>
+            </div>
+            <div class="layui-input-inline">
+                <select class="layui-select" name="three" id="three">
+                    <option value="0"></option>
+                </select>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">商品名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="productName" name="productName" autocomplete="off" v-model="productName" placeholder="请输入商品名称"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">商城价格</label>
+            <div class="layui-input-block">
+                <input type="text" id="shopPrice" name="shopPrice" autocomplete="off" v-model="shopPrice" placeholder="请输入商城价格"
+                       class="layui-input">
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <img id="pro_topPicShow" src="images/addImage.png" alt=" " style="height: 120px;width: 120px">
+            <button type="button" class="layui-btn" id="uploadBtn1" onclick="upLoad1()">首页图</button>
+            <input id="pro_topPic" name="productOneImage" type="file" style="display: none">
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="color: #00bbee">状态</label>
+            <div class="layui-input-block">
+                <select name="productState" id="productState" lay-filter="productState">
+                    <td >
+                        <option value="0" >暂不使用</option>
+                        <option value="1" selected="">正常使用</option>
+                    </td>
+
+                </select>
+            </div>
+        </div>
+
+
+
+        <div class="site-demo-button" style="margin-top: 20px;">
+            <button  type="submit" class="layui-btn site-demo-layedit" data-type="content"
+                     th:text="${btn_text}"></button>
+        </div>
+    </form>
+
+
+</div>
+
+
+<script>
+    layui.use([ 'laydate', 'laypage', 'layer','form', 'table', 'carousel',
+        'upload', 'element','jquery' ], function() {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , upload = layui.upload //上传
+            , element = layui.element
+            ,form = layui.form;
+        var $ = layui.jquery;
+
+
+        //监听一级分类选择框
+        form.on('select(first)', function (data) {
+            $.ajax({
+                url: '/catalogTwo/getTwo',
+                type: 'post',
+                data: {'oneId': data.value},
+                dataType: 'json',
+                success: function (data) {
+                    var htmlStr = "<option value='0'>二级分类</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        htmlStr += "<option value='" + data[i].twoId + "'>" + data[i].twoName + "</option>"
+                    }
+                    $("select[name='two']").html(htmlStr);
+                    form.render()
+                }
+            })
+        })
+
+
+        //监听二级分类选择框
+        form.on('select(two)', function (data) {
+            $.ajax({
+                url: '/catalogThree/getThree',
+                type: 'post',
+                data: {'twoId': data.value},
+                dataType: 'json',
+                success: function (data) {
+                    var htmlStr = "<option value='0'>三级分类</option>";
+                    for (var i = 0; i < data.length; i++) {
+                        htmlStr += "<option value='" + data[i].threeId + "'>" + data[i].threeName + "</option>"
+                    }
+                    $("select[name='three']").html(htmlStr);
+                    form.render()
+                }
+            })
+        })
+    });
+
+</script>
+<script>
+    var app = new Vue({
+        el : '#app',
+        data : {
+
+        }
+    });
+</script>
+<script>
+    function upLoad1(){
+        $("#pro_topPic").click();
+    }
+
+</script>
+<script>
+    $(function() {
+        //1首页图
+        $('#pro_topPic').change(function(event) {
+            var files = event.target.files, file;
+            if (files && files.length > 0) {
+                file = files[0];
+                var URL = window.URL || window.webkitURL;
+                var imgURL = URL.createObjectURL(file);
+                $('#pro_topPicShow').attr('src', imgURL);
+                $('#newImg').attr('value', imgURL);
+            }
+        });
+
+    });
+</script>
+
+</body>
+</html>

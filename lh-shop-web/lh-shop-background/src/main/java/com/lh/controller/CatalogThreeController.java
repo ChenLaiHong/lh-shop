@@ -7,14 +7,17 @@ import com.lh.api.product.ICatalogOneService;
 import com.lh.api.product.ICatalogThreeService;
 import com.lh.api.product.ICatalogTwoService;
 import com.lh.entity.CatalogThree;
+import com.lh.entity.CatalogTwo;
 import com.lh.entity.PageBean;
 import com.lh.entity.Result;
 import com.lh.shop.common.util.ResponseUtil;
 import com.lh.shop.common.util.StringUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
@@ -125,5 +128,11 @@ public class CatalogThreeController {
         return "/admin/catalogThreeManage";
     }
 
+    @ResponseBody
+    @PostMapping("/getThree")
+    public List<CatalogThree> getThree(Integer twoId) {
+        List<CatalogThree> catalogThreeList = catalogThreeService.selectThreeBytwoId(twoId);
+        return catalogThreeList;
+    }
 
 }

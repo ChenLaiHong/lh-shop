@@ -26,4 +26,11 @@ public class PageController {
     public String toHeadLines(){
         return "/admin/headLinesManage";
     }
+
+    //商品管理
+    @RequestMapping("/toProduct")
+    public String toProduct(){
+        return "/admin/productManage";
+//        return "/admin/test";
+    }
 }

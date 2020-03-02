@@ -237,6 +237,16 @@
       WHERE one_id = #{one_id}
   </select>
 
+  <select id="selectTwoByOneId" resultMap="TwoResultMap">
+    SELECT * FROM catalog_two
+    WHERE one_id = #{oneId}
+  </select>
+
+  <select id="getTwo" resultMap="TwoResultMap">
+    SELECT * FROM catalog_two
+    WHERE state = 1
+  </select>
+
   <select id="pageList" parameterType="Map" resultMap="TwoResultMap">
     select * from catalog_two
     <where>

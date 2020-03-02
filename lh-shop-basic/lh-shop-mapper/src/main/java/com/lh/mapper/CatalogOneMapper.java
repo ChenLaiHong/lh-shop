@@ -39,4 +39,5 @@ public interface CatalogOneMapper  {
 
     void updateList(List ints);
 
+    List<CatalogOne> getOne();
 }
