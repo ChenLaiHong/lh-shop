@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.ProductSpecs;
 import com.lh.entity.ProductSpecsExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ProductSpecsMapper {
@@ -27,4 +29,10 @@ public interface ProductSpecsMapper {
     int updateByPrimaryKeySelective(ProductSpecs record);
 
     int updateByPrimaryKey(ProductSpecs record);
+
+    List<ProductSpecs> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    void updateList(List list);
 }

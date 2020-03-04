@@ -215,4 +215,13 @@ public class ProductController {
         return path;
     }
 
+    @RequestMapping("/seeDetail")
+    public ModelAndView toLook(@RequestParam(value = "productId", required = false) Integer productId) throws Exception {
+        Product product = productService.findById(productId);
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("product", product);
+        mav.setViewName("/admin/productDetail");
+        return mav;
+    }
+
 }

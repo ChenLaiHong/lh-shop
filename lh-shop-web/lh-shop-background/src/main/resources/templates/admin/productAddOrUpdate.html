@@ -39,25 +39,31 @@
             <div class="layui-input-inline">
                 <select name="first" id="first" lay-filter="first">
                     <option value="0">一级分类</option>
+                    <td th:if="${product != null}">
                     <option th:each="one:${catalogOneList}"
                             th:value="${one.oneId}" th:text="${one.oneName}"
                             th:selected="${product.catalogThree.catalogTwo.catalogOne.oneId eq one.oneId}"></option>
+                    </td>
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select class="layui-select" name="two" id="two" lay-filter="two">
                     <option value="0"></option>
+                    <td th:if="${product != null}">
                     <option th:each="two:${catalogTwoList}"
                             th:value="${two.twoId}" th:text="${two.twoName}"
                             th:selected="${product.catalogThree.catalogTwo.twoId eq two.twoId}"></option>
+                    </td>
                 </select>
             </div>
             <div class="layui-input-inline">
                 <select class="layui-select" name="threeId" id="threeId" lay-filter="threeId" lay-verify="required|threeId">
                     <option value="0"></option>
+                    <td th:if="${product != null}">
                     <option th:each="three:${catalogThreeList}"
                             th:value="${three.threeId}" th:text="${three.threeName}"
                             th:selected="${product.catalogThree.threeId eq three.threeId}"></option>
+                    </td>
                 </select>
             </div>
         </div>
@@ -81,7 +87,7 @@
         </div>
 
         <div class="layui-form-item">
-            <img id="pro_topPicShow" th:src="${product !=null? product.productOneImage:''}" alt=" " style="height: 120px;width: 120px">
+            <img id="pro_topPicShow" th:src="${product !=null? product.productOneImage:'/images/wu.png'}" alt=" " style="height: 120px;width: 120px">
             <button type="button" class="layui-btn" id="uploadBtn1" onclick="upLoad1()">首页图</button>
             <input id="pro_topPic" name="oneImage" lay-verify="required|oneImage" type="file" style="display: none">
         </div>

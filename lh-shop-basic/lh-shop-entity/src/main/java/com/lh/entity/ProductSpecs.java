@@ -13,6 +13,9 @@ public class ProductSpecs implements Serializable {
 
     private Integer specsStock;
 
+    //额外添加的新库存
+    private Integer newSpecsStock;
+
     private Integer productId;
 
     private Integer state;
@@ -85,14 +88,23 @@ public class ProductSpecs implements Serializable {
         this.product = product;
     }
 
+    public Integer getNewSpecsStock() {
+        return newSpecsStock;
+    }
+
+    public void setNewSpecsStock(Integer newSpecsStock) {
+        this.newSpecsStock = newSpecsStock;
+    }
+
     public ProductSpecs() {
     }
 
-    public ProductSpecs(Integer specsId, String specsName, BigDecimal specsPrice, Integer specsStock, Integer productId, Integer state, Date updateTime, Product product) {
+    public ProductSpecs(Integer specsId, String specsName, BigDecimal specsPrice, Integer specsStock, Integer newSpecsStock, Integer productId, Integer state, Date updateTime, Product product) {
         this.specsId = specsId;
         this.specsName = specsName;
         this.specsPrice = specsPrice;
         this.specsStock = specsStock;
+        this.newSpecsStock = newSpecsStock;
         this.productId = productId;
         this.state = state;
         this.updateTime = updateTime;

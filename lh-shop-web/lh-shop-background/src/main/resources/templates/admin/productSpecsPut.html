@@ -3,17 +3,12 @@
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-
     <!-- 加入移动布局 -->
     <meta name="viewport"	content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no" />
     <!-- 加入移动布局 -->
-
-
     <link href="/layui/layui/css/layui.css" rel="stylesheet"/>
     <link rel="stylesheet" type="text/css" href="/css/uploadifive.css"/>
 
-    <!--添加  vue.js 支持加载-->
     <style>
         html, body {
         }
@@ -27,24 +22,15 @@
     <form class="layui-form layui-form-pane">
         <input type="hidden" id="save_url" th:value="${save_url}" >
         <!-- 保存商品id，隐藏域 -->
-        <input type="hidden"  id="productId" th:value="${productImage !=null? productImage.productId:productId}">
-        <!-- 保存旧商品图片，隐藏域 -->
-        <input type="hidden"  id="OImageUrl" th:value="${OImageUrl}">
-        <div class="layui-form-item">
-            <label class="layui-form-label" style="color: #00bbee">图片名称</label>
-            <div class="layui-input-block">
-                <input type="text" id="imageName" name="imageName" autocomplete="off" th:value="${productImage !=null? productImage.imageName:''}" v-model="imageName" placeholder="请输入图片名称" class="layui-input">
-            </div>
-        </div>
+        <input type="hidden"  id="productId" th:value="${productSpecs !=null? productSpecs.productId:productId}">
 
+
+        <input class="layui-input" style="color: #CC2222" th:value=" ${'规格名称：'+productSpecs.specsName}"></input>
+        <input class="layui-input" style="color: #CC2222" th:value=" ${'已有库存：'+productSpecs.specsStock}"></input>
         <div class="layui-form-item">
-            <label class="layui-form-label" style="color: #00bbee">图片</label>
-            <div>
-                <input type="file" class="form-control" id="chooseImage" name="file"/>
-                <!--回显-->
-                <img th:src="${productImage !=null? productImage.imageUrl:'#'}" id="showImage" style="width: 100px;height: 100px;"/>
-                <!---提交的时候，传给服务器端的地址-->
-                <input type="hidden" name="imageUrl" id="image" th:value="${productImage !=null? productImage.imageUrl:''}" v-model="imageUrl"/>
+            <label class="layui-form-label" style="color: #00bbee">添加库存</label>
+            <div class="layui-input-block">
+                <input type="text" id="newSpecsStock" name="newSpecsStock" autocomplete="off" v-model="newSpecsStock" placeholder="请输入库存" class="layui-input">
             </div>
         </div>
 
@@ -82,23 +68,6 @@
         }
     });
 
-    //初始化文件上传按钮
-    $('#chooseImage').uploadifive({
-        'uploadScript' : '/file/upload',
-        'fileObjName'  : 'file',
-        'onUploadComplete' : function(file, data) {
-            console.log(data);//{} //字符串不是一个对象
-            var json = JSON.parse(data);
-            //设置图片回显
-            if(json.statusCode == 200){
-                $("#showImage").attr("src",json.data).show();
-                //设置提交的图片地址
-                $("#image").val(json.data);
-            }else{
-                alert(json.msg);
-            }
-        }
-    });
 
     //保存
     function save(){
@@ -106,25 +75,18 @@
             shade: [0.1,'#fff'] //0.1透明度的白色背景
         });
 
-        var imageUrl = document.getElementById("image").value;
-        if(app.imageName.length<1){
+
+        if(!new RegExp("(^[1-9]\\d*$)").test(app.newSpecsStock)){
             layer.closeAll();//关闭loading
-            layer.msg('请输入图片名称!!!!!!');
+            layer.msg('库存为正整数！');
             return ;
         }
-        if(imageUrl.length<1){
-            layer.closeAll();//关闭loading
-            layer.msg('请上传图片!!!!!!');
-            return ;
-        }
+
         var save_url = document.getElementById("save_url").value
         var productId = document.getElementById("productId").value;
-        var OImageUrl = document.getElementById("OImageUrl").value;
         $.post(save_url,{
-            imageName:app.imageName
-            ,imageUrl:imageUrl
+             newSpecsStock:app.newSpecsStock
             ,productId:productId
-            ,OImageUrl:OImageUrl
 
         },function(result){
             if(result.success){
