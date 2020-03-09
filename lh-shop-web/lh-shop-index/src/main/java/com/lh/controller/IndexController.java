@@ -1,12 +1,14 @@
 package com.lh.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+import com.github.pagehelper.PageInfo;
 import com.lh.api.product.*;
 import com.lh.entity.*;
 import com.lh.utils.ItdragonUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -38,15 +40,16 @@ public class IndexController {
     private IProductSpecsService productSpecsService;
 
 
-    @RequestMapping("show")
-    public String showIndex(Model model){
+    @RequestMapping("show/{pageIndex}/{pageSize}")
+    public String showIndex(Model model,@PathVariable("pageIndex") Integer pageIndex,
+                            @PathVariable("pageSize") Integer pageSize){
         List<CatalogOne> list = catalogOneService.getAll();
 
         List<Banner> bannerList = bannerService.getAll();
 
         List<HeadLines> headLinesList = headLinesService.getFive();
 
-        List<Product> productList = productService.getAll();
+        PageInfo<Product> productList = productService.getAll(pageIndex,pageSize);
         //分类列表
         model.addAttribute("list",list);
         //Banner列表

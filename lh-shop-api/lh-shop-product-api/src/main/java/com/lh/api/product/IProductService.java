@@ -1,5 +1,6 @@
 package com.lh.api.product;
 
+import com.github.pagehelper.PageInfo;
 import com.lh.entity.Product;
 
 import java.util.List;
@@ -21,7 +22,7 @@ public interface IProductService {
 
     void delete(String ids);
 
-    List<Product> getAll();
+    PageInfo<Product> getAll(Integer pageIndex, Integer pageSize);
 
     Product getById(Map<String, Object> map);
 }

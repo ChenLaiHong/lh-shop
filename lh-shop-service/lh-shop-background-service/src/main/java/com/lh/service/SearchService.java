@@ -5,6 +5,7 @@ import com.lh.api.product.ISearchService;
 import com.lh.entity.Product;
 import com.lh.entity.ProductExample;
 import com.lh.mapper.ProductMapper;
+import com.lh.shop.common.pojo.PageResultBean;
 import com.lh.shop.common.pojo.ResultBean;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -99,7 +100,7 @@ public class SearchService implements ISearchService {
             Map<String, Map<String, List<String>>> highlighting = response.getHighlighting();
             //
             results = new ArrayList<>(list.size());
-            //3.将查询结果List<Docuemnt>转换为List<TProduct>
+            //3.将查询结果List<Docuemnt>转换为List<Product>
             for (SolrDocument document : list) {
                 //document->product
                 Product product = new Product();
@@ -129,5 +130,76 @@ public class SearchService implements ISearchService {
             e.printStackTrace();
         }
         return results;
+    }
+
+    @Override
+    public PageResultBean<Product> searchByKeyWord(String keyWord, Integer pageIndex, Integer rows) {
+        PageResultBean<Product> pageResultBean = new PageResultBean<>();
+        //1.组装查询条件
+        SolrQuery queryCondition = new SolrQuery();
+        if(!StringUtils.isAllEmpty(keyWord)){
+            queryCondition.setQuery("product_keywords:"+keyWord);
+        }else{
+            queryCondition.setQuery("product_keywords:华为");
+        }
+        //2.增加一个高亮的效果
+        queryCondition.setHighlight(true);
+        queryCondition.addHighlightField("product_name");
+        queryCondition.addHighlightField("product_sale_point");
+        queryCondition.setHighlightSimplePre("<font color='red'>");
+        queryCondition.setHighlightSimplePost("</font>");
+
+        //3.增加分页
+        queryCondition.setStart((pageIndex-1)*rows);
+        queryCondition.setRows(rows);
+
+        List<Product> results = null;
+
+        long totalCount = 0L;
+        try {
+            //2.执行查询
+            QueryResponse response = solrClient.query(queryCondition);
+            SolrDocumentList list = response.getResults();
+            totalCount = list.getNumFound();
+
+            //获取到高亮的信息
+            Map<String, Map<String, List<String>>> highlighting = response.getHighlighting();
+            //
+            results = new ArrayList<>(list.size());
+            //3.将查询结果List<Docuemnt>转换为List<Product>
+            for (SolrDocument document : list) {
+                //document->product
+                Product product = new Product();
+                product.setProductId((int) Long.parseLong(document.getFieldValue("id").toString()));
+                //product.setName(document.getFieldValue("product_name").toString());
+                product.setProductOneImage(document.getFieldValue("product_images").toString());
+                product.setShopPrice(NumberUtils.createBigDecimal(document.get("product_price").toString()));
+                //product.setSalePoint(document.getFieldValue("product_sale_point").toString());
+                //获取商品名称的高亮信息
+                //1，获取到当前这条记录的高亮信息
+                Map<String, List<String>> map = highlighting.get(document.getFieldValue("id").toString());
+                //2，获取商品名称的字段的高亮信息
+                List<String> productNameHighlight = map.get("product_name");
+                //3.单独处理高亮的设置
+                if(productNameHighlight!= null && productNameHighlight.size() > 0){
+                    //如果本次是按照商品名称搜索到的记录
+                    product.setProductName(productNameHighlight.get(0));
+                }else{
+                    product.setProductName(document.getFieldValue("product_name").toString());
+                }
+
+                results.add(product);
+            }
+        } catch (SolrServerException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        pageResultBean.setPageNum(pageIndex);
+        pageResultBean.setPageSize(rows);
+        pageResultBean.setList(results);
+        pageResultBean.setTotal(totalCount);
+        pageResultBean.setPages((int) (totalCount%rows==0?(totalCount/rows):(totalCount/rows)+1));
+        return pageResultBean;
     }
 }

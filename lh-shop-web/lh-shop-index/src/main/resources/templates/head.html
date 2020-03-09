@@ -53,9 +53,11 @@
 
         <div class="search-bar pr">
             <a name="index_none_header_sysc" href="#"></a>
-            <form action="http://localhost:9092/search/searchByKeywords" method="post">
-                <input id="searchInput" name="product_keywords" type="text" placeholder="搜索" autocomplete="off">
+            <form action="http://localhost:9091/search/searchByKeywords" method="post">
+                <input id="searchInput" name="keyWord" type="text" placeholder="搜索" autocomplete="off">
                 <input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
+                <input type="hidden"  name="pageIndex" value="1">
+                <input type="hidden"  name="pageSize" value="10">
             </form>
         </div>
     </div>

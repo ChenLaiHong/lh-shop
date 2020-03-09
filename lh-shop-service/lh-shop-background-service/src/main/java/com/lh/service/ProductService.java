@@ -1,6 +1,8 @@
 package com.lh.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.lh.api.product.IProductService;
 import com.lh.entity.Product;
@@ -65,11 +67,13 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> getAll() {
+    public PageInfo<Product> getAll(Integer pageIndex,Integer pageSize) {
+        PageHelper.startPage(pageIndex,pageSize);
         ProductExample productExample = new ProductExample();
         productExample.createCriteria().andProductStateEqualTo(1);
-
-        return productMapper.selectByExample(productExample);
+        List<Product> list = productMapper.selectByExample(productExample);
+        PageInfo<Product> pageInfo = new PageInfo<Product>(list,3);
+        return pageInfo;
     }
 
     @Override
