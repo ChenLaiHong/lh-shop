@@ -3,6 +3,7 @@ package com.lh.service;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.lh.api.product.IProductImageService;
 import com.lh.entity.ProductImage;
+import com.lh.entity.ProductImageExample;
 import com.lh.mapper.ProductImageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -54,5 +55,12 @@ public class ImageService implements IProductImageService {
     public void delete(String ids) {
 
         productImageMapper.updateList(StringIds(ids));
+    }
+
+    @Override
+    public List<ProductImage> getByPid(Long productId) {
+        ProductImageExample productImageExample = new ProductImageExample();
+        productImageExample.createCriteria().andProductIdEqualTo(productId);
+        return productImageMapper.selectByExample(productImageExample);
     }
 }

@@ -3,6 +3,7 @@ package com.lh.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class Product implements Serializable {
     private Integer productId;
@@ -27,6 +28,8 @@ public class Product implements Serializable {
     private String productDetail;
 
     private CatalogThree catalogThree;
+
+    private ProductSpecs productSpecs;
 
     public Integer getProductId() {
         return productId;
@@ -116,10 +119,18 @@ public class Product implements Serializable {
         this.newImages = newImages;
     }
 
+    public ProductSpecs getProductSpecs() {
+        return productSpecs;
+    }
+
+    public void setProductSpecs(ProductSpecs productSpecs) {
+        this.productSpecs = productSpecs;
+    }
+
     public Product() {
     }
 
-    public Product(Integer productId, String productName, String productOneImage, String images, BigDecimal shopPrice, Integer productState, Date updateTime, Integer threeId, String newImages, String productDetail, CatalogThree catalogThree) {
+    public Product(Integer productId, String productName, String productOneImage, String images, BigDecimal shopPrice, Integer productState, Date updateTime, Integer threeId, String newImages, String productDetail, CatalogThree catalogThree, ProductSpecs productSpecs) {
         this.productId = productId;
         this.productName = productName;
         this.productOneImage = productOneImage;
@@ -131,5 +142,6 @@ public class Product implements Serializable {
         this.newImages = newImages;
         this.productDetail = productDetail;
         this.catalogThree = catalogThree;
+        this.productSpecs = productSpecs;
     }
 }

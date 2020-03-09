@@ -41,4 +41,6 @@ public interface ProductMapper {
     Integer getTotal(Map<String, Object> map);
 
     void updateList(List list);
+
+    Product getById(Map<String, Object> map);
 }

@@ -4,6 +4,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.lh.api.product.IProductService;
 import com.lh.entity.Product;
+import com.lh.entity.ProductExample;
 import com.lh.mapper.ProductMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,5 +62,18 @@ public class ProductService implements IProductService {
     @Override
     public void delete(String ids) {
         productMapper.updateList(StringIds(ids));
+    }
+
+    @Override
+    public List<Product> getAll() {
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andProductStateEqualTo(1);
+
+        return productMapper.selectByExample(productExample);
+    }
+
+    @Override
+    public Product getById(Map<String, Object> map) {
+        return productMapper.getById(map);
     }
 }

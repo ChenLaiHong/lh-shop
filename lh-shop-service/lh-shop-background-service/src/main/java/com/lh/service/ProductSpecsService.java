@@ -3,6 +3,7 @@ package com.lh.service;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.lh.api.product.IProductSpecsService;
 import com.lh.entity.ProductSpecs;
+import com.lh.entity.ProductSpecsExample;
 import com.lh.mapper.ProductSpecsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -58,5 +59,12 @@ public class ProductSpecsService implements IProductSpecsService {
     @Override
     public void delete(String ids) {
         productSpecsMapper.updateList(StringIds(ids));
+    }
+
+    @Override
+    public List<ProductSpecs> getByPid(Long productId) {
+        ProductSpecsExample productSpecsExample = new ProductSpecsExample();
+        productSpecsExample.createCriteria().andProductIdEqualTo(Math.toIntExact(productId));
+        return productSpecsMapper.selectByExample(productSpecsExample);
     }
 }

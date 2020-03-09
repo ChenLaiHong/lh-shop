@@ -20,4 +20,6 @@ public interface IProductSpecsService {
     int update(ProductSpecs productSpecs);
 
     void delete(String ids);
+
+    List<ProductSpecs> getByPid(Long productId);
 }

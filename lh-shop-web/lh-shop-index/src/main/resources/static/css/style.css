@@ -328,7 +328,7 @@ div.zoomMask { position:absolute; background:url(../images/mask.png)repeat scrol
 .browse li img{width:100% ;}
 .browse li .p-price strong {color: #E4393C;font-weight: 600;}
 /*导航固定*/
-ul.am-tabs-nav.am-nav.am-nav-tabs {left:20% ;max-width:960px ;background: #F5F5F5;right: 40px;}
+ul.am-tabs-nav.am-nav.am-nav-tabs {left:20% ;max-width:1060px ;background: #F5F5F5;right: 40px;}
 .am-nav-tabs > li.am-active {border-top: 2px solid #F03726;border-bottom: none;}
 
 /*评论*/

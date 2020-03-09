@@ -283,4 +283,11 @@
       #{id}
     </foreach>
   </update>
+
+  <select id="selectSpecs" resultMap="BaseResultMap">
+    SELECT * FROM product_specs
+    WHERE product_id = #{productId}
+    ORDER BY update_time DESC
+    LIMIT 1
+  </select>
 </mapper>

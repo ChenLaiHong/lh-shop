@@ -13,6 +13,32 @@
 
     <association property="catalogThree" column="three_id" select="com.lh.mapper.CatalogThreeMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogThree">
     </association>
+
+  </resultMap>
+
+  <resultMap id="SpecsResultMap" type="com.lh.entity.Product">
+    <id column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_one_image" jdbcType="VARCHAR" property="productOneImage" />
+    <result column="images" jdbcType="VARCHAR" property="images" />
+    <result column="shop_price" jdbcType="DECIMAL" property="shopPrice" />
+    <result column="product_state" jdbcType="INTEGER" property="productState" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="three_id" jdbcType="INTEGER" property="threeId" />
+    <result column="product_detail" jdbcType="LONGVARCHAR" property="productDetail" />
+    <association property="catalogThree" column="three_id" select="com.lh.mapper.CatalogThreeMapper.selectByPrimaryKey" javaType="com.lh.entity.CatalogThree">
+    </association>
+
+    <collection  property="productSpecs" column="product_id" select="com.lh.mapper.ProductSpecsMapper.selectSpecs">
+      <id column="specs_id" jdbcType="INTEGER" property="specsId" />
+      <result column="specs_name" jdbcType="VARCHAR" property="specsName" />
+      <result column="specs_price" jdbcType="DECIMAL" property="specsPrice" />
+      <result column="specs_stock" jdbcType="INTEGER" property="specsStock" />
+      <result column="product_id" jdbcType="INTEGER" property="productId" />
+      <result column="state" jdbcType="INTEGER" property="state" />
+      <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </collection>
+
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.lh.entity.Product">
     <result column="product_detail" jdbcType="LONGVARCHAR" property="productDetail" />
@@ -366,4 +392,12 @@
       #{id}
     </foreach>
   </update>
+
+
+  <select id="getById" resultMap="SpecsResultMap">
+    select * from product
+    <where>
+      product_id = #{productId}
+    </where>
+  </select>
 </mapper>

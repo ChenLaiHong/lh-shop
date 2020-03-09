@@ -20,4 +20,8 @@ public interface IProductService {
     int update(Product product);
 
     void delete(String ids);
+
+    List<Product> getAll();
+
+    Product getById(Map<String, Object> map);
 }

@@ -8,11 +8,12 @@ import org.springframework.context.annotation.Import;
 
 @SpringBootApplication
 @EnableDubbo
-@Import(FdfsClientConfig.class)
+@Import({FdfsClientConfig.class})
 public class LhShopBackgroundApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LhShopBackgroundApplication.class, args);
+
 	}
 
 }
