@@ -56,7 +56,7 @@ public class IndexController {
         model.addAttribute("bannerList",bannerList);
         model.addAttribute("newsList",headLinesList);
         model.addAttribute("productList",productList);
-        return "index1";
+        return "index";
     }
 
     //商品详情

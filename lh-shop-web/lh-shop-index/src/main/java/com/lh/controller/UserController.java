@@ -3,9 +3,12 @@ package com.lh.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
+import com.lh.api.product.IAddressService;
 import com.lh.api.product.IPersonService;
 
+import com.lh.entity.Address;
 import com.lh.entity.Person;
+import com.lh.entity.Result;
 import com.lh.shop.common.util.MdUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -17,15 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -44,6 +45,8 @@ public class UserController {
     @Reference
     private IPersonService personService;
 
+    @Reference
+    private IAddressService addressService;
 
     //检查用户名是否有重复
     @RequestMapping("checkName")
@@ -145,11 +148,53 @@ public class UserController {
     @RequestMapping("/address")
     public String Address(Model model,HttpServletRequest request){
         Person person = (Person) request.getSession().getAttribute("person");
-        Person person1 = personService.findById(person.getUserId());
-        model.addAttribute("person",person1);
+        List<Address> addressList = addressService.list(person.getUserId());
+        model.addAttribute("addressList",addressList);
+        model.addAttribute("userId",person.getUserId());
         return "address";
     }
 
+    //去修改地址页面
+    @RequestMapping("/updateAddress")
+    public String updateAddress(Model model,@RequestParam(value = "addressId", required = false) Integer  addressId) {
+        Address address = addressService.findById(addressId);
+        model.addAttribute("address",address);
+        return "updateAddress";
+    }
+        //添加或修改收货地址
+    @PostMapping("/addOrUpdateAddress")
+    public String addAddress(Address address){
+        if(address.getAddressId() == null){
+            addressService.add(address);
+        }else {
+            addressService.update(address);
+        }
+
+        return "redirect:/user/address";
+    }
+
+    //设置默认地址
+    @PostMapping("/addDefaultAddress")
+    @ResponseBody
+    public Result addDefaultAddress(Integer addressId){
+        Result finalResult = new Result();
+        Integer result = addressService.updateById(addressId);
+        if(result > 0){
+            finalResult.setSuccess(true);
+            finalResult.setMsg("设置成功");
+        }else {
+            finalResult.setSuccess(false);
+            finalResult.setMsg("设置失败");
+        }
+        return finalResult;
+    }
+
+    //删除地址
+    @GetMapping("/delAddress")
+    public String delAddress(@RequestParam(value = "addressId", required = false) Integer  addressId){
+        addressService.delete(addressId);
+        return "redirect:/user/address";
+    }
 
     public String getPath(MultipartFile file) {
         //1.获取到文件对象，将文件对象上传FastDFS上

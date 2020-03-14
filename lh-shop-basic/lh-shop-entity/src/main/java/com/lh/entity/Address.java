@@ -24,6 +24,8 @@ public class Address implements Serializable {
 
     private Integer userId;
 
+    private Person person;
+
     public Integer getAddressId() {
         return addressId;
     }
@@ -102,5 +104,30 @@ public class Address implements Serializable {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Address() {
+    }
+
+    public Address(Integer addressId, String receiver, String phone, String location, String fullAddress, Integer defaultAddress, Date addTime, Date updateTime, Integer state, Integer userId, Person person) {
+        this.addressId = addressId;
+        this.receiver = receiver;
+        this.phone = phone;
+        this.location = location;
+        this.fullAddress = fullAddress;
+        this.defaultAddress = defaultAddress;
+        this.addTime = addTime;
+        this.updateTime = updateTime;
+        this.state = state;
+        this.userId = userId;
+        this.person = person;
     }
 }

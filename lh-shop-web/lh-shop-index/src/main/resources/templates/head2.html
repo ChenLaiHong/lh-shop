@@ -22,7 +22,8 @@
                     <div class="topMessage">
                         <div class="menu-hd">
                             <a href="/toLogin" th:if="${session.person == null}">亲！请登录</a><a th:if="${session.person != null}" th:text="${'欢迎 '+session.person.userName}"></a>
-                            <a href="toRegister" target="_top">免费注册</a>
+                            <a href="/toRegister" th:if="${session.person == null}">免费注册</a><a href="/logout" th:if="${session.person != null}">退出登录</a>
+
                         </div>
                     </div>
                 </ul>
