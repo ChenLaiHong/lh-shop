@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+
+    <title>个人资料</title>
+    <base href="/"/>
+    <link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
+    <link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+
+    <link href="css/personal.css" rel="stylesheet" type="text/css">
+    <link href="css/infstyle.css" rel="stylesheet" type="text/css">
+    <script src="AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
+    <script src="AmazeUI-2.4.2/assets/js/amazeui.js"></script>
+    <script src="layui/layui/layui.js"></script>
+    <link href="layui/layui/css/layui.css" rel="stylesheet"/>
+</head>
+
+<body>
+<!--顶部引用-->
+<div th:replace="head2 :: heads2"></div>
+<div th:replace="head2 :: nav2"></div>
+<div class="center">
+    <div class="col-main">
+        <div class="main-wrap">
+
+            <form class="am-form am-form-horizontal" action="/user/saveInfo" method="post"
+                  enctype="multipart/form-data">
+            <div class="user-info">
+                <!--标题 -->
+                <div class="am-cf am-padding">
+                    <div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">个人资料</strong> /
+                        <small>Personal&nbsp;information</small>
+                    </div>
+                </div>
+                <hr/>
+
+                    <input type="hidden" id="userId" name="userId" th:value="${person.userId}" >
+                    <input type="hidden" id="newImg" name="newImg">
+                    <input type="hidden" id="imageUrl" name="imageUrl" class="imageUrl" th:value="${person.imageUrl !=null? person.imageUrl:''}">
+                    <!--头像 -->
+                    <div class="user-infoPic">
+
+                        <div class="filePic">
+
+                            <img id="pro_topPicShow"
+                                 th:src="${person.imageUrl !=null? person.imageUrl:'/images/getAvatar.do.jpg'}"
+                                  style="height: 80px;width: 60px"/>
+                            <button type="button"  id="uploadBtn1" onclick="upLoad1()">上传图片</button>
+                            <input id="pro_topPic" name="oneIoc" type="file" style="display: none">
+                        </div>
+
+                        <p class="am-form-help">头像</p>
+
+                        <div class="info-m">
+                            <div><b>用户名：<i th:text="${person.userName}"></i></b></div>
+                        </div>
+                    </div>
+
+                    <!--个人信息 -->
+                    <div class="info-main">
+                        <div class="am-form-group">
+                            <label class="am-form-label">昵称</label>
+                            <div class="am-form-content">
+                                <input type="text" id="user-name" name="userName" th:value="${person.userName}" placeholder="userName">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label class="am-form-label">性别</label>
+                            <div class="am-form-content sex">
+                                <label class="am-radio-inline">
+                                    <input type="radio" name="gender" th:field ="*{person.gender}" value="1"  > 男
+                                </label>
+                                <label class="am-radio-inline">
+                                    <input type="radio" name="gender" value="2" th:field ="*{person.gender}" > 女
+                                </label>
+                                <label class="am-radio-inline">
+                                    <input type="radio" name="gender" value="3" th:field ="*{person.gender}" > 保密
+                                </label>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <div class="layui-form-item">
+                                <label class="am-form-label">出生年月</label>
+                                <div class="am-form-content">
+                                    <input type="text" class="layui-input" id="birth" name="birth"
+                                           placeholder="yyyy-MM-dd" th:value="${person.birth}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="user-phone" class="am-form-label">电话</label>
+                            <div class="am-form-content">
+                                <input id="user-phone" name="phone" th:value="${person.phone}" placeholder="telephonenumber" type="tel">
+                            </div>
+                        </div>
+                        <div class="am-form-group">
+                            <label for="user-email" class="am-form-label">电子邮件</label>
+                            <div class="am-form-content">
+                                <input id="user-email" name="email" th:value="${person.email}" placeholder="Email" type="email">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-btn">
+                        <button type="submit" class="am-btn am-btn-danger">保存修改</button>
+                    </div>
+
+            </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <div th:replace="head2 :: menu"></div>
+</div>
+
+
+<script>
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel',
+        'upload', 'element'], function () {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , element = layui.element; //元素操作
+        var $ = layui.jquery
+            , upload = layui.upload;
+        //常规用法
+        laydate.render({
+            elem: '#birth',
+            trigger: 'click'
+        });
+    });
+
+    $(function() {
+        //1
+        $('#pro_topPic').change(function(event) {
+            var files = event.target.files, file;
+            if (files && files.length > 0) {
+                file = files[0];
+
+                var URL = window.URL || window.webkitURL;
+                var imgURL = URL.createObjectURL(file);
+                $('#pro_topPicShow').attr('src', imgURL);
+                $('#newImg').attr('value', imgURL);
+            }
+        });
+
+    });
+
+    function upLoad1(){
+        $("#pro_topPic").click();
+    }
+
+</script>
+</body>
+
+</html>

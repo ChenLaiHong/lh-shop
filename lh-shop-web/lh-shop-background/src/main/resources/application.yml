@@ -9,6 +9,9 @@ server:
 spring:
   thymeleaf:
     cache: false
+    suffix: .html
+    prefix: classpath:/templates/
+    mode: LEGACYHTML5
 
 fdfs:
   so-timeout: 1500
@@ -22,3 +25,5 @@ fdfs:
 
 image:
   server: http://47.102.212.171/
+
+

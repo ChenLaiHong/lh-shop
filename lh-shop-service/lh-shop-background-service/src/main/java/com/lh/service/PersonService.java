@@ -9,6 +9,8 @@ import com.lh.shop.common.util.MdUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
+
 /**
  * Created by laiHom on 2020/3/4.
  */
@@ -42,5 +44,16 @@ public class PersonService implements IPersonService {
     public void add(Person person) {
         person.setUserPassword(MdUtil.md5(person.getUserPassword()));
         personMapper.insertSelective(person);
+    }
+
+    @Override
+    public Integer update(Person person) {
+        person.setUpdateTime(new Date());
+        return personMapper.updateByPrimaryKeySelective(person);
+    }
+
+    @Override
+    public Person findById(Integer userId) {
+        return personMapper.selectByPrimaryKey(userId);
     }
 }

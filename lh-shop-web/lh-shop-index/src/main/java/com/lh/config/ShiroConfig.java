@@ -46,9 +46,9 @@ public class ShiroConfig {
         //js
         filterMap.put("/js/**", "anon");
         // 登录匿名访问
-        filterMap.put("/login", "anon");
+        filterMap.put("/user/login", "anon");
         // 首页匿名访问
-        filterMap.put("/index/show", "anon");
+        filterMap.put("/index/show/1/2", "anon");
         //登录界面
         filterMap.put("/toLogin", "anon");
         //注册界面
@@ -60,7 +60,8 @@ public class ShiroConfig {
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
         filterMap.put("/logout", "logout");
 
-        filterMap.put("/*","authc");
+        
+        filterMap.put("/user/*","authc");
 
 
         System.out.println("Youshenmchulai!!!!!!!!!!!!");

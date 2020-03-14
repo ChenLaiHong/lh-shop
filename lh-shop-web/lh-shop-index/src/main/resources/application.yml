@@ -10,3 +10,18 @@ spring:
   thymeleaf:
     cache: false
 
+
+
+fdfs:
+  so-timeout: 1500
+  connect-timeout: 600
+  pool:
+    jmx-enabled: false
+  thumb-image:
+    width: 200
+    height: 100
+  tracker-list: 47.102.212.171:22122
+
+image:
+  server: http://47.102.212.171/
+

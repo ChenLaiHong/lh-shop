@@ -15,4 +15,6 @@ public interface ISearchService {
     List<Product> searchByKeyWord(String keyWord);
 
     PageResultBean<Product> searchByKeyWord(String keyWord, Integer pageIndex, Integer rows);
+
+    ResultBean updateById(int resultTotal);
 }

@@ -202,4 +202,36 @@ public class SearchService implements ISearchService {
         pageResultBean.setPages((int) (totalCount%rows==0?(totalCount/rows):(totalCount/rows)+1));
         return pageResultBean;
     }
+
+    @Override
+    public ResultBean updateById(int resultTotal) {
+        //1.获取到数据库的数据
+        Product product = productMapper.selectByPrimaryKey(resultTotal);
+        //2.将数据转换成document，再将保存到solr中
+        //product->document
+        SolrInputDocument document = new SolrInputDocument();
+        document.setField("id",product.getProductId());
+        document.setField("product_name",product.getProductName());
+        document.setField("product_images",product.getProductOneImage());
+        document.setField("product_price",product.getShopPrice().floatValue());
+        
+        try {
+            solrClient.add(document);
+        } catch (SolrServerException | IOException e) {
+            //打印到控制台
+            e.printStackTrace();
+            //记录日志
+            //记录到日志表
+            //异常信息管理---索引库异常信息
+            //发送一封邮件和发送短信给相关负责人
+            return ResultBean.error("添加到索引库失败！");
+        }
+        try {
+            solrClient.commit();
+        } catch (SolrServerException | IOException e) {
+            e.printStackTrace();
+            return ResultBean.error("添加到索引库失败！");
+        }
+        return ResultBean.success("数据同步成功！");
+    }
 }

@@ -49,6 +49,12 @@
 			<version>0.2.0</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.github.tobato</groupId>
+			<artifactId>fastdfs-client</artifactId>
+			<version>1.26.1-RELEASE</version>
+		</dependency>
+
 		<!-- shiro相关 -->
 		<dependency>
 			<groupId>org.apache.shiro</groupId>

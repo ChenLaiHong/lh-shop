@@ -5,13 +5,13 @@ import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.lh.api.product.ICatalogOneService;
-import com.lh.api.product.ICatalogThreeService;
-import com.lh.api.product.ICatalogTwoService;
-import com.lh.api.product.IProductService;
+import com.lh.api.product.*;
+import com.lh.api.vo.ProductVO;
 import com.lh.entity.*;
 import com.lh.shop.common.util.ResponseUtil;
 import com.lh.shop.common.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -40,6 +40,8 @@ public class ProductController {
     @Autowired
     private FastFileStorageClient fastFileStorageClient;
 
+    @Reference
+    private ISearchService searchService;
     @Reference
     private IProductService productService;
 
@@ -119,23 +121,28 @@ public class ProductController {
     public ModelAndView add(Product product, HttpServletResponse response, @RequestParam("oneImage") MultipartFile file,
                             @RequestParam("newImg") String newImg, @RequestParam("newImages") String newImages) throws Exception {
         ModelAndView mav = new ModelAndView();
-        //添加
         Integer productId = product.getProductId();
+
+        ProductVO productVO = new ProductVO();
         int resultTotal = 0;
         if (productId == 0) {
             //如果上传了图片
-            if (file != null) {
+            if (StringUtils.isNotBlank(file.getOriginalFilename())) {
                 String path = getPath(file);
                 product.setProductOneImage(path);
             }
             product.setImages(newImages);
-            resultTotal = productService.add(product);
+
+            productVO.setProduct(product);
+            resultTotal = productService.add(productVO);
+            //resultTotal是添加返回的主键
+            searchService.updateById(resultTotal);
         } else {
             String groupPath = null;
             String oldImage = product.getProductOneImage();
 
             //如果旧的照片存在并且重新上传了图片则删除旧的把图片地址替换成新的
-            if(file != null){
+            if(StringUtils.isNotBlank(file.getOriginalFilename())){
                 if(oldImage.length()>0 ) {
                     groupPath = oldImage.substring(image_server.length(), oldImage.length());
                     fastFileStorageClient.deleteFile(groupPath);
@@ -169,7 +176,9 @@ public class ProductController {
                 }
             }
             resultTotal = productService.update(product);
+            searchService.updateById(productId);
         }
+
         mav.setViewName("/admin/productManage");
         return mav;
     }

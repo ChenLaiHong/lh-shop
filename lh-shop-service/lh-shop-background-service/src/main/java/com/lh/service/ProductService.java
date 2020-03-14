@@ -5,6 +5,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.lh.api.product.IProductService;
+import com.lh.api.vo.ProductVO;
 import com.lh.entity.Product;
 import com.lh.entity.ProductExample;
 import com.lh.mapper.ProductMapper;
@@ -48,9 +49,11 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public int add(Product product) {
+    public int add(ProductVO productVO) {
+        Product product = productVO.getProduct();
         product.setUpdateTime(new Date());
-        return productMapper.insertSelective(product);
+        productMapper.insertSelective(product);
+        return product.getProductId();
     }
 
     @Override
@@ -69,9 +72,8 @@ public class ProductService implements IProductService {
     @Override
     public PageInfo<Product> getAll(Integer pageIndex,Integer pageSize) {
         PageHelper.startPage(pageIndex,pageSize);
-        ProductExample productExample = new ProductExample();
-        productExample.createCriteria().andProductStateEqualTo(1);
-        List<Product> list = productMapper.selectByExample(productExample);
+
+        List<Product> list = productMapper.list();
         PageInfo<Product> pageInfo = new PageInfo<Product>(list,3);
         return pageInfo;
     }

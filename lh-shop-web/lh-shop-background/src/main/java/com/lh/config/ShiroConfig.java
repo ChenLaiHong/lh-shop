@@ -41,10 +41,13 @@ public class ShiroConfig {
         filterMap.put("/static/**", "anon");
         //img
         filterMap.put("/image/**", "anon");
+
+        filterMap.put("/jquery-easyui-1.3.3/**","anon");
         //css
         filterMap.put("/css/**", "anon");
         //js
         filterMap.put("/js/**", "anon");
+        filterMap.put("/layui/**","anon");
         // 登录匿名访问
         filterMap.put("/login", "anon");
         //登录界面
@@ -58,8 +61,6 @@ public class ShiroConfig {
 
         filterMap.put("/*","authc");
 
-
-        System.out.println("Youshenmchulai!!!!!!!!!!!!");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;
     }

@@ -13,6 +13,7 @@ import com.lh.entity.Result;
 import com.lh.shop.common.util.ResponseUtil;
 import com.lh.shop.common.util.StringUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -98,7 +99,7 @@ public class CatalogOneController {
         int resultTotal = 0;
         if (oneId == 0) {
             //如果上传了图片
-            if (file != null) {
+            if (StringUtils.isNotBlank(file.getOriginalFilename())) {
                 String path = getPath(file);
                 catalogOne.setOneImage(path);
             }
@@ -114,7 +115,7 @@ public class CatalogOneController {
 
                     System.out.println(oldImage.length());
                     //如果上传了图片
-                    if (file != null) {
+                    if (StringUtils.isNotBlank(file.getOriginalFilename())) {
                         String path = getPath(file);
                         catalogOne.setOneImage(path);
                     }
@@ -122,7 +123,7 @@ public class CatalogOneController {
             } else {
                 if (newImage != null) {
                     //如果上传了图片
-                    if (file != null) {
+                    if (StringUtils.isNotBlank(file.getOriginalFilename())) {
                         String path = getPath(file);
                         catalogOne.setOneImage(path);
                     }

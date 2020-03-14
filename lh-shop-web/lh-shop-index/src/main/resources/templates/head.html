@@ -18,7 +18,8 @@
             <div class="topMessage">
                 <div class="menu-hd" id="userInfo">
                     <a href="/toLogin" th:if="${session.person == null}">亲！请登录</a><a th:if="${session.person != null}" th:text="${'欢迎 '+session.person.userName}"></a>
-                    <a href="toRegister" target="_top">免费注册</a>
+                    <a href="/toRegister" th:if="${session.person == null}">免费注册</a><a href="/logout" th:if="${session.person != null}">退出登录</a>
+
                 </div>
             </div>
         </ul>
@@ -29,7 +30,7 @@
                 <div class="menu-hd"><a href="#" target="_top" class="h">商城首页</a></div>
             </div>
             <div class="topMessage my-shangcheng">
-                <div class="menu-hd MyShangcheng"><a href="#" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
+                <div class="menu-hd MyShangcheng"><a href="/user/information" target="_top"><i class="am-icon-user am-icon-fw"></i>个人中心</a>
                 </div>
             </div>
             <div class="topMessage mini-cart">
@@ -54,15 +55,16 @@
         <div class="search-bar pr">
             <a name="index_none_header_sysc" href="#"></a>
             <form action="http://localhost:9091/search/searchByKeywords" method="post">
-                <input id="searchInput" name="keyWord" type="text" placeholder="搜索" autocomplete="off">
-                <input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
-                <input type="hidden"  name="pageIndex" value="1">
-                <input type="hidden"  name="pageSize" value="10">
-            </form>
+            <input id="searchInput" name="keyWord" type="text" placeholder="搜索" autocomplete="off">
+            <input id="ai-topsearch" class="submit am-btn" value="搜索" index="1" type="submit">
+            <input type="hidden"  name="pageIndex" value="1">
+            <input type="hidden"  name="pageSize" value="3">
+        </form>
         </div>
     </div>
     <div class="clear"></div>
 </div>
+
 
 <div th:fragment="banner" class="banner">
     <!--轮播 -->
@@ -157,69 +159,69 @@
             })
         </script>
         <!--小导航 -->
-        <div class="am-g am-g-fixed smallnav">
-            <div class="am-u-sm-3">
-                <a href="sort.html"><img src="images/navsmall.jpg"/>
-                    <div class="title">商品分类</div>
-                </a>
-            </div>
-            <div class="am-u-sm-3">
-                <a href="#"><img src="images/huismall.jpg"/>
-                    <div class="title">大聚惠</div>
-                </a>
-            </div>
-            <div class="am-u-sm-3">
-                <a href="#"><img src="images/mansmall.jpg"/>
-                    <div class="title">个人中心</div>
-                </a>
-            </div>
-            <div class="am-u-sm-3">
-                <a href="#"><img src="images/moneysmall.jpg"/>
-                    <div class="title">投资理财</div>
-                </a>
-            </div>
-        </div>
+        <!--<div class="am-g am-g-fixed smallnav">-->
+            <!--<div class="am-u-sm-3">-->
+                <!--<a href="sort.html"><img src="images/navsmall.jpg"/>-->
+                    <!--<div class="title">商品分类</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="am-u-sm-3">-->
+                <!--<a href="#"><img src="images/huismall.jpg"/>-->
+                    <!--<div class="title">大聚惠</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="am-u-sm-3">-->
+                <!--<a href="/user/information"><img src="images/mansmall.jpg"/>-->
+                    <!--<div class="title">个人中心</div>-->
+                <!--</a>-->
+            <!--</div>-->
+            <!--<div class="am-u-sm-3">-->
+                <!--<a href="#"><img src="images/moneysmall.jpg"/>-->
+                    <!--<div class="title">投资理财</div>-->
+                <!--</a>-->
+            <!--</div>-->
+        <!--</div>-->
 
         <!--走马灯 -->
-        <div class="marqueen">
-            <span class="marqueen-title">商城头条</span>
-            <div class="demo">
+        <!--<div class="marqueen">-->
+            <!--<span class="marqueen-title">商城头条</span>-->
+            <!--<div class="demo">-->
 
-                <ul>
-                    <li class="title-first" th:each="newsList : ${newsList}"><a target="_blank" href="#">
-                        <img src="images/TJ2.jpg"></img>
-                        <span th:utext="${newsList.newsTitle}"></span>
-                    </a></li>
-
-
-                    <div class="mod-vip">
-                        <div class="m-baseinfo">
-                            <a href="person/index.html">
-                                <img src="images/getAvatar.do.jpg">
-                            </a>
-                            <em>
-                                Hi,<span class="s-name">小叮当</span>
-                                <a href="#"><p>点击更多优惠活动</p></a>
-                            </em>
-                        </div>
-                        <div class="member-logout">
-                            <a class="am-btn-warning btn" href="login.html">登录</a>
-                            <a class="am-btn-warning btn" href="register.html">注册</a>
-                        </div>
-                        <div class="member-login">
-                            <a href="#"><strong>0</strong>待收货</a>
-                            <a href="#"><strong>0</strong>待发货</a>
-                            <a href="#"><strong>0</strong>待付款</a>
-                            <a href="#"><strong>0</strong>待评价</a>
-                        </div>
-                        <div class="clear"></div>
-                    </div>
+                <!--<ul>-->
+                    <!--<li class="title-first" th:each="newsList : ${newsList}"><a target="_blank" href="#">-->
+                        <!--<img src="images/TJ2.jpg"></img>-->
+                        <!--<span th:utext="${newsList.newsTitle}"></span>-->
+                    <!--</a></li>-->
 
 
-                </ul>
-                <div class="advTip"><img src="images/advTip.jpg"/></div>
-            </div>
-        </div>
+                    <!--<div class="mod-vip">-->
+                        <!--<div class="m-baseinfo">-->
+                            <!--<a href="person/index.html">-->
+                                <!--<img src="images/getAvatar.do.jpg">-->
+                            <!--</a>-->
+                            <!--<em>-->
+                                <!--Hi,<span class="s-name">小叮当</span>-->
+                                <!--<a href="#"><p>点击更多优惠活动</p></a>-->
+                            <!--</em>-->
+                        <!--</div>-->
+                        <!--<div class="member-logout">-->
+                            <!--<a class="am-btn-warning btn" href="login.html">登录</a>-->
+                            <!--<a class="am-btn-warning btn" href="register.html">注册</a>-->
+                        <!--</div>-->
+                        <!--<div class="member-login">-->
+                            <!--<a href="#"><strong>0</strong>待收货</a>-->
+                            <!--<a href="#"><strong>0</strong>待发货</a>-->
+                            <!--<a href="#"><strong>0</strong>待付款</a>-->
+                            <!--<a href="#"><strong>0</strong>待评价</a>-->
+                        <!--</div>-->
+                        <!--<div class="clear"></div>-->
+                    <!--</div>-->
+
+
+                <!--</ul>-->
+                <!--<div class="advTip"><img src="images/advTip.jpg"/></div>-->
+            <!--</div>-->
+        <!--</div>-->
         <div class="clear"></div>
     </div>
     <script type="text/javascript">

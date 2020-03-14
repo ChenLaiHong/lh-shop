@@ -166,7 +166,11 @@
     #{updateTime,jdbcType=TIMESTAMP}, #{threeId,jdbcType=INTEGER}, #{productDetail,jdbcType=LONGVARCHAR}
     )
   </insert>
-  <insert id="insertSelective" parameterType="com.lh.entity.Product">
+  <insert id="insertSelective"  parameterType="com.lh.entity.Product">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="productId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
     insert into product
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="productId != null">
@@ -227,6 +231,74 @@
       </if>
     </trim>
   </insert>
+
+
+  <insert id="add"  parameterType="com.lh.entity.Product">
+    <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="productId">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+
+    insert into product
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="productName != null">
+        product_name,
+      </if>
+      <if test="productOneImage != null">
+        product_one_image,
+      </if>
+      <if test="images != null">
+        images,
+      </if>
+      <if test="shopPrice != null">
+        shop_price,
+      </if>
+      <if test="productState != null">
+        product_state,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+      <if test="threeId != null">
+        three_id,
+      </if>
+      <if test="productDetail != null">
+        product_detail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="productName != null">
+        #{productName,jdbcType=VARCHAR},
+      </if>
+      <if test="productOneImage != null">
+        #{productOneImage,jdbcType=VARCHAR},
+      </if>
+      <if test="images != null">
+        #{images,jdbcType=VARCHAR},
+      </if>
+      <if test="shopPrice != null">
+        #{shopPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="productState != null">
+        #{productState,jdbcType=INTEGER},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="threeId != null">
+        #{threeId,jdbcType=INTEGER},
+      </if>
+      <if test="productDetail != null">
+        #{productDetail,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+
   <select id="countByExample" parameterType="com.lh.entity.ProductExample" resultType="java.lang.Long">
     select count(*) from product
     <if test="_parameter != null">
@@ -351,6 +423,12 @@
     where product_id = #{productId,jdbcType=INTEGER}
   </update>
 
+  <select id="list"  resultMap="BaseResultMap">
+    select * from product
+    <where>
+      product_state = 1
+    </where>
+  </select>
 
   <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
     select * from product
@@ -386,7 +464,7 @@
 
   <update id="updateList" parameterType="java.util.List" >
     UPDATE product SET
-    state = 0
+    product_state = 0
     WHERE product_id in
     <foreach collection="list" open="(" close=")" item="id" separator=",">
       #{id}

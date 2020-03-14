@@ -44,6 +44,10 @@
                             th:value="${one.oneId}" th:text="${one.oneName}"
                             th:selected="${product.catalogThree.catalogTwo.catalogOne.oneId eq one.oneId}"></option>
                     </td>
+                    <td th:if="${product == null}">
+                        <option th:each="one:${catalogOneList}"
+                                th:value="${one.oneId}" th:text="${one.oneName}"></option>
+                    </td>
                 </select>
             </div>
             <div class="layui-input-inline">

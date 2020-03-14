@@ -1,6 +1,7 @@
 package com.lh.api.product;
 
 import com.github.pagehelper.PageInfo;
+import com.lh.api.vo.ProductVO;
 import com.lh.entity.Product;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface IProductService {
 
     Product findById(Integer productId);
 
-    int add(Product product);
+    int add(ProductVO product);
 
     int update(Product product);
 

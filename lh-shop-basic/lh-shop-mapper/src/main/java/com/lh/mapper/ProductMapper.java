@@ -43,4 +43,8 @@ public interface ProductMapper {
     void updateList(List list);
 
     Product getById(Map<String, Object> map);
+
+    Integer add(Product product);
+
+    List<Product> list();
 }
