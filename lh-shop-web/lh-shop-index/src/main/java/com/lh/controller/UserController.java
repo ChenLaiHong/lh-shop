@@ -25,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -81,7 +82,9 @@ public class UserController {
 
     //登陆操作
     @PostMapping("/login")
-    public String login(Person person,Map<String,Object> map,ModelAndView mv) {
+    public String login(Person person, Map<String,Object> map, ModelAndView mv
+            , HttpServletResponse response, HttpServletRequest request,
+                        @CookieValue(name = "user_cart",required = false) String userCartToken) {
 
         //获取subject
         Subject subject = SecurityUtils.getSubject();

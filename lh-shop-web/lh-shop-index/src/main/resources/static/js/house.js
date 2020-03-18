@@ -87,7 +87,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
         layer.msg('验证码已发送');
     });
     form.on('submit(user-login)', function (data) {
-        window.location.href = "index.html";
+        window.location.href = "index1.html";
     });
 
     //列表页——点击切换

@@ -9,7 +9,13 @@ server:
 spring:
   thymeleaf:
     cache: false
-
+  redis:
+    host: 47.102.212.171
+    port: 6379
+    jedis:
+      pool:
+        max-active: 20
+    password: lhshop
 
 
 fdfs:

@@ -21,7 +21,8 @@
     <script type="text/javascript" src="AmazeUI-2.4.2/assets/js/amazeui.js"></script>
     <script type="text/javascript" src="js/jquery.imagezoom.min.js"></script>
     <script type="text/javascript" src="js/jquery.flexslider.js"></script>
-
+    <script src="layui/layui/layui.js"></script>
+    <link href="layui/layui/css/layui.css" rel="stylesheet"/>
 
 </head>
 
@@ -163,7 +164,6 @@
                     //获得文本框对象
                     var t = $("#text_box");
                     var specsStock = document.getElementById("specsStock").value;
-                    console.log(specsStock+"数量有吗???")
                     //初始化数量为1,并失效减
                     $('#min').attr('disabled', true);
                     //数量增加操作
@@ -213,9 +213,10 @@
                     <a id="LikBuy" title="点此按钮到下一步确认购买信息" href="#">立即购买</a>
                 </div>
             </li>
-            <li>
+            <li >
                 <div class="clearfix tb-btn tb-btn-basket theme-login">
-                    <a id="LikBasket" title="加入购物车" href="#"><i></i>加入购物车</a>
+                    <button id="addCart"  title="加入购物车">加入购物车</button>
+                    <input type="hidden"  id="specsId" th:value="${product.productSpecs.specsId}">
                 </div>
             </li>
         </div>
@@ -424,6 +425,46 @@
 </div>
 </div>
 
+<script>
+    layui.use(['laydate', 'laypage', 'layer', 'table', 'carousel',
+        'upload', 'element'], function () {
+        var laydate = layui.laydate //日期
+            , laypage = layui.laypage //分页
+        layer = layui.layer //弹层
+            , table = layui.table //表格
+            , carousel = layui.carousel //轮播
+            , element = layui.element; //元素操作
+        var $ = layui.jquery
+            , upload = layui.upload;
+        //常规用法
+        laydate.render({
+            elem: '#birth',
+            trigger: 'click'
+        });
+    });
+    //详情页--加入购物车
+    $("#addCart").click(function() {
+        var productId = document.getElementById("specsId").value;
+        //获得文本框对象
+        var t = $("#text_box");
+        var count = parseInt(t.val())
+        $.ajax({
+            url: '/cart/add',
+            type: 'post',
+            data: {"productId": productId, "count": count},
+            dataType: 'json',
+            async: false,
+            success: function (result) {
+                if (result.statusCode != 200) {
+                    layer.msg(result.msg, {time: 2000});
+                    return false;
+                } else {
+                    layer.msg('加入购物车成功!');
+                }
+            }
+        });
+    });
+</script>
 </body>
 
 </html>

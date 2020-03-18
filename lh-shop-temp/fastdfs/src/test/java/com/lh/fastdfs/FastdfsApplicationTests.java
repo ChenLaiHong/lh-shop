@@ -9,10 +9,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import redis.clients.jedis.Jedis;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -38,4 +40,18 @@ public class FastdfsApplicationTests {
 		System.out.println("删除成功！");
 	}
 
+	@Test
+	public void stringTest(){
+		Jedis jedis = new Jedis("47.102.212.171",6379);
+		jedis.auth("lhshop");
+		jedis.set("target","redis");
+		System.out.println(jedis.get("target"));
+
+		//api设计很
+		jedis.mset("k1","v1","k2","v2");
+		List<String> values = jedis.mget("k1", "k2");
+		for (String value : values) {
+			System.out.println(value);
+		}
+	}
 }
