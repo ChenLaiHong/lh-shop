@@ -3,15 +3,24 @@ package com.lh.controller;
 import com.alibaba.dubbo.common.serialize.java.CompactedObjectInputStream;
 import com.alibaba.dubbo.config.annotation.Reference;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.lh.api.product.ICartService;
+import com.lh.api.product.IPersonService;
 import com.lh.entity.Person;
 import com.lh.shop.common.pojo.ResultBean;
+import com.lh.shop.common.util.ResponseUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -30,12 +39,19 @@ public class CartController {
     @Reference
     private ICartService cartService;
 
+    @Reference
+    private IPersonService personService;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
 //    @RequestMapping("add/{productId}/{count}")
     @RequestMapping("add")
     @ResponseBody
     public ResultBean add(@RequestParam(value = "productId", required = false) Integer productId,
                           @RequestParam(value = "count", required = false) Integer count,
                           @CookieValue(name = "user_cart",required = false) String uuid,
+                          @CookieValue(name = "user_token",required = false) String userToken,
                           HttpServletResponse response,
                           HttpServletRequest request){
 
@@ -43,7 +59,10 @@ public class CartController {
         //user:cart:userId
         //user:cart:uuid
         //TODO 但凡这些常用的字符串，都需要通过常量类管理起来
-        Person user = (Person) request.getSession().getAttribute("person");
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
+        //
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";
         if(user != null){
             key = new StringBuilder("user:cart:").append(user.getUserId()).toString();
@@ -66,28 +85,43 @@ public class CartController {
         response.addCookie(cookie);
     }
 
+    //去购物车页面
+    @RequestMapping("/toPage")
+    public String toPage(){
+        return "trolley";
+    }
+    //购物车列表
     @RequestMapping("list")
-    @ResponseBody
-    public ResultBean list(@CookieValue(name = "user_cart",required = false) String uuid,
+    public String list(@CookieValue(name = "user_cart",required = false) String uuid,
+                       @CookieValue(name = "user_token",required = false) String userToken,
                            HttpServletResponse response,
-                           HttpServletRequest request){
+                           HttpServletRequest request) throws Exception {
+        Map<String, Object> map = new HashMap<String, Object>();
+        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
         //定位--走到哪了
         //查看当前用户的登录状态
         //user:cart:userId
         //user:cart:uuid
-        Person user = (Person) request.getSession().getAttribute("person");
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
+        //
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";
         if(user != null){
             key = new StringBuilder("user:cart:").append(user.getUserId()).toString();
         }else{
             if(uuid == null){
-                return ResultBean.error("购物车暂无商品信息！");
+                return null;
             }
             key = new StringBuilder("user:cart:").append(uuid).toString();
         }
         //写cookie到客户端
         flushCookie(uuid, response);
-        return cartService.list(key.toString());
+        ResultBean list = cartService.list(key.toString());
+        map.put("data", list.getData());
+        map.put("code", 0);
+        ResponseUtil.write(response, gson.toJson(map));
+        return null;
     }
 
     @RequestMapping("update/{productId}/{count}")
@@ -95,9 +129,13 @@ public class CartController {
     public ResultBean update(@PathVariable("productId") Integer productId,
                              @PathVariable("count") Integer count,
                              @CookieValue(name = "user_cart",required = false) String uuid,
+                             @CookieValue(name = "user_token",required = false) String userToken,
                              HttpServletResponse response,
                              HttpServletRequest request){
-        Person user = (Person) request.getSession().getAttribute("person");
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
+        //
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";
         if(user != null){
             key = new StringBuilder("user:cart:").append(user.getUserId()).toString();
@@ -113,13 +151,17 @@ public class CartController {
         return resultBean;
     }
 
-    @RequestMapping("del/{productId}")
+    @DeleteMapping("del")
     @ResponseBody
-    public ResultBean del(@PathVariable("productId") Integer productId,
+    public ResultBean del(@RequestParam(value = "productId", required = false) Integer productId,
                           @CookieValue(name = "user_cart",required = false) String uuid,
+                          @CookieValue(name = "user_token",required = false) String userToken,
                           HttpServletResponse response,
                           HttpServletRequest request){
-        Person user = (Person) request.getSession().getAttribute("person");
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
+        //
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";
         if(user != null){
             key = new StringBuilder("user:cart:").append(user.getUserId()).toString();
@@ -137,22 +179,36 @@ public class CartController {
     @RequestMapping("merge")
     @ResponseBody
     public ResultBean merge(@CookieValue(name = "user_cart",required = false) String uuid,
+                            @CookieValue(name = "user_token",required = false) String userToken,
                             HttpServletResponse response,
                             HttpServletRequest request){
+
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
         //
-        Person user = (Person) request.getSession().getAttribute("person");
-        if(user == null){
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person currentUser = (Person) redisTemplate.opsForValue().get(redisKey.toString());
+
+        if(currentUser == null){
             return ResultBean.error("未登录状态！");
         }
         if(uuid == null || "".equals(uuid)){
             return ResultBean.error("不存在未登录购物车,无需合并");
         }
         //
-        String loginKey = new StringBuilder("user:cart:").append(user.getUserId()).toString();
+        String loginKey = new StringBuilder("user:cart:").append(currentUser.getUserId()).toString();
         String noLoginKey = new StringBuilder("user:cart:").append(uuid).toString();
         ResultBean resultBean = cartService.merge(noLoginKey, loginKey);
-        //TODO 清除掉cookie
+        //TODO 清除掉旧的cookie
         //重新写cookie，设置有效期为0，就是删除
+        //1.删除cookie   627b8a37-7e49-4a14-9883-0b24f9fb0b80
+//        System.out.println("uuid===="+uuid);
+//        System.out.println("userToken===="+userToken);
+        Cookie cookie = new Cookie("user_cart",uuid);
+        cookie.setHttpOnly(true);
+        //让cookie失效
+
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return resultBean;
     }
 }

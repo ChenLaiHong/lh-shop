@@ -3,6 +3,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <base href="/"/>
     <link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css"/>
     <link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css"/>
 
@@ -18,7 +19,7 @@
             <div class="topMessage">
                 <div class="menu-hd" id="userInfo">
                     <a href="/toLogin" th:if="${session.person == null}">亲！请登录</a><a th:if="${session.person != null}" th:text="${'欢迎 '+session.person.userName}"></a>
-                    <a href="/toRegister" th:if="${session.person == null}">免费注册</a><a href="/logout" th:if="${session.person != null}">退出登录</a>
+                    <a href="/toRegister" th:if="${session.person == null}">免费注册</a><a href="/user/logout" th:if="${session.person != null}">退出登录</a>
 
                 </div>
             </div>
@@ -34,9 +35,8 @@
                 </div>
             </div>
             <div class="topMessage mini-cart">
-                <div class="menu-hd"><a id="mc-menu-hd" href="#" target="_top"><i
-                        class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span><strong id="J_MiniCartNum"
-                                                                                              class="h">0</strong></a>
+                <div class="menu-hd"><a id="mc-menu-hd" href="/cart/toPage" target="_top"><i
+                        class="am-icon-shopping-cart  am-icon-fw"></i><span>购物车</span></a>
                 </div>
             </div>
             <div class="topMessage favorite">

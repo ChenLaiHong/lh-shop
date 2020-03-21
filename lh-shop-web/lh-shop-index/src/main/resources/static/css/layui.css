@@ -174,8 +174,8 @@ a cite {
 
 @font-face {
     font-family: layui-icon;
-    src: url(../font/iconfont.eot?v=240);
-    src: url(../font/iconfont.eot?v=240#iefix) format('embedded-opentype'), url(../font/iconfont.svg?v=240#iconfont) format('svg'), url(../font/iconfont.woff?v=240) format('woff'), url(../font/iconfont.ttf?v=240) format('truetype')
+    src: url(../js/font/iconfont.eot?v=240);
+    src: url(../js/font/iconfont.eot?v=240#iefix) format('embedded-opentype'), url(../js/font/iconfont.svg?v=240#iconfont) format('svg'), url(../js/font/iconfont.woff?v=240) format('woff'), url(../js/font/iconfont.ttf?v=240) format('truetype')
 }
 
 .layui-icon {
@@ -2265,8 +2265,8 @@ a cite {
 .layui-form-checkbox[lay-skin=primary] i {
     right: auto;
     left: 0;
-    width: 10px;
-    height: 10px;
+    width: 20px;
+    height: 20px;
     line-height: 16px;
     border: 1px solid #d2d2d2;
     font-size: 12px;
@@ -2923,8 +2923,8 @@ a cite {
 }
 
 .layui-table-view .layui-form-checkbox[lay-skin=primary] i {
-    width: 12px;
-    height: 12px
+    width: 22px;
+    height: 22px
 }
 
 .layui-table-view .layui-form-radio {

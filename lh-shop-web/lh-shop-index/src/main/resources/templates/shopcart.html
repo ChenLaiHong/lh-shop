@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <title>购物车页面</title>
+    <base href="/"/>
+    <link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css"/>
+    <link href="basic/css/demo.css" rel="stylesheet" type="text/css"/>
+    <link href="css/cartstyle.css" rel="stylesheet" type="text/css"/>
+    <link href="css/optstyle.css" rel="stylesheet" type="text/css"/>
+
+    <link rel="stylesheet" href="layui/layui.css">
+    <link rel="stylesheet" href="css/index.css">
+
+    <!-- layui.js -->
+    <script type="text/javascript" src="js/layui/layui.js"></script>
+    <script type="text/javascript" src="js/house.js"></script>
+
+    <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+    <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+</head>
+<style>
+    #house-usershop-table + div td .layui-table-cell {
+        height: 50px;
+        padding-top: 9px;
+    }
+
+    #house-usershop-table + div td .layui-table-cell p {
+        font-size: 15px;
+    }
+</style>
+<body class="concent">
+
+<!--顶部导航条 -->
+<div th:replace="head :: heads"></div>
+
+
+    <!--购物车 -->
+
+    <div class="layui-container house-usershop">
+        <table id="house-usershop-table" lay-filter="house-usershop-table"></table>
+        <div class="house-usershop-table-num layui-form">
+            <input type="checkbox" disabled lay-skin="primary"><span class="numal">已选 0 件</span>
+            <!--<a id="batchDel">批量删除</a>-->
+            <p id="total">合计: ￥<span>0.00</span></p>
+
+            <button class="layui-btn settleAccounts">结算</button>
+        </div>
+
+    </div>
+
+
+<script type="text/html" id="goodsTpl">
+    <div>
+        <img src="{{d.productSpecs.product.productOneImage}}" style="height: 80px">
+        <div style="display: inline-block; text-align: left; vertical-align: top;">
+            <p>{{d.productSpecs.specsName}}</p>
+        </div>
+    </div>
+</script>
+<script type="text/html" id="priceTpl">
+    <p><span class="price">￥{{d.productSpecs.specsPrice}}</span></p>
+</script>
+<script type="text/html" id="numTpl">
+    <div class="numVal">
+        <button class="layui-btn layui-btn-primary sup">-</button>
+        <input type="text" class="layui-input" value="{{d.count}}">
+        <button class="layui-btn layui-btn-primary sub">+</button>
+    </div>
+</script>
+<script type="text/html" id="totalTpl">
+    <span class="total" style="color: #cd2d15;">￥{{(d.productSpecs.specsPrice*d.count).toFixed(2)}}</span>
+</script>
+<script type="text/html" id="shopTpl">
+    <a lay-event="del">删除</a>
+</script>
+
+
+</body>
+
+</html>

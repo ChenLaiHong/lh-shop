@@ -44,10 +44,10 @@ public class UserRealm extends AuthorizingRealm {
             return null;//shiro底层会抛出UnKnowAccountException
         }
 
-        // 当验证都通过后，把用户信息放在session里
-        Session session2 = SecurityUtils.getSubject().getSession();
-        session2.setAttribute("personName", person.getUserName());
-        session2.setAttribute("person", person);
+//        // 当验证都通过后，把用户信息放在session里
+//        Session session2 = SecurityUtils.getSubject().getSession();
+//        session2.setAttribute("personName", person.getUserName());
+//        session2.setAttribute("person", person);
         return new SimpleAuthenticationInfo(person,person.getUserPassword(), "");
     }
 }

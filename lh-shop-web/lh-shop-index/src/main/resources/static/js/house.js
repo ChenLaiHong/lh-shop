@@ -386,7 +386,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
     //个人中心——订单
     table.render({
         elem: '#house-user-order'
-        , url: '/front/orderTable.do'
+        , url: '/cart/orderTable.do'
         , id: 'house-user-order'
         , where: {'status': "未付款"}
         , skin: 'line'
@@ -465,16 +465,16 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
     //购物车——表格
     table.render({
         elem: '#house-usershop-table'
-        , url: '/front/trolleyTable.do'
+        , url: '/cart/list'
         , skin: 'line'
         , id: 'house-usershop-table'
         , cols: [[
             {type: 'checkbox', width: 50}
-            , {title: '商品', align: 'center', minWidth: 260, templet: '#goodsTpl'}
-            , {title: '单价', align: 'center', minWidth: 160, templet: '#priceTpl'}
+            , {title: '商品', align: 'center', minWidth: 120, templet: '#goodsTpl'}
+            , {title: '单价', align: 'center', minWidth: 80, templet: '#priceTpl'}
             , {title: '数量', align: 'center', width: 150, templet: '#numTpl'}
-            , {title: '小计', align: 'center', width: 120, templet: '#totalTpl'}
-            , {title: '操作', align: 'center', width: 100, templet: '#shopTpl'}
+            , {title: '小计', align: 'center', width: 100, templet: '#totalTpl'}
+            , {title: '操作', align: 'center', width: 90, templet: '#shopTpl'}
         ]]
         , done: function (res, curr, count) {
             console.log(res.data)
@@ -523,7 +523,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
             ;
         }
         , text: {
-            none: '<div class="house-usershop-table-none"><div><img src="/resource/img/shopnone.png"></div><p>购物车空空如也</p></div>'
+            none: '<div class="house-usershop-table-none"><div><img src="/imgages/shopnone.png"></div><p>购物车空空如也</p></div>'
         }
         , id: 'house-usershop-table'
     });
@@ -587,15 +587,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
         })
         copyWith[0].innerHTML = '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
         var checkStatus = table.checkStatus('house-usershop-table');
-        /* //满减
-         if (goodsVal[0].innerHTML > 200) {
-             copyWith[0].innerHTML = '￥' + (goodsVal[0].innerHTML - 20).toFixed(2)
-             copyTips.css("display", "inline-block");
-         } else {
-             copyWith[0].innerHTML = '￥' + parseFloat(goodsVal[0].innerHTML).toFixed(2);
-             copyTips.css("display", "none");
-         }
-         ;*/
+
         //转换格式
         goodsVal[0].innerHTML = parseFloat(goodsVal[0].innerHTML).toFixed(2);
         if (checkStatus.data.length != 0) {
@@ -646,17 +638,17 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
         // });
     })
     table.on('tool(house-usershop-table)', function (obj) {
-        var data = obj.data;
+        var data = obj.data.productSpecs;
         if (obj.event === 'del') {
             layer.confirm('确定删除此物品？', function (index) {
                 $.ajax({
-                    url: '/front/delTrolley.do',
+                    url: '/cart/del',
                     type: 'post',
-                    data: {_method: "DELETE", "id": data.id},
+                    data: {_method: "DELETE", "productId": data.specsId},
                     dataType: 'json',
                     async: false,
                     success: function (result) {
-                        if (!result.status) {
+                        if (result.statusCode != 200) {
                             parent.layer.msg(result.msg, {time: 2000});
                             return false;
                         } else {

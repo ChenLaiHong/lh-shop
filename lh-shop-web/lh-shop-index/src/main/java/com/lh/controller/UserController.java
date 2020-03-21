@@ -9,6 +9,7 @@ import com.lh.api.product.IPersonService;
 import com.lh.entity.Address;
 import com.lh.entity.Person;
 import com.lh.entity.Result;
+import com.lh.shop.common.util.HttpClientUtils;
 import com.lh.shop.common.util.MdUtil;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
@@ -18,17 +19,24 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by laiHom on 2020/3/7.
@@ -42,6 +50,9 @@ public class UserController {
 
     @Autowired
     private FastFileStorageClient fastFileStorageClient;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     @Reference
     private IPersonService personService;
@@ -92,10 +103,42 @@ public class UserController {
         UsernamePasswordToken token = new UsernamePasswordToken(person.getUserName(), MdUtil.md5(person.getUserPassword()));
 
         try {
-
             subject.login(token);
+
+            Person currentUser = personService.getUserByNameAndPass(person.getUserName(),person.getUserPassword());
+            request.getSession().setAttribute("personName",currentUser.getUserName());
+            request.getSession().setAttribute("person", currentUser);
+//        session2.setAttribute("person", person);
+            //3.1 生成唯一的标识
+            String uuid = UUID.randomUUID().toString();
+            //3.2 构造一个cookie
+            Cookie cookie = new Cookie("user_token",uuid);
+            cookie.setPath("/");
+            //基于安全控制，只允许通过后端来获取到cookie的信息
+            //不能在前端通过脚本获取到cookie document.cookies
+            cookie.setHttpOnly(true);
+            //3.3 redis中保存凭证信息
+            StringBuilder redisKey = new StringBuilder("user:token:").append(uuid);
+            redisTemplate.setKeySerializer(new StringRedisSerializer());
+            redisTemplate.opsForValue().set(redisKey.toString(),currentUser);
+            //设置有效期
+            redisTemplate.expire(redisKey.toString(),30, TimeUnit.MINUTES);
+            response.addCookie(cookie);
             //登陆成功
-            mv.addObject("go_in", true);
+            //登录成功之后，应该是调用购物车合并的接口
+            //需要有一个工具，来模拟浏览器发送http请求
+            //HttpClient---> Apache
+            StringBuilder value = new StringBuilder("user_token=");
+            value.append(uuid);
+            value.append(";");
+            value.append("user_cart=");
+            value.append(userCartToken);
+
+            Map<String,String> params = new HashMap<>();
+            params.put("Cookie",value.toString());
+
+            HttpClientUtils.doGetWithHeaders("http://localhost:9091/cart/merge",params);
+
             return "redirect:/index/show/1/8";
         }catch (UnknownAccountException e){
             //登陆用户名不存在
@@ -199,6 +242,26 @@ public class UserController {
         return "redirect:/user/address";
     }
 
+    //退出登录
+    @RequestMapping("/logout")
+    public String logout(HttpSession session,HttpServletResponse response,
+                         @CookieValue(name = "user_token",required = false) String uuid) {
+        Subject subject = SecurityUtils.getSubject();
+        subject.logout();
+        //1.删除cookie
+        Cookie cookie = new Cookie("user_token",uuid);
+        cookie.setPath("/");
+        cookie.setHttpOnly(true);
+        //让cookie失效
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
+        //2.删除redis的凭证
+        StringBuilder redisKey = new StringBuilder("user:token:").append(uuid);
+        //
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.delete(redisKey.toString());
+        return "index";
+    }
     public String getPath(MultipartFile file) {
         //1.获取到文件对象，将文件对象上传FastDFS上
         String originalFilename = file.getOriginalFilename();

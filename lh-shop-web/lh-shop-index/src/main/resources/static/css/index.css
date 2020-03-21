@@ -9,11 +9,11 @@
 /** 图标字体 **/
 @font-face {
     font-family: 'layui-icon';
-    src: url('/resource/js/front/font/iconfont.eot?v=230');
-    src: url('/resource/js/front/font/iconfont.eot?v=230#iefix') format('embedded-opentype'),
-    url('/resource/js/front/font/iconfont.svg?v=230#iconfont') format('svg'),
-    url('/resource/js/front/font/iconfont.woff?v=230') format('woff'),
-    url('/resource/js/front/font/iconfont.ttf?v=230') format('truetype');
+    src: url('../js/font/iconfont.eot?v=230');
+    src: url('../js/font/iconfont.eot?v=230#iefix') format('embedded-opentype'),
+    url('../js/font/iconfont.svg?v=230#iconfont') format('svg'),
+    url('../js/font/iconfont.woff?v=230') format('woff'),
+    url('../js/font/iconfont.ttf?v=230') format('truetype');
 }
 
 /* font-class */
@@ -476,12 +476,7 @@ body.user {
     margin-top: 10px;
 }
 
-/* 登录页面 */
-#house-login {
-    height: 575px;
-    padding-top: 125px;
-    background: url(../img/load_bg.jpg) no-repeat center center;
-}
+
 
 #house-login .layui-form {
     width: 300px;
@@ -1505,7 +1500,7 @@ body .address-class .layui-layer-btn a {
     border-radius: 0;
     padding: 0;
     font-size: 16px;
-    background-color: #dbbb92;
+    background-color: #db4d47;
     position: absolute;
     top: -1px;
     right: -1px;
@@ -1518,7 +1513,7 @@ body .address-class .layui-layer-btn a {
 
 #house-usershop-table + div .layui-form-checked[lay-skin=primary] i, .house-usershop .house-usershop-table-num .layui-form-checked[lay-skin=primary] i {
     border-color: #CCC;
-    background-color: #FFF;
+    background-color: #eb6741;
     color: #eb6741;
     font-weight: bold;
 }

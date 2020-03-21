@@ -55,12 +55,13 @@ public class ShiroConfig {
         filterMap.put("/toRegister", "anon");
         //自定义加载权限资源关系
 
+        //购物车
+        filterMap.put("/cart/*", "anon");
         //还没登陆时拦截后调整回登陆页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
-        filterMap.put("/logout", "logout");
+//        filterMap.put("/logout", "logout");
 
-        
         filterMap.put("/user/*","authc");
 
 
