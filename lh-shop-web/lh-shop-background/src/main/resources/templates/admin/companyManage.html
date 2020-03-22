@@ -1,0 +1,269 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title></title>
+
+
+    <!-- 加入移动布局 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
+    <meta NAME=”renderer” content=”webkit”>
+    <script type="text/javascript" src="/js/jquery.min.js"></script>
+    <!-- 引入manage 的基础css -->
+    <script	src="/layui/layui/layui.js"></script>
+    <link href="/layui/layui/css/layui.css" rel="stylesheet"/>
+    <script	src="/js/manage_base.js"></script>
+    <link href="/css/manage_base.css" rel="stylesheet"/>
+    <!-- 引入manage 的基础css -->
+
+
+</head>
+<style>
+    body{
+        padding-top: 3px;
+    }
+    .layui-table-cell {
+        height: auto;
+    }
+</style>
+<body>
+
+<div class="layui-form" style=" ">
+
+    <div class="layui-table-toolbar" style="margin-bottom: 3px;">
+        <div class="layui-btn-group">
+            <button  onclick="add()" class="layui-btn layui-btn-normal layui-btn-sm"><i class="layui-icon">&#xe654;</i>添加</button>
+            <button  type="button" class="layui-btn layui-btn-danger layui-btn-sm" onclick="delSelected()"><i class="layui-icon"></i>删除</button>
+        </div>
+
+        <div class="layui-input-inline" style="  width: 150px; margin-right: -1px;">
+            <input class="layui-input" id="q" onkeydown="if(event.keyCode==13) reload_data()" placeholder="公司名称">
+        </div>
+
+        <div class="layui-input-inline" style="  width: 113px;">
+            <a class="layui-btn layui-btn-normal layui-btn-sm" onclick="reload_data()">查询</a>
+        </div>
+    </div>
+
+    <table class="layui-hide"   id="table" lay-filter="table"></table>
+    <script type="text/html" id="table_bar">
+        <div class="layui-btn-group">
+            <a class="layui-btn layui-btn-xs" lay-event="edit">修改</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="set_state">修改状态</a>
+        </div>
+    </script>
+
+    <script>
+
+        layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
+            'upload', 'element' ], function() {
+            var laydate = layui.laydate //日期
+                , laypage = layui.laypage //分页
+            layer = layui.layer //弹层
+                ,toolbar= 'default'
+                , table = layui.table //表格
+                , carousel = layui.carousel //轮播
+                , upload = layui.upload //上传
+                , element = layui.element; //元素操作
+            table.render({
+                elem: '#table'
+                ,url: '/company/list',
+                height: 'full-60',
+                cols: [
+                    [
+                        {checkbox: true, fixed: false}
+                        ,{field:'companyId', title: 'ID',width:20}
+                        ,{field:'companyName', title: '名称', width:150,align:"center"}
+                        ,{field:'companyPhone', title: '客服电话', width:200,align:"center"}
+                        ,{field:'companyAddress', title: '官网地址', width:200,align:"center"}
+                        ,{field:'companyIcon', title: '图标', width:150,align:"center",templet:'<div><img src="{{d.companyIcon}}" style="height: 40px;width: 40px"></div>'}
+                        ,{field:'updateTime', title: '更新时间', width:160,align:"center"}
+                        ,{field:'state', title: '状态', width:100,align:"center", templet: '#format_state'}
+                        ,{fixed:'right', width:180,title: '操作',align:"center",  toolbar: '#table_bar'}
+                    ]
+                ]
+                ,id: 'table'
+                ,page: true
+                ,limits:[20,30,40,50],
+                limit:20
+            });
+
+
+            //监听工具条 table_bar
+            table.on('tool(table)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+                var data = obj.data //获得当前行数据
+                    , layEvent = obj.event; //获得 lay-event 对应的值
+                if (layEvent === 'del') {
+                    del(data.companyId);
+                } else if (layEvent === 'edit') {
+                    edit(data.companyId);
+                }
+                else if (layEvent === 'set_state') {
+                    setState(data.companyId);
+                }
+            });
+
+            //监听单元格编辑
+            table.on('edit(table)', function(obj){
+                var value = obj.value //得到修改后的值
+                    ,data = obj.data //得到所在行所有键值
+                    ,field = obj.field; //得到字段
+                table_edit_update(data.companyId,field,value);
+            });
+
+
+        });
+
+        //修改状态
+        function setState(companyId){
+            $.post('/company/setState',{companyId:companyId},function(result){
+                if(result.success){
+                    layer.closeAll();
+                    layer.msg(result.msg);
+                    reload_data();
+                }else{
+                    layer.closeAll();
+                    layer.msg(result.msg);
+                }
+            },'json');
+        }
+    </script>
+
+    <script>
+
+        //用户选中的行ids = 1,2,3,5   len=4
+        var global_ids;
+        var global_ids_len;
+        //用户选中的行ids = 1,2,3,5   len=4
+        var w ;//窗口的宽
+        var h ;//窗口的高
+        //检测定义的宽和高，是否合适。
+
+        //子窗口调用 的  关闭窗口方法
+        function closeDlg(msg){
+            layer.closeAll();
+            layer.msg(msg);
+            reload_data();
+        }
+
+        //相当前刷新  重新加载
+        function reload_data(){
+            var q = $("#q").val();
+            table.reload('table', {
+                where: {
+                    q: q
+                }
+            });
+        }
+
+        //打开添加窗口
+        function add(){
+            w = 400;
+            h = 400;
+            checkWindow();
+            // 获取一级id
+            layer.open({
+                type: 2,
+                title: '添加',
+                shadeClose: true,
+                shade: 0.8,
+                area: [w+'px', h+'px'],
+                content: '/company/toAdd'
+            });
+        }
+
+
+        //打开编辑窗口
+        function edit(companyId){
+            w = 400;
+            h = 400;
+            checkWindow();
+            layer.open({
+                type: 2,
+                title: '修改',
+                shadeClose: true,
+                shade: 0.8,
+                area: [w+'px', h+'px'],
+                content: '/company/toEdit?companyId='+companyId //iframe的url
+            });
+        }
+
+
+
+        //删除开始***********************
+        function del(ids){
+            console.log("主键："+ids)
+            var index = layer.load(1, {
+                shade: [0.1,'#fff'] //0.1透明度的白色背景
+            });
+            $.post('/company/delete',{ids:ids},function(result){
+                if(result.success){
+                    layer.closeAll();
+                    layer.msg('删除成功');
+                    reload_data();
+                }else{
+                    layer.closeAll();
+                    layer.msg(result.msg);
+                }
+            },'json');
+        }
+
+        function getTableSelected(){
+            var selected = table.checkStatus("table");
+            if(selected.data.length<1){
+                layer.msg('请选择内容!');
+                return;
+            }
+            var ids = "";
+            if(selected.data.length>0){
+                $.each(selected.data,function(i,val){
+                    ids = ids+val.companyId+",";
+                });
+            }
+            //去掉最后的逗号,
+            ids = ids.substring(0,ids.length-1);
+            global_ids = ids;
+            global_ids_len = selected.data.length;
+        }
+
+        function delSelected(){
+            global_ids="";
+            global_ids_len=0;
+            getTableSelected();
+            if(global_ids_len>0){
+                //询问框
+                layer.confirm('您是否要删除这'+global_ids_len+'个吗？', {
+                    btn: ['确定删除','取消'] //按钮
+                }, function(){
+                    del(global_ids);
+                }, function(){
+                    layer.msg('您选择了取消');
+                });
+            }
+        }
+        //删除完成***********************
+
+        //修改*******
+        function table_edit_update(companyId,field,value){
+            console.log("field是什么？"+field+"value是什么？"+value)
+            $.post('/company/update?'+field+'='+value,{companyId:companyId},function(result){
+                if(result.success){
+                    layer.msg('修改成功');
+                }else{
+                    layer.closeAll();
+                    layer.msg(result.msg);
+                }
+            },'json');
+        }
+
+    </script>
+    <script type="text/html" id="format_state">
+        {{#  if(d.state =='1'){ }}
+        <dd>正常使用</dd>
+        {{#  } else if(d.state =='0') { }}
+        <dd>暂不使用</dd>
+        {{#  } }}
+    </script>
+</div>
+</body>
+</html>

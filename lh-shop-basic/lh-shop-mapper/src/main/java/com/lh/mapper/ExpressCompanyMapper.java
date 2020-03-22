@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.ExpressCompany;
 import com.lh.entity.ExpressCompanyExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface ExpressCompanyMapper {
@@ -27,4 +29,10 @@ public interface ExpressCompanyMapper {
     int updateByPrimaryKeySelective(ExpressCompany record);
 
     int updateByPrimaryKey(ExpressCompany record);
+
+    List<ExpressCompany> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    void updateList(List list);
 }

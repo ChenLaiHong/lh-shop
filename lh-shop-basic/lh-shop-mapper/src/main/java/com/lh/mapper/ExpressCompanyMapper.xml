@@ -256,4 +256,40 @@
       state = #{state,jdbcType=VARCHAR}
     where company_id = #{companyId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+    select * from express_company
+    <where>
+      <if test="q!=null and q!=''">
+        and (company_name like #{q} )
+      </if>
+    </where>
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+  </select>
+
+  <select id="getTotal" parameterType="Map" resultType="Integer">
+    select
+    count(*) from express_company
+    <where>
+      <if test="q!=null and q!=''">
+        and (company_name like #{q} )
+      </if>
+    </where>
+  </select>
+
+  <!--批量修改，逻辑删除
+ 1、这里修改的是某个字段的值，参数是int类型的集合
+2、如果你的是对象的集合，item.字段名 赋值就好了
+-->
+  <update id="updateList" parameterType="java.util.List" >
+    UPDATE express_company SET
+    state = 0
+    WHERE company_id in
+    <foreach collection="list" open="(" close=")" item="id" separator=",">
+      #{id}
+    </foreach>
+  </update>
 </mapper>

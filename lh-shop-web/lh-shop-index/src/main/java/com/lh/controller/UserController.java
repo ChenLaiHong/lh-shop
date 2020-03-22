@@ -230,8 +230,8 @@ public class UserController {
             finalResult.setMsg("设置成功");
         }else {
             finalResult.setSuccess(false);
-            finalResult.setMsg("设置失败");
-        }
+        finalResult.setMsg("设置失败");
+    }
         return finalResult;
     }
 

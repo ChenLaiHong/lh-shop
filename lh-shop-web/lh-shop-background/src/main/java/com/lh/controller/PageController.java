@@ -48,9 +48,12 @@ public class PageController {
     @RequestMapping("/toProduct")
     public String toProduct(){
         return "/admin/productManage";
-//        return "/admin/test";
     }
-
+    //快递公司管理
+    @RequestMapping("/toCompany")
+    public String toCompany(){
+        return "/admin/companyManage";
+    }
     //登陆操作
     @PostMapping("/login")
     public String login(HttpServletRequest request, Map<String,Object> map, Model model) {
