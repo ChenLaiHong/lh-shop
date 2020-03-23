@@ -3,6 +3,7 @@ package com.lh.service;
 import com.alibaba.dubbo.config.annotation.Service;
 import com.lh.api.product.ICompanyService;
 import com.lh.entity.ExpressCompany;
+import com.lh.entity.ExpressCompanyExample;
 import com.lh.entity.ProductImage;
 import com.lh.mapper.ExpressCompanyMapper;
 import com.lh.mapper.ProductImageMapper;
@@ -65,5 +66,12 @@ public class CompanyService implements ICompanyService{
             company.setState("1");
         }
        return expressCompanyMapper.updateByPrimaryKeySelective(company);
+    }
+
+    @Override
+    public List<ExpressCompany> getAll() {
+        ExpressCompanyExample companyExample = new ExpressCompanyExample();
+        companyExample.createCriteria().andStateEqualTo("1");
+        return expressCompanyMapper.selectByExample(companyExample);
     }
 }

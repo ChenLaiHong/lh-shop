@@ -54,6 +54,12 @@ public class PageController {
     public String toCompany(){
         return "/admin/companyManage";
     }
+
+    //支付方式管理
+    @RequestMapping("/toPayment")
+    public String toPayment(){
+        return "/admin/paymentManage";
+    }
     //登陆操作
     @PostMapping("/login")
     public String login(HttpServletRequest request, Map<String,Object> map, Model model) {

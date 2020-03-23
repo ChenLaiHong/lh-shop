@@ -63,9 +63,8 @@ public class ShiroConfig {
 //        filterMap.put("/logout", "logout");
 
         filterMap.put("/user/*","authc");
+        filterMap.put("/orders/*","authc");
 
-
-        System.out.println("Youshenmchulai!!!!!!!!!!!!");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterMap);
         return shiroFilterFactoryBean;
     }

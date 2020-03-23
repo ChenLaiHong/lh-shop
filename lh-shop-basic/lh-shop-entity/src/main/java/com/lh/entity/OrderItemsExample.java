@@ -1,6 +1,7 @@
 package com.lh.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -365,73 +366,123 @@ public class OrderItemsExample implements Serializable {
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberIsNull() {
-            addCriterion("order_number is null");
+        public Criteria andProductPriceIsNull() {
+            addCriterion("product_price is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberIsNotNull() {
-            addCriterion("order_number is not null");
+        public Criteria andProductPriceIsNotNull() {
+            addCriterion("product_price is not null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberEqualTo(String value) {
-            addCriterion("order_number =", value, "orderNumber");
+        public Criteria andProductPriceEqualTo(BigDecimal value) {
+            addCriterion("product_price =", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberNotEqualTo(String value) {
-            addCriterion("order_number <>", value, "orderNumber");
+        public Criteria andProductPriceNotEqualTo(BigDecimal value) {
+            addCriterion("product_price <>", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberGreaterThan(String value) {
-            addCriterion("order_number >", value, "orderNumber");
+        public Criteria andProductPriceGreaterThan(BigDecimal value) {
+            addCriterion("product_price >", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberGreaterThanOrEqualTo(String value) {
-            addCriterion("order_number >=", value, "orderNumber");
+        public Criteria andProductPriceGreaterThanOrEqualTo(BigDecimal value) {
+            addCriterion("product_price >=", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberLessThan(String value) {
-            addCriterion("order_number <", value, "orderNumber");
+        public Criteria andProductPriceLessThan(BigDecimal value) {
+            addCriterion("product_price <", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberLessThanOrEqualTo(String value) {
-            addCriterion("order_number <=", value, "orderNumber");
+        public Criteria andProductPriceLessThanOrEqualTo(BigDecimal value) {
+            addCriterion("product_price <=", value, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberLike(String value) {
-            addCriterion("order_number like", value, "orderNumber");
+        public Criteria andProductPriceIn(List<BigDecimal> values) {
+            addCriterion("product_price in", values, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberNotLike(String value) {
-            addCriterion("order_number not like", value, "orderNumber");
+        public Criteria andProductPriceNotIn(List<BigDecimal> values) {
+            addCriterion("product_price not in", values, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberIn(List<String> values) {
-            addCriterion("order_number in", values, "orderNumber");
+        public Criteria andProductPriceBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("product_price between", value1, value2, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberNotIn(List<String> values) {
-            addCriterion("order_number not in", values, "orderNumber");
+        public Criteria andProductPriceNotBetween(BigDecimal value1, BigDecimal value2) {
+            addCriterion("product_price not between", value1, value2, "productPrice");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberBetween(String value1, String value2) {
-            addCriterion("order_number between", value1, value2, "orderNumber");
+        public Criteria andOrderIdIsNull() {
+            addCriterion("order_id is null");
             return (Criteria) this;
         }
 
-        public Criteria andOrderNumberNotBetween(String value1, String value2) {
-            addCriterion("order_number not between", value1, value2, "orderNumber");
+        public Criteria andOrderIdIsNotNull() {
+            addCriterion("order_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdEqualTo(Integer value) {
+            addCriterion("order_id =", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdNotEqualTo(Integer value) {
+            addCriterion("order_id <>", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdGreaterThan(Integer value) {
+            addCriterion("order_id >", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("order_id >=", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdLessThan(Integer value) {
+            addCriterion("order_id <", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdLessThanOrEqualTo(Integer value) {
+            addCriterion("order_id <=", value, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdIn(List<Integer> values) {
+            addCriterion("order_id in", values, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdNotIn(List<Integer> values) {
+            addCriterion("order_id not in", values, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdBetween(Integer value1, Integer value2) {
+            addCriterion("order_id between", value1, value2, "orderId");
+            return (Criteria) this;
+        }
+
+        public Criteria andOrderIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("order_id not between", value1, value2, "orderId");
             return (Criteria) this;
         }
     }

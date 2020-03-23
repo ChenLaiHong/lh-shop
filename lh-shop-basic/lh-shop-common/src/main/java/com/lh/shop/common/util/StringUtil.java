@@ -41,6 +41,15 @@ public class StringUtil {
 		}
 		return ints;
 	}
+	//查找需要批量删除的id集合
+	public static List StringIds(String ids,Integer temp){
+		String[] idsStr = ids.split(",");
+		List ints = new ArrayList();
+		for(int i =0;i<idsStr.length;i++){
+			ints.add(idsStr[i].substring(1));
+		}
+		return ints;
+	}
 
 	public static List findPath(String[] imagesURL){
 		List temp = new ArrayList();

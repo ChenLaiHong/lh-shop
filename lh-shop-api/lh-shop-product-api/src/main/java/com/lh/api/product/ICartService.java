@@ -18,4 +18,6 @@ public interface ICartService {
 
     //合并购物车
     public ResultBean merge(String noLoginKey,String loginKey);
+
+    ResultBean delIds(String s, String ids);
 }

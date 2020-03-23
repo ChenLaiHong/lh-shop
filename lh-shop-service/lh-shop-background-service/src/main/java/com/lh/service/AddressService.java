@@ -70,4 +70,11 @@ public class AddressService implements IAddressService {
     public Address findById(Integer addressId) {
         return addressMapper.selectByPrimaryKey(addressId);
     }
+
+    @Override
+    public Address findByUserId(Integer userId) {
+        AddressExample addressExample = new AddressExample();
+        addressExample.createCriteria().andUserIdEqualTo(userId).andDefaultAddressEqualTo(0);
+        return addressMapper.selectByExample(addressExample).get(0);
+    }
 }

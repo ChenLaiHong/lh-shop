@@ -23,4 +23,6 @@ public interface ICompanyService {
     void delete(String ids);
 
     int updateState(ExpressCompany company);
+
+    List<ExpressCompany> getAll();
 }

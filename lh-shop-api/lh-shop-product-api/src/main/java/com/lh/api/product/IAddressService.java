@@ -19,4 +19,6 @@ public interface IAddressService {
     void update(Address address);
 
     Address findById(Integer addressId);
+
+    Address findByUserId(Integer userId);
 }

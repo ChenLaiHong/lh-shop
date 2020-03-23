@@ -605,10 +605,17 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
         var checkStatus = table.checkStatus('house-usershop-table');
         var ids = [];
         var nums = [];
+        var prices = [];
+
         $(checkStatus.data).each(function () {
-            ids.push(this.id);
+
+            ids.push(this.productSpecs.specsId);
         });
-        console.log(ids)
+        $(".numVal").each(function () {
+            prices.push($(this).parents("td").siblings().find("span").filter(".price")[0].innerHTML) ;
+
+        });
+
         $("input[name='layTableCheckbox']:checked").each(function () {
             var val = $(this).parents("td").siblings().find("input").val();
             if (val != '' && val != null && val != 'undefined') {
@@ -616,26 +623,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
             }
         });
         goodsVal = $(".house-usershop").find("#total").children("span")
-        location.href = '/front/subSettle.do?ids=' + ids.toString() + '&nums=' + nums.toString() + '&zumPrice=' + goodsVal[0].innerHTML
-        // $.ajax({
-        //     url: '/front/settleAccounts.do',
-        //     type: 'post',
-        //     data: {"ids": ids.toString(), "nums": nums.toString(), 'price': goodsVal[0].innerHTML},
-        //     dataType: 'json',
-        //     async: false,
-        //     success: function (result) {
-        //         if (result.status) {
-        //             layer.alert("成功!", {
-        //                 time: 2000,
-        //                 end: function () {
-        //                     location.href = '/front/order.do'
-        //                 }
-        //             })
-        //         } else {
-        //             layer.msg(result.msg)
-        //         }
-        //     }
-        // });
+        location.href = '/orders/subSettle?ids=' + ids.toString() + '&nums=' + nums.toString() +'&prices=' + prices.toString()+'&zumPrice=' + goodsVal[0].innerHTML
     })
     table.on('tool(house-usershop-table)', function (obj) {
         var data = obj.data.productSpecs;

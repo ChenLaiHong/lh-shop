@@ -1,6 +1,7 @@
 package com.lh.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 public class OrderItems implements Serializable {
     private Integer id;
@@ -11,7 +12,11 @@ public class OrderItems implements Serializable {
 
     private Integer productNum;
 
-    private String orderNumber;
+    private BigDecimal productPrice;
+
+    private Integer orderId;
+
+    private OrderBasics orderBasics;
 
     public Integer getId() {
         return id;
@@ -45,11 +50,40 @@ public class OrderItems implements Serializable {
         this.productNum = productNum;
     }
 
-    public String getOrderNumber() {
-        return orderNumber;
+    public BigDecimal getProductPrice() {
+        return productPrice;
     }
 
-    public void setOrderNumber(String orderNumber) {
-        this.orderNumber = orderNumber == null ? null : orderNumber.trim();
+    public void setProductPrice(BigDecimal productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    public Integer getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
+    }
+
+    public OrderBasics getOrderBasics() {
+        return orderBasics;
+    }
+
+    public void setOrderBasics(OrderBasics orderBasics) {
+        this.orderBasics = orderBasics;
+    }
+
+    public OrderItems() {
+    }
+
+    public OrderItems(Integer id, String productName, String producrIcon, Integer productNum, BigDecimal productPrice, Integer orderId, OrderBasics orderBasics) {
+        this.id = id;
+        this.productName = productName;
+        this.producrIcon = producrIcon;
+        this.productNum = productNum;
+        this.productPrice = productPrice;
+        this.orderId = orderId;
+        this.orderBasics = orderBasics;
     }
 }

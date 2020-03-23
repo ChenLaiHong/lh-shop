@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.Payment;
 import com.lh.entity.PaymentExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface PaymentMapper {
@@ -27,4 +29,10 @@ public interface PaymentMapper {
     int updateByPrimaryKeySelective(Payment record);
 
     int updateByPrimaryKey(Payment record);
+
+    List<Payment> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    int updateList(List list);
 }

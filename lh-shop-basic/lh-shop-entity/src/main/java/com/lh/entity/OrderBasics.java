@@ -3,9 +3,10 @@ package com.lh.entity;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 public class OrderBasics implements Serializable {
-    private Integer id;
+    private Integer orderId;
 
     private String orderNumber;
 
@@ -27,12 +28,14 @@ public class OrderBasics implements Serializable {
 
     private String remarks;
 
-    public Integer getId() {
-        return id;
+    private List<OrderItems> orderItemsList;
+
+    public Integer getOrderId() {
+        return orderId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setOrderId(Integer orderId) {
+        this.orderId = orderId;
     }
 
     public String getOrderNumber() {
@@ -113,5 +116,31 @@ public class OrderBasics implements Serializable {
 
     public void setRemarks(String remarks) {
         this.remarks = remarks == null ? null : remarks.trim();
+    }
+
+    public List<OrderItems> getOrderItemsList() {
+        return orderItemsList;
+    }
+
+    public void setOrderItemsList(List<OrderItems> orderItemsList) {
+        this.orderItemsList = orderItemsList;
+    }
+
+    public OrderBasics() {
+    }
+
+    public OrderBasics(Integer orderId, String orderNumber, Integer userId, String receiverPhone, String receiverAddress, BigDecimal totalMoney, Date orderTime, Integer payId, Integer companyId, String state, String remarks, List<OrderItems> orderItemsList) {
+        this.orderId = orderId;
+        this.orderNumber = orderNumber;
+        this.userId = userId;
+        this.receiverPhone = receiverPhone;
+        this.receiverAddress = receiverAddress;
+        this.totalMoney = totalMoney;
+        this.orderTime = orderTime;
+        this.payId = payId;
+        this.companyId = companyId;
+        this.state = state;
+        this.remarks = remarks;
+        this.orderItemsList = orderItemsList;
     }
 }

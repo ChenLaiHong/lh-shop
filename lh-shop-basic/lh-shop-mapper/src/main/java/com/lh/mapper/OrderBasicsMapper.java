@@ -3,6 +3,8 @@ package com.lh.mapper;
 import com.lh.entity.OrderBasics;
 import com.lh.entity.OrderBasicsExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface OrderBasicsMapper {
@@ -10,7 +12,7 @@ public interface OrderBasicsMapper {
 
     int deleteByExample(OrderBasicsExample example);
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer orderId);
 
     int insert(OrderBasics record);
 
@@ -18,7 +20,7 @@ public interface OrderBasicsMapper {
 
     List<OrderBasics> selectByExample(OrderBasicsExample example);
 
-    OrderBasics selectByPrimaryKey(Integer id);
+    OrderBasics selectByPrimaryKey(Integer orderId);
 
     int updateByExampleSelective(@Param("record") OrderBasics record, @Param("example") OrderBasicsExample example);
 
@@ -27,4 +29,8 @@ public interface OrderBasicsMapper {
     int updateByPrimaryKeySelective(OrderBasics record);
 
     int updateByPrimaryKey(OrderBasics record);
+
+    void insertAndGetId(OrderBasics orderBasics);
+
+    List<OrderBasics> getAll(Map<String, Object> map);
 }
