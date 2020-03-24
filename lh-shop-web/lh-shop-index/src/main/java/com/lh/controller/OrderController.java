@@ -92,7 +92,12 @@ public class OrderController {
         map.put("userId", user.getUserId());
         //获取所有状态的订单
         List<OrderBasics> orderBasicsList = orderService.getAll(map);
+        //获取未支付订单
+        List<OrderBasics> orderBasicsListNoPay = orderService.getAllNoPay(map);
         model.addAttribute("orderBasicsList",orderBasicsList);
+        model.addAttribute("orderBasicsListNoPay",orderBasicsListNoPay);
+
+
         return "order";
     }
 

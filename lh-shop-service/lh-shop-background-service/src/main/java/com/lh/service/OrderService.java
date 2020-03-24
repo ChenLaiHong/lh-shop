@@ -60,4 +60,9 @@ public class OrderService implements IOrderService {
     public List<OrderBasics> getAll(Map<String, Object> map) {
         return orderBasicsMapper.getAll(map);
     }
+
+    @Override
+    public List<OrderBasics> getAllNoPay(Map<String, Object> map) {
+        return orderBasicsMapper.getAllNoPay(map);
+    }
 }

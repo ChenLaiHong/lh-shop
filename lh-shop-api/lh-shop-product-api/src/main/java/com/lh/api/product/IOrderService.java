@@ -17,4 +17,6 @@ public interface IOrderService {
     OrderBasics findById(int result);
 
     List<OrderBasics> getAll(Map<String, Object> map);
+
+    List<OrderBasics> getAllNoPay(Map<String, Object> map);
 }

@@ -404,4 +404,8 @@
     SELECT * FROM order_basics
     WHERE user_id = #{userId}
   </select>
+  <select id="getAllNoPay" parameterType="Map" resultMap="ItemsResultMap">
+    SELECT * FROM order_basics
+    WHERE user_id = #{userId} AND state = 1
+  </select>
 </mapper>
