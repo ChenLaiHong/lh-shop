@@ -124,7 +124,9 @@ public class CatalogTwoController {
      */
     @RequestMapping(value = "/page")
     public String twoPage(@RequestParam("oneId") Integer oneId, Model model) {
+        CatalogOne catalogOne = catalogOneService.findById(oneId);
         model.addAttribute("oneId", oneId);
+        model.addAttribute("catalogOne", catalogOne);
         return "/admin/catalogTwoManage";
     }
 

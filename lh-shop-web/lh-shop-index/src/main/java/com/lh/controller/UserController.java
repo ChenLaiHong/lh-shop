@@ -61,15 +61,18 @@ public class UserController {
     private IAddressService addressService;
 
     //检查用户名是否有重复
-    @RequestMapping("checkName")
+    @PostMapping("checkName")
     @ResponseBody
-    private Integer checkName(@RequestParam(value = "userName", required = false) String userName){
+    private Result checkName(@RequestParam(value = "userName", required = false) String userName){
         int result = personService.checkName(userName);
+        Result finalResult = new Result();
+        System.out.println("结果是：：："+result+"===="+userName);
         if(result > 0){
-            return 1;
+            finalResult.setSuccess(true);
         }else {
-            return 0;
+            finalResult.setSuccess(false);
         }
+        return finalResult;
     }
 
     //检查手机号是否有重复
@@ -96,19 +99,15 @@ public class UserController {
     public String login(Person person, Map<String,Object> map, ModelAndView mv
             , HttpServletResponse response, HttpServletRequest request,
                         @CookieValue(name = "user_cart",required = false) String userCartToken) {
-
         //获取subject
         Subject subject = SecurityUtils.getSubject();
         //封装用户信息
         UsernamePasswordToken token = new UsernamePasswordToken(person.getUserName(), MdUtil.md5(person.getUserPassword()));
-
         try {
             subject.login(token);
-
             Person currentUser = personService.getUserByNameAndPass(person.getUserName(),person.getUserPassword());
             request.getSession().setAttribute("personName",currentUser.getUserName());
             request.getSession().setAttribute("person", currentUser);
-//        session2.setAttribute("person", person);
             //3.1 生成唯一的标识
             String uuid = UUID.randomUUID().toString();
             //3.2 构造一个cookie
@@ -124,21 +123,15 @@ public class UserController {
             //设置有效期
             redisTemplate.expire(redisKey.toString(),30, TimeUnit.MINUTES);
             response.addCookie(cookie);
-            //登陆成功
             //登录成功之后，应该是调用购物车合并的接口
-            //需要有一个工具，来模拟浏览器发送http请求
-            //HttpClient---> Apache
             StringBuilder value = new StringBuilder("user_token=");
             value.append(uuid);
             value.append(";");
             value.append("user_cart=");
             value.append(userCartToken);
-
             Map<String,String> params = new HashMap<>();
             params.put("Cookie",value.toString());
-
             HttpClientUtils.doGetWithHeaders("http://localhost:9091/cart/merge",params);
-
             return "redirect:/index/show/1/8";
         }catch (UnknownAccountException e){
             //登陆用户名不存在

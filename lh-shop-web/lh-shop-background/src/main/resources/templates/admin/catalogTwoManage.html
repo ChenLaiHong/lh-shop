@@ -178,6 +178,7 @@
             <a class="layui-btn layui-btn-normal layui-btn-sm" onclick="reload_data()">查询</a>
         </div>
     </div>
+    <input class="layui-input" style="color: #CC2222" th:value=" ${'一级名称：'+catalogOne.oneName}"></input>
     <!-- 保存一级id，隐藏域 -->
     <input type="hidden" id="oneId" name="oneId" th:value="${oneId}">
     <table class="layui-hide"   id="table" lay-filter="table"></table>

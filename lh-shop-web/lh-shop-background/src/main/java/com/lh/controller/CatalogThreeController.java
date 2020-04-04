@@ -37,6 +37,9 @@ public class CatalogThreeController {
     @Reference
     private ICatalogThreeService catalogThreeService;
 
+    @Reference
+    private ICatalogTwoService catalogTwoService;
+
     @RequestMapping("/list")
     public String list(@RequestParam("twoId") Integer twoId,
                        @RequestParam(value = "page", required = false) String page,
@@ -124,7 +127,9 @@ public class CatalogThreeController {
      */
     @RequestMapping(value = "/page")
     public String twoPage(@RequestParam("twoId") Integer twoId, Model model) {
+        CatalogTwo catalogTwo = catalogTwoService.findById(twoId);
         model.addAttribute("twoId", twoId);
+        model.addAttribute("catalogTwo", catalogTwo);
         return "/admin/catalogThreeManage";
     }
 

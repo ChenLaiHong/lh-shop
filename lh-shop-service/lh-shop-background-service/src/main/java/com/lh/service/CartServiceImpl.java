@@ -55,7 +55,6 @@ public class CartServiceImpl implements ICartService {
         cart.add(new CartItem(productId, count, new Date()));
         //保存到redis中,刷新有效期
         return resetToReids(key, cart);
-        //TODO 将代码做下优化，去除重复的代码
     }
 
     @Override
@@ -84,7 +83,6 @@ public class CartServiceImpl implements ICartService {
             for (CartItem cartItem : carts) {
                 if (productId.longValue() == cartItem.getProductId().longValue()) {
                     carts.remove(cartItem);
-                    //
                     return resetToReids(key, carts);
                 }
             }
@@ -157,7 +155,6 @@ public class CartServiceImpl implements ICartService {
         for (CartItem cartItem : noLoginCart) {
             map.put(cartItem.getProductId(), cartItem);
         }
-        //
         for (CartItem cartItem : loginCart) {
             CartItem item = map.get(cartItem.getProductId());
             if (item == null) {

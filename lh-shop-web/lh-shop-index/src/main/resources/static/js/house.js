@@ -523,7 +523,7 @@ layui.define(['element', 'carousel', 'table', 'util'], function (exports) {
             ;
         }
         , text: {
-            none: '<div class="house-usershop-table-none"><div><img src="/imgages/shopnone.png"></div><p>购物车空空如也</p></div>'
+            none: '<div class="house-usershop-table-none"><div><p>购物车空空如也</p></div>'
         }
         , id: 'house-usershop-table'
     });

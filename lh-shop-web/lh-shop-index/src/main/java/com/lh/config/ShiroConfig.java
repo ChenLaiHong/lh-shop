@@ -19,6 +19,13 @@ public class ShiroConfig {
 
     /**
      *创建ShiroFilterFactoryBean
+         添加shiro内置过滤器，可以实现权限相关的拦截器
+     * 常用的过滤器：
+     *        anon:无需认证（登陆）可以访问
+     *        authc:必须认证才可以访问
+     *        user:如果使用rememberMe的功能可以直接访问
+     *        perms:该资源必须得到资源权限才可以访问
+     *        role:该资源必须得到角色权限才可以访问
      *
      * */
     @Bean
@@ -26,42 +33,28 @@ public class ShiroConfig {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         //设置安全管理器
         shiroFilterFactoryBean.setSecurityManager(securityManager);
-
-        /**添加shiro内置过滤器，可以实现权限相关的拦截器
-         * 常用的过滤器：
-         *        anon:无需认证（登陆）可以访问
-         *        authc:必须认证才可以访问
-         *        user:如果使用rememberMe的功能可以直接访问
-         *        perms:该资源必须得到资源权限才可以访问
-         *        role:该资源必须得到角色权限才可以访问
-        */
         Map<String,String> filterMap = new LinkedHashMap<String,String>();
-
         // 静态资源匿名访问
         filterMap.put("/static/**", "anon");
-        //img
         filterMap.put("/images/**", "anon");
-        //css
         filterMap.put("/css/**", "anon");
-        //js
         filterMap.put("/js/**", "anon");
         // 登录匿名访问
         filterMap.put("/user/login", "anon");
+        filterMap.put("/user/checkName", "anon");
+        filterMap.put("/user/checkPhone", "anon");
         // 首页匿名访问
         filterMap.put("/index/show/1/2", "anon");
         //登录界面
         filterMap.put("/toLogin", "anon");
         //注册界面
         filterMap.put("/toRegister", "anon");
-        //自定义加载权限资源关系
-
         //购物车
         filterMap.put("/cart/*", "anon");
         //还没登陆时拦截后调整回登陆页面
         shiroFilterFactoryBean.setLoginUrl("/toLogin");
         //配置退出 过滤器,其中的具体的退出代码Shiro已经替我们实现了
 //        filterMap.put("/logout", "logout");
-
         filterMap.put("/user/*","authc");
         filterMap.put("/orders/*","authc");
 

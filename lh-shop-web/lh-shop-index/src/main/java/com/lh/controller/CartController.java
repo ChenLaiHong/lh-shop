@@ -45,7 +45,6 @@ public class CartController {
     @Autowired
     private RedisTemplate redisTemplate;
 
-//    @RequestMapping("add/{productId}/{count}")
     @RequestMapping("add")
     @ResponseBody
     public ResultBean add(@RequestParam(value = "productId", required = false) Integer productId,
@@ -58,9 +57,7 @@ public class CartController {
         //查看当前用户的登录状态
         //user:cart:userId
         //user:cart:uuid
-        //TODO 但凡这些常用的字符串，都需要通过常量类管理起来
         StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
-        //
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";
@@ -103,7 +100,6 @@ public class CartController {
         //user:cart:userId
         //user:cart:uuid
         StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
-        //
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         String key = "";

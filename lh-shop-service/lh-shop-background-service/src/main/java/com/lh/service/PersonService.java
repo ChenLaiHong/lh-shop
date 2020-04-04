@@ -13,6 +13,8 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -87,5 +89,15 @@ public class PersonService implements IPersonService {
             return new ResultBean(200,currentUser);
         }
         return ResultBean.error("用户未登录");
+    }
+
+    @Override
+    public List<Person> pageList(Map<String, Object> map) {
+        return personMapper.pageList(map);
+    }
+
+    @Override
+    public Integer getTotal(Map<String, Object> map) {
+        return personMapper.getTotal(map);
     }
 }

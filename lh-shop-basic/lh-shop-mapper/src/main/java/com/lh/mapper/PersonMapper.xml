@@ -335,4 +335,31 @@
       update_time = #{updateTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=INTEGER}
   </update>
+
+
+  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+    select * from person
+    <where>
+      <if test="q!=null and q!=''">
+        and (user_name like #{q} )
+      </if>
+      and  user_name != 'admin'
+    </where>
+    ORDER BY update_time DESC
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+  </select>
+
+  <select id="getTotal" parameterType="Map" resultType="Integer">
+    select
+    count(*) from person
+    <where>
+      <if test="q!=null and q!=''">
+        and (user_name like #{q} )
+      </if>
+      and user_name != 'admin'
+    </where>
+    ORDER BY update_time DESC
+  </select>
 </mapper>

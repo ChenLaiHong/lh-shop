@@ -60,6 +60,13 @@ public class PageController {
     public String toPayment(){
         return "/admin/paymentManage";
     }
+
+    //用户管理
+    @RequestMapping("/toPerson")
+    public String toPerson(){
+        return "/admin/personManage";
+    }
+
     //登陆操作
     @PostMapping("/login")
     public String login(HttpServletRequest request, Map<String,Object> map, Model model) {
@@ -71,10 +78,8 @@ public class PageController {
         UsernamePasswordToken token = new UsernamePasswordToken(name, MdUtil.md5(password));
 
         try {
-
             subject.login(token);
             //登陆成功
-
             return "/admin/AdminMain";
 
         }catch (UnknownAccountException e){

@@ -14,7 +14,7 @@
 
     <link rel="stylesheet" href="AmazeUI-2.4.2/assets/css/amazeui.min.css"/>
     <link href="css/dlstyle.css" rel="stylesheet" type="text/css">
-    <script src="AmazeUI-2.4.2/assets/js/jquery.min.js"></script>
+    <script src="js/jquery-1.7.2.min.js"></script>
     <script src="AmazeUI-2.4.2/assets/js/amazeui.min.js"></script>
 
 </head>
@@ -112,13 +112,15 @@
     function checkUserName() {
         var username = document.getElementById("userName").value;
         username   =   username.replace(/^\s+|\s+$/g,"");
-        if (username != '') {
+        console.log(username+"=============数据")
             $.ajax({
                 type: "POST",
-                url: "/user/checkName", //servlet的名字
-                data: "userName=" + username,
+                url: "/user/checkName",
+                data: {'userName': username},
+
                 success: function (data) {
-                    if (data == 0) {
+
+                    if (data.success == false) {
                         $("#divinfo").show();
                         $("#erroinfo").html("用户名可用");
                     } else {
@@ -128,7 +130,8 @@
                     }
                 }
             });
-        }
+
+
     }
 
     function checkpassword(){
