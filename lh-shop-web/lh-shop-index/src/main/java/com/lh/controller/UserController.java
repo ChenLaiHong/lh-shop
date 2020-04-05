@@ -4,11 +4,15 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.lh.api.product.IAddressService;
+import com.lh.api.product.IBrowseRecordService;
 import com.lh.api.product.IPersonService;
 
+import com.lh.api.product.IProductCollectService;
 import com.lh.entity.Address;
 import com.lh.entity.Person;
+import com.lh.entity.Product;
 import com.lh.entity.Result;
+import com.lh.shop.common.pojo.ResultBean;
 import com.lh.shop.common.util.HttpClientUtils;
 import com.lh.shop.common.util.MdUtil;
 import org.apache.commons.lang.StringUtils;
@@ -59,6 +63,12 @@ public class UserController {
 
     @Reference
     private IAddressService addressService;
+
+    @Reference
+    private IBrowseRecordService browseRecordService;
+
+    @Reference
+    private IProductCollectService collectService;
 
     //检查用户名是否有重复
     @PostMapping("checkName")
@@ -144,6 +154,33 @@ public class UserController {
 
     }
 
+    //收藏商品
+    @RequestMapping("addCollect")
+    @ResponseBody
+    public Result add(@RequestParam(value = "productId", required = false) Integer productId,
+                          @CookieValue(name = "user_token",required = false) String userToken,
+                          HttpServletResponse response,
+                          HttpServletRequest request){
+
+        Result finalResult = new Result();
+        //查看当前用户的登录状态
+        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
+        if(user != null){
+            //添加商品都购物车也要进行记录
+            browseRecordService.insertOrUpdate(user.getUserId(),productId.intValue());
+        }
+        int result = collectService.add(user.getUserId(),productId);
+        if(result == 1){
+            finalResult.setSuccess(true);
+            finalResult.setMsg("收藏成功");
+        }else {
+            finalResult.setSuccess(false);
+            finalResult.setMsg("已收藏过");
+        }
+        return finalResult;
+    }
     //去到个人中心页面
     @RequestMapping("/information")
     public String Information(Model model,HttpServletRequest request){
@@ -153,6 +190,23 @@ public class UserController {
         return "information";
     }
 
+    //去个人收藏夹页面
+    @RequestMapping("/collectList")
+    public String collectList(Model model,HttpServletRequest request){
+        Person person = (Person) request.getSession().getAttribute("person");
+        List<Product> productList = collectService.findByUserId(person.getUserId());
+        model.addAttribute("productList",productList);
+        return "collection";
+    }
+
+    //删除收藏的商品
+    @GetMapping("/delCollect")
+    public String delCollect(@RequestParam(value = "productId", required = false) Integer  productId,
+            HttpServletRequest request){
+        Person person = (Person) request.getSession().getAttribute("person");
+        collectService.findCollect(person.getUserId(),productId);
+        return "redirect:/user/collectList";
+    }
     //保存个人信息saveInfo
     @PostMapping("/saveInfo")
     public String saveInfo(Person person, @RequestParam("oneIoc") MultipartFile file, @RequestParam("newImg") String newImg){

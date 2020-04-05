@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lh.mapper.BrowseRecordMapper">
-  <resultMap id="BaseResultMap" type="com.lh.entity.BrowseRecord">
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="product_id" jdbcType="INTEGER" property="productId" />
-    <result column="browse_time" jdbcType="VARCHAR" property="browseTime" />
-    <result column="frequency" jdbcType="INTEGER" property="frequency" />
+<mapper namespace="com.lh.mapper.ProductCollectMapper">
+  <resultMap id="BaseResultMap" type="com.lh.entity.ProductCollect">
+    <id column="collect_id" jdbcType="INTEGER" property="collectId" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="state" jdbcType="INTEGER" property="state" />
   </resultMap>
   <sql id="Example_Where_Clause">
     <where>
@@ -67,15 +67,15 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    id, product_id, browse_time, frequency, user_id
+    collect_id, user_id, product_id, add_time, state
   </sql>
-  <select id="selectByExample" parameterType="com.lh.entity.BrowseRecordExample" resultMap="BaseResultMap">
+  <select id="selectByExample" parameterType="com.lh.entity.ProductCollectExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
       distinct
     </if>
     <include refid="Base_Column_List" />
-    from browse_record
+    from product_collect
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
@@ -84,87 +84,87 @@
     </if>
   </select>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
-    from browse_record
-    where id = #{id,jdbcType=INTEGER}
+    from product_collect
+    where collect_id = #{collectId,jdbcType=INTEGER}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
-    delete from browse_record
-    where id = #{id,jdbcType=INTEGER}
+    delete from product_collect
+    where collect_id = #{collectId,jdbcType=INTEGER}
   </delete>
-  <delete id="deleteByExample" parameterType="com.lh.entity.BrowseRecordExample">
-    delete from browse_record
+  <delete id="deleteByExample" parameterType="com.lh.entity.ProductCollectExample">
+    delete from product_collect
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
-  <insert id="insert" parameterType="com.lh.entity.BrowseRecord">
-    insert into browse_record (id, product_id, browse_time,
-    frequency, user_id)
-    values (#{id,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, #{browseTime,jdbcType=VARCHAR},
-    #{frequency,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER})
+  <insert id="insert" parameterType="com.lh.entity.ProductCollect">
+    insert into product_collect (collect_id, user_id, product_id, 
+      add_time, state)
+    values (#{collectId,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{productId,jdbcType=INTEGER}, 
+      #{addTime,jdbcType=TIMESTAMP}, #{state,jdbcType=INTEGER})
   </insert>
-  <insert id="insertSelective" parameterType="com.lh.entity.BrowseRecord">
-    insert into browse_record
+  <insert id="insertSelective" parameterType="com.lh.entity.ProductCollect">
+    insert into product_collect
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="productId != null">
-        product_id,
-      </if>
-      <if test="browseTime != null">
-        browse_time,
-      </if>
-      <if test="frequency != null">
-        frequency,
+      <if test="collectId != null">
+        collect_id,
       </if>
       <if test="userId != null">
         user_id,
       </if>
+      <if test="productId != null">
+        product_id,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="productId != null">
-        #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="browseTime != null">
-        #{browseTime,jdbcType=VARCHAR},
-      </if>
-      <if test="frequency != null">
-        #{frequency,jdbcType=INTEGER},
+      <if test="collectId != null">
+        #{collectId,jdbcType=INTEGER},
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="productId != null">
+        #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
     </trim>
   </insert>
-  <select id="countByExample" parameterType="com.lh.entity.BrowseRecordExample" resultType="java.lang.Long">
-    select count(*) from browse_record
+  <select id="countByExample" parameterType="com.lh.entity.ProductCollectExample" resultType="java.lang.Long">
+    select count(*) from product_collect
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
   <update id="updateByExampleSelective" parameterType="map">
-    update browse_record
+    update product_collect
     <set>
-      <if test="record.id != null">
-        id = #{record.id,jdbcType=INTEGER},
+      <if test="record.collectId != null">
+        collect_id = #{record.collectId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userId != null">
+        user_id = #{record.userId,jdbcType=INTEGER},
       </if>
       <if test="record.productId != null">
         product_id = #{record.productId,jdbcType=INTEGER},
       </if>
-      <if test="record.browseTime != null">
-        browse_time = #{record.browseTime,jdbcType=VARCHAR},
+      <if test="record.addTime != null">
+        add_time = #{record.addTime,jdbcType=TIMESTAMP},
       </if>
-      <if test="record.frequency != null">
-        frequency = #{record.frequency,jdbcType=INTEGER},
-      </if>
-      <if test="record.userId != null">
-        user_id = #{record.userId,jdbcType=INTEGER},
+      <if test="record.state != null">
+        state = #{record.state,jdbcType=INTEGER},
       </if>
     </set>
     <if test="_parameter != null">
@@ -172,40 +172,40 @@
     </if>
   </update>
   <update id="updateByExample" parameterType="map">
-    update browse_record
-    set id = #{record.id,jdbcType=INTEGER},
-    product_id = #{record.productId,jdbcType=INTEGER},
-    browse_time = #{record.browseTime,jdbcType=VARCHAR},
-    frequency = #{record.frequency,jdbcType=INTEGER},
-    user_id = #{record.userId,jdbcType=INTEGER}
+    update product_collect
+    set collect_id = #{record.collectId,jdbcType=INTEGER},
+      user_id = #{record.userId,jdbcType=INTEGER},
+      product_id = #{record.productId,jdbcType=INTEGER},
+      add_time = #{record.addTime,jdbcType=TIMESTAMP},
+      state = #{record.state,jdbcType=INTEGER}
     <if test="_parameter != null">
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
-  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.BrowseRecord">
-    update browse_record
+  <update id="updateByPrimaryKeySelective" parameterType="com.lh.entity.ProductCollect">
+    update product_collect
     <set>
-      <if test="productId != null">
-        product_id = #{productId,jdbcType=INTEGER},
-      </if>
-      <if test="browseTime != null">
-        browse_time = #{browseTime,jdbcType=VARCHAR},
-      </if>
-      <if test="frequency != null">
-        frequency = #{frequency,jdbcType=INTEGER},
-      </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
       </if>
+      <if test="productId != null">
+        product_id = #{productId,jdbcType=INTEGER},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where collect_id = #{collectId,jdbcType=INTEGER}
   </update>
-  <update id="updateByPrimaryKey" parameterType="com.lh.entity.BrowseRecord">
-    update browse_record
-    set product_id = #{productId,jdbcType=INTEGER},
-      browse_time = #{browseTime,jdbcType=VARCHAR},
-      frequency = #{frequency,jdbcType=INTEGER},
-      user_id = #{userId,jdbcType=INTEGER}
-    where id = #{id,jdbcType=INTEGER}
+  <update id="updateByPrimaryKey" parameterType="com.lh.entity.ProductCollect">
+    update product_collect
+    set user_id = #{userId,jdbcType=INTEGER},
+      product_id = #{productId,jdbcType=INTEGER},
+      add_time = #{addTime,jdbcType=TIMESTAMP},
+      state = #{state,jdbcType=INTEGER}
+    where collect_id = #{collectId,jdbcType=INTEGER}
   </update>
 </mapper>

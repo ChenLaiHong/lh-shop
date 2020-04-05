@@ -8,7 +8,7 @@ public class BrowseRecord implements Serializable {
 
     private Integer productId;
 
-    private Date browseTime;
+    private String browseTime;
 
     private Integer frequency;
 
@@ -30,12 +30,12 @@ public class BrowseRecord implements Serializable {
         this.productId = productId;
     }
 
-    public Date getBrowseTime() {
+    public String getBrowseTime() {
         return browseTime;
     }
 
-    public void setBrowseTime(Date browseTime) {
-        this.browseTime = browseTime;
+    public void setBrowseTime(String browseTime) {
+        this.browseTime = browseTime == null ? null : browseTime.trim();
     }
 
     public Integer getFrequency() {

@@ -5,6 +5,7 @@ import com.alibaba.dubbo.config.annotation.Reference;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.lh.api.product.IBrowseRecordService;
 import com.lh.api.product.ICartService;
 import com.lh.api.product.IPersonService;
 import com.lh.entity.Person;
@@ -42,6 +43,9 @@ public class CartController {
     @Reference
     private IPersonService personService;
 
+    @Reference
+    private IBrowseRecordService browseRecordService;
+
     @Autowired
     private RedisTemplate redisTemplate;
 
@@ -63,6 +67,8 @@ public class CartController {
         String key = "";
         if(user != null){
             key = new StringBuilder("user:cart:").append(user.getUserId()).toString();
+            //添加商品都购物车也要进行记录
+            browseRecordService.insertOrUpdate(user.getUserId(),productId.intValue());
         }else{
             if(uuid == null){
                 uuid = UUID.randomUUID().toString();

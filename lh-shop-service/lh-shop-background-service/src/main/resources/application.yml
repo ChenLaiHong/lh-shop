@@ -1,6 +1,7 @@
 dubbo:
   application:
     name: product-Service
+    qos-enable: false
   registry:
     protocol: zookeeper
     address: 47.102.212.171:2181
