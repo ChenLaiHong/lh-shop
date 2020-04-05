@@ -41,11 +41,11 @@
 									<div class="s-item">
 										<div class="s-pic">
 											<a th:if="${product.productState != 0}" th:href="${'/index/productDetails?productId='+product.productId}" class="s-pic-link" >
-												<img th:src="${product.productOneImage}"   class="s-pic-img s-guess-item-img">
+												<img th:src="${product.productOneImage}"   class="s-pic-img s-guess-item-img" style="height: 208px">
 											</a>
 
 											<a th:if="${product.productState == 0}"  class="s-pic-link" disabled= 'true'>
-												<img th:src="${product.productOneImage}"   class="s-pic-img s-guess-item-img">
+												<img th:src="${product.productOneImage}"   class="s-pic-img s-guess-item-img" style="height: 208px">
 												<span class="tip-title" >已下架</span>
 											</a>
 										</div>
