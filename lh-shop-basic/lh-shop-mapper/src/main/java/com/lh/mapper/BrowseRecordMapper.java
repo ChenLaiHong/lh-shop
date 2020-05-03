@@ -27,4 +27,6 @@ public interface BrowseRecordMapper {
     int updateByPrimaryKeySelective(BrowseRecord record);
 
     int updateByPrimaryKey(BrowseRecord record);
+
+    List<Integer> getProductIds(Integer userId);
 }

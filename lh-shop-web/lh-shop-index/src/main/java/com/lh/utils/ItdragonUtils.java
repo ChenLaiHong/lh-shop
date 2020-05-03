@@ -30,7 +30,6 @@ import java.util.UUID;
 /**
  * 工具类
  *
- * @author itdragon
  */
 @Component
 public class ItdragonUtils {
@@ -39,40 +38,7 @@ public class ItdragonUtils {
     private static final Integer HASH_ITERATIONS = 1024;
 
 
-    /**
-     * 获取ShiroSession
-     *
-     * @return
-     */
-    public Session getShiroSession() {
-        Subject currentUser = SecurityUtils.getSubject();
-        Session session = currentUser.getSession();
-        return session;
-    }
 
-    /**
-     * 获取Session用户信息
-     *
-     * @return
-     */
-    public Person getSessionUser() {
-        Subject currentUser = SecurityUtils.getSubject();
-        Session session = currentUser.getSession();
-        Person user = (Person) session.getAttribute("userInfo");
-        return user;
-    }
-
-    public String getOrderIdByUUId() {
-        int machineId = 1;//最大支持1-9个集群机器部署
-        int hashCodeV = UUID.randomUUID().toString().hashCode();
-        if (hashCodeV < 0) { //有可能是负数
-            hashCodeV = -hashCodeV;
-        }
-//         0 代表前面补充0     
-//         4 代表长度为4     
-//         d 代表参数为正数型
-        return machineId + String.format("%015d", hashCodeV);
-    }
 
     public String getProductUUId(String code) {
         int machineId = 1;//最大支持1-9个集群机器部署
@@ -84,14 +50,6 @@ public class ItdragonUtils {
 //         4 代表长度为4     
 //         d 代表参数为正数型
         return code + (machineId + String.format("%015d", hashCodeV)).substring(6, 15);
-    }
-
-    /**
-     * 判断用户是否登录
-     */
-    public boolean isGogin() {
-        Subject currentUser = SecurityUtils.getSubject();
-        return currentUser.isAuthenticated();
     }
 
     public static boolean stringIsNotBlack(String string) {
@@ -142,7 +100,7 @@ public class ItdragonUtils {
      * @throws Exception
      */
     final static int NEIGHBORHOOD_NUM = 2;//临近的用户个数
-    final static int RECOMMENDER_NUM = 6;//推荐物品的最大个数
+    final static int RECOMMENDER_NUM = 8;//推荐物品的最大个数
 
     public List<String> getSlopeOneCF(String userId, String path, List<Product> productList) throws Exception {
         //所有商品id的string类型和long类型一一对应通过

@@ -82,4 +82,23 @@ public class ProductService implements IProductService {
     public Product getById(Map<String, Object> map) {
         return productMapper.getById(map);
     }
+
+    @Override
+    public List<Product> getProductList() {
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andProductStateEqualTo(1);
+        return productMapper.selectByExample(productExample);
+    }
+
+    @Override
+    public Product getOneProduct(String s) {
+        return productMapper.selectByPrimaryKey(Integer.valueOf(s));
+    }
+
+    @Override
+    public List<Product> getByPids(List<Integer> productIds) {
+        ProductExample productExample = new ProductExample();
+        productExample.createCriteria().andProductIdIn(productIds);
+        return productMapper.selectByExample(productExample);
+    }
 }

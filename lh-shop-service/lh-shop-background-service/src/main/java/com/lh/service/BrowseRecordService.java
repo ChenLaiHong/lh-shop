@@ -59,4 +59,14 @@ public class BrowseRecordService implements IBrowseRecordService {
             }
         }
     }
+
+    @Override
+    public List<BrowseRecord> getList() {
+        return browseRecordMapper.selectByExample(null);
+    }
+
+    @Override
+    public List<Integer> getProductIds(Integer userId) {
+        return browseRecordMapper.getProductIds(userId);
+    }
 }

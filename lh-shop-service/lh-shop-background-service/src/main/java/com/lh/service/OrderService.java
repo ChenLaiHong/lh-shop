@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -65,4 +66,39 @@ public class OrderService implements IOrderService {
     public List<OrderBasics> getAllNoPay(Map<String, Object> map) {
         return orderBasicsMapper.getAllNoPay(map);
     }
+
+    @Override
+    public List<OrderBasics> getAllNoSend(List<OrderBasics> orderBasicsList) {
+        List<OrderBasics> resultList = new ArrayList<>();
+        for (int i = 0; i < orderBasicsList.size(); i++) {
+            if(orderBasicsList.get(i).getState().equals("2")){
+                resultList.add(orderBasicsList.get(i));
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<OrderBasics> getAllNoReceive(List<OrderBasics> orderBasicsList) {
+        List<OrderBasics> resultList = new ArrayList<>();
+        for (int i = 0; i < orderBasicsList.size(); i++) {
+            if(orderBasicsList.get(i).getState().equals("3")){
+                resultList.add(orderBasicsList.get(i));
+            }
+        }
+        return resultList;
+    }
+
+    @Override
+    public List<OrderBasics> getAllNoAssess(List<OrderBasics> orderBasicsList) {
+        List<OrderBasics> resultList = new ArrayList<>();
+        for (int i = 0; i < orderBasicsList.size(); i++) {
+            if(orderBasicsList.get(i).getState().equals("4")){
+                resultList.add(orderBasicsList.get(i));
+            }
+        }
+        return resultList;
+    }
+
+
 }

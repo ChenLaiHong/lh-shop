@@ -1,6 +1,7 @@
 package com.lh.controller;
 
 import com.alibaba.dubbo.config.annotation.Reference;
+
 import com.lh.api.product.*;
 import com.lh.api.vo.OrderVO;
 import com.lh.entity.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -94,6 +96,18 @@ public class OrderController {
         List<OrderBasics> orderBasicsList = orderService.getAll(map);
         //获取未支付订单
         List<OrderBasics> orderBasicsListNoPay = orderService.getAllNoPay(map);
+        if(!orderBasicsList.isEmpty()) {
+            //获取已付款未发货订单
+            List<OrderBasics> orderBasicsListNoSend = orderService.getAllNoSend(orderBasicsList);
+            //获取已发货未收货订单
+            List<OrderBasics> orderBasicsListNoReceive = orderService.getAllNoReceive(orderBasicsList);
+            //获已收货未评价订单
+            List<OrderBasics> orderBasicsListNoAssess = orderService.getAllNoAssess(orderBasicsList);
+
+            model.addAttribute("orderBasicsListNoSend",orderBasicsListNoSend);
+            model.addAttribute("orderBasicsListNoReceive",orderBasicsListNoReceive);
+            model.addAttribute("orderBasicsListNoAssess",orderBasicsListNoAssess);
+        }
         model.addAttribute("orderBasicsList",orderBasicsList);
         model.addAttribute("orderBasicsListNoPay",orderBasicsListNoPay);
 

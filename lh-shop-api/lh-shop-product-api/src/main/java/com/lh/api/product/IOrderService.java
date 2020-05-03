@@ -19,4 +19,10 @@ public interface IOrderService {
     List<OrderBasics> getAll(Map<String, Object> map);
 
     List<OrderBasics> getAllNoPay(Map<String, Object> map);
+
+    List<OrderBasics> getAllNoSend(List<OrderBasics> orderBasicsList);
+
+    List<OrderBasics> getAllNoReceive(List<OrderBasics> orderBasicsList);
+
+    List<OrderBasics> getAllNoAssess(List<OrderBasics> orderBasicsList);
 }

@@ -35,4 +35,6 @@ public interface OrderBasicsMapper {
     List<OrderBasics> getAll(Map<String, Object> map);
 
     List<OrderBasics> getAllNoPay(Map<String, Object> map);
+
+    List<OrderBasics> getAllNoSend(Map<String, Object> map);
 }

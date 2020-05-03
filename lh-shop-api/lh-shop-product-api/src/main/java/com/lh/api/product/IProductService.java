@@ -26,4 +26,10 @@ public interface IProductService {
     PageInfo<Product> getAll(Integer pageIndex, Integer pageSize);
 
     Product getById(Map<String, Object> map);
+
+    List<Product> getProductList();
+
+    Product getOneProduct(String s);
+
+    List<Product> getByPids(List<Integer> productIds);
 }

@@ -1,5 +1,7 @@
 package com.lh.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
@@ -18,6 +20,7 @@ public class OrderBasics implements Serializable {
 
     private BigDecimal totalMoney;
 
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date orderTime;
 
     private Integer payId;

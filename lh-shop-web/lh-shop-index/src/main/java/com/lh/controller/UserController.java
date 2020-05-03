@@ -3,18 +3,13 @@ package com.lh.controller;
 import com.alibaba.dubbo.config.annotation.Reference;
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
-import com.lh.api.product.IAddressService;
-import com.lh.api.product.IBrowseRecordService;
-import com.lh.api.product.IPersonService;
+import com.lh.api.product.*;
 
-import com.lh.api.product.IProductCollectService;
-import com.lh.entity.Address;
-import com.lh.entity.Person;
-import com.lh.entity.Product;
-import com.lh.entity.Result;
+import com.lh.entity.*;
 import com.lh.shop.common.pojo.ResultBean;
 import com.lh.shop.common.util.HttpClientUtils;
 import com.lh.shop.common.util.MdUtil;
+import com.lh.utils.ItdragonUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
@@ -36,10 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -58,6 +51,9 @@ public class UserController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    @Autowired
+    private ItdragonUtils itdragonUtils;
+
     @Reference
     private IPersonService personService;
 
@@ -69,6 +65,9 @@ public class UserController {
 
     @Reference
     private IProductCollectService collectService;
+
+    @Reference
+    private IProductService productService;
 
     //检查用户名是否有重复
     @PostMapping("checkName")
@@ -325,5 +324,36 @@ public class UserController {
             e.printStackTrace();
         }
         return path;
+    }
+
+    /**
+     * 猜你喜欢页面跳转接口
+     *
+     * @param mv
+     * @return
+     */
+    @RequestMapping("likeList")
+    public String likeList(Model mv,HttpServletRequest request) throws Exception {
+        Person person = (Person) request.getSession().getAttribute("person");
+        List<BrowseRecord> browseRecordList = browseRecordService.getList();
+        Date dt = new Date();
+        SimpleDateFormat matter1 = new SimpleDateFormat("yyyyMMddhhMMss");
+        String date = matter1.format(dt);
+        String path = itdragonUtils.writeToD(date, browseRecordList);
+        System.out.println(path);
+        List<String> slopeOneCF = itdragonUtils.getSlopeOneCF(String.valueOf(person.getUserId()), path, productService.getProductList());
+        System.out.println(slopeOneCF);
+        List<Product> resultList = new ArrayList<>();
+        if (slopeOneCF.isEmpty()) {
+            //如果推荐集合为空,那么就推荐当前用户点击次数多的数据
+            List<Integer> ProductIds = browseRecordService.getProductIds(person.getUserId());
+            resultList = productService.getByPids(ProductIds);
+        } else {
+            for (String s : slopeOneCF) {
+                resultList.add(productService.getOneProduct(s));
+            }
+        }
+        mv.addAttribute("resultList", resultList);
+        return "like";
     }
 }
