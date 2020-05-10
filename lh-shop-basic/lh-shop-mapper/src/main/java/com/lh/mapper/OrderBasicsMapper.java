@@ -37,4 +37,10 @@ public interface OrderBasicsMapper {
     List<OrderBasics> getAllNoPay(Map<String, Object> map);
 
     List<OrderBasics> getAllNoSend(Map<String, Object> map);
+
+    OrderBasics findByIdAndItems(Integer orderId);
+
+    List<OrderBasics> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
 }

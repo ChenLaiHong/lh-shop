@@ -297,6 +297,76 @@ public class OrderBasicsExample implements Serializable {
             return (Criteria) this;
         }
 
+        public Criteria andReceiverNameIsNull() {
+            addCriterion("receiver_name is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameIsNotNull() {
+            addCriterion("receiver_name is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameEqualTo(String value) {
+            addCriterion("receiver_name =", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameNotEqualTo(String value) {
+            addCriterion("receiver_name <>", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameGreaterThan(String value) {
+            addCriterion("receiver_name >", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameGreaterThanOrEqualTo(String value) {
+            addCriterion("receiver_name >=", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameLessThan(String value) {
+            addCriterion("receiver_name <", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameLessThanOrEqualTo(String value) {
+            addCriterion("receiver_name <=", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameLike(String value) {
+            addCriterion("receiver_name like", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameNotLike(String value) {
+            addCriterion("receiver_name not like", value, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameIn(List<String> values) {
+            addCriterion("receiver_name in", values, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameNotIn(List<String> values) {
+            addCriterion("receiver_name not in", values, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameBetween(String value1, String value2) {
+            addCriterion("receiver_name between", value1, value2, "receiverName");
+            return (Criteria) this;
+        }
+
+        public Criteria andReceiverNameNotBetween(String value1, String value2) {
+            addCriterion("receiver_name not between", value1, value2, "receiverName");
+            return (Criteria) this;
+        }
+
         public Criteria andReceiverPhoneIsNull() {
             addCriterion("receiver_phone is null");
             return (Criteria) this;

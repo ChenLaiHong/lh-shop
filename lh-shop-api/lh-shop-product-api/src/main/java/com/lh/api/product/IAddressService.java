@@ -12,7 +12,7 @@ public interface IAddressService {
 
     void add(Address address);
 
-    Integer updateById(Integer addressId);
+    Integer updateById(Integer userId,Integer addressId);
 
     void delete(Integer addressId);
 

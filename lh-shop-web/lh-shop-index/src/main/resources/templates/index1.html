@@ -105,12 +105,13 @@
 <script type="text/javascript">
     $(function () {
 
-    $('.demo ul span').each(function () {
-        var words = $(this).text().length;
-        if (words > 15) {
-            $(this).text($(this).text().slice(0, 15) + "...");
-        }
-    });
+        $('.demo ul span').each(function () {
+            var words = $(this).text().length;
+            if (words > 15) {
+                $(this).text($(this).text().slice(0, 15) + "...");
+            }
+        })
+    })
 </script>
 </body>
 

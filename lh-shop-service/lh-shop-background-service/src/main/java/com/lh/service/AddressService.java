@@ -36,9 +36,9 @@ public class AddressService implements IAddressService {
     }
 
     @Override
-    public Integer updateById(Integer addressId) {
+    public Integer updateById(Integer userId,Integer addressId) {
         AddressExample example = new AddressExample();
-        example.createCriteria().andDefaultAddressEqualTo(0);
+        example.createCriteria().andDefaultAddressEqualTo(0).andUserIdEqualTo(userId);
         List<Address> addresses = addressMapper.selectByExample(example);
         //将之前的默认地址改成非默认
         if(addresses.size()>0) {

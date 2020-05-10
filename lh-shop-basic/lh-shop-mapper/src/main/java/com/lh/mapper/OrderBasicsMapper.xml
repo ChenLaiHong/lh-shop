@@ -5,6 +5,7 @@
     <id column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
     <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
     <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
@@ -13,12 +14,20 @@
     <result column="company_id" jdbcType="INTEGER" property="companyId" />
     <result column="state" jdbcType="VARCHAR" property="state" />
     <result column="remarks" jdbcType="VARCHAR" property="remarks" />
+
+    <association property="person" column="user_id" select="com.lh.mapper.PersonMapper.selectByPrimaryKey" javaType="com.lh.entity.Person">
+    </association>
+    <association property="payment" column="pay_id" select="com.lh.mapper.PaymentMapper.selectByPrimaryKey" javaType="com.lh.entity.Payment">
+    </association>
+    <association property="company" column="company_id" select="com.lh.mapper.ExpressCompanyMapper.selectByPrimaryKey" javaType="com.lh.entity.ExpressCompany">
+    </association>
   </resultMap>
 
   <resultMap id="ItemsResultMap" type="com.lh.entity.OrderBasics">
     <id column="order_id" jdbcType="INTEGER" property="orderId" />
     <result column="order_number" jdbcType="VARCHAR" property="orderNumber" />
     <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="receiver_name" jdbcType="VARCHAR" property="receiverName" />
     <result column="receiver_phone" jdbcType="VARCHAR" property="receiverPhone" />
     <result column="receiver_address" jdbcType="VARCHAR" property="receiverAddress" />
     <result column="total_money" jdbcType="DECIMAL" property="totalMoney" />
@@ -96,8 +105,8 @@
     </where>
   </sql>
   <sql id="Base_Column_List">
-    order_id, order_number, user_id, receiver_phone, receiver_address, total_money, order_time,
-    pay_id, company_id, state, remarks
+    order_id, order_number, user_id, receiver_name, receiver_phone, receiver_address,
+    total_money, order_time, pay_id, company_id, state, remarks
   </sql>
   <select id="selectByExample" parameterType="com.lh.entity.OrderBasicsExample" resultMap="BaseResultMap">
     select
@@ -131,13 +140,15 @@
   </delete>
   <insert id="insert" parameterType="com.lh.entity.OrderBasics">
     insert into order_basics (order_id, order_number, user_id,
-    receiver_phone, receiver_address, total_money,
-    order_time, pay_id, company_id,
-    state, remarks)
+    receiver_name, receiver_phone, receiver_address,
+    total_money, order_time, pay_id,
+    company_id, state, remarks
+    )
     values (#{orderId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{userId,jdbcType=INTEGER},
-    #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR}, #{totalMoney,jdbcType=DECIMAL},
-    #{orderTime,jdbcType=TIMESTAMP}, #{payId,jdbcType=INTEGER}, #{companyId,jdbcType=INTEGER},
-    #{state,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR})
+    #{receiverName,jdbcType=VARCHAR}, #{receiverPhone,jdbcType=VARCHAR}, #{receiverAddress,jdbcType=VARCHAR},
+    #{totalMoney,jdbcType=DECIMAL}, #{orderTime,jdbcType=TIMESTAMP}, #{payId,jdbcType=INTEGER},
+    #{companyId,jdbcType=INTEGER}, #{state,jdbcType=VARCHAR}, #{remarks,jdbcType=VARCHAR}
+    )
   </insert>
   <insert id="insertSelective" parameterType="com.lh.entity.OrderBasics">
     insert into order_basics
@@ -150,6 +161,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
       </if>
       <if test="receiverPhone != null">
         receiver_phone,
@@ -185,6 +199,9 @@
       </if>
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
       </if>
       <if test="receiverPhone != null">
         #{receiverPhone,jdbcType=VARCHAR},
@@ -230,6 +247,9 @@
       <if test="record.userId != null">
         user_id = #{record.userId,jdbcType=INTEGER},
       </if>
+      <if test="record.receiverName != null">
+        receiver_name = #{record.receiverName,jdbcType=VARCHAR},
+      </if>
       <if test="record.receiverPhone != null">
         receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
       </if>
@@ -264,6 +284,7 @@
     set order_id = #{record.orderId,jdbcType=INTEGER},
     order_number = #{record.orderNumber,jdbcType=VARCHAR},
     user_id = #{record.userId,jdbcType=INTEGER},
+    receiver_name = #{record.receiverName,jdbcType=VARCHAR},
     receiver_phone = #{record.receiverPhone,jdbcType=VARCHAR},
     receiver_address = #{record.receiverAddress,jdbcType=VARCHAR},
     total_money = #{record.totalMoney,jdbcType=DECIMAL},
@@ -284,6 +305,9 @@
       </if>
       <if test="userId != null">
         user_id = #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="receiverName != null">
+        receiver_name = #{receiverName,jdbcType=VARCHAR},
       </if>
       <if test="receiverPhone != null">
         receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
@@ -316,6 +340,7 @@
     update order_basics
     set order_number = #{orderNumber,jdbcType=VARCHAR},
       user_id = #{userId,jdbcType=INTEGER},
+      receiver_name = #{receiverName,jdbcType=VARCHAR},
       receiver_phone = #{receiverPhone,jdbcType=VARCHAR},
       receiver_address = #{receiverAddress,jdbcType=VARCHAR},
       total_money = #{totalMoney,jdbcType=DECIMAL},
@@ -338,6 +363,9 @@
       </if>
       <if test="userId != null">
         user_id,
+      </if>
+      <if test="receiverName != null">
+        receiver_name,
       </if>
       <if test="receiverPhone != null">
         receiver_phone,
@@ -374,6 +402,9 @@
       <if test="userId != null">
         #{userId,jdbcType=INTEGER},
       </if>
+      <if test="receiverName != null">
+        #{receiverName,jdbcType=VARCHAR},
+      </if>
       <if test="receiverPhone != null">
         #{receiverPhone,jdbcType=VARCHAR},
       </if>
@@ -407,5 +438,37 @@
   <select id="getAllNoPay" parameterType="Map" resultMap="ItemsResultMap">
     SELECT * FROM order_basics
     WHERE user_id = #{userId} AND state = 1
+  </select>
+  <!--findByIdAndItems-->
+  <select id="findByIdAndItems" parameterType="java.lang.Integer" resultMap="ItemsResultMap">
+    SELECT * FROM order_basics
+    WHERE order_id = #{orderId}
+  </select>
+
+
+
+  <select id="pageList" parameterType="Map" resultMap="BaseResultMap">
+    select * from order_basics
+    <where>
+      <if test="q!=null and q!=''">
+        and (order_number like #{q} )
+      </if>
+    </where>
+    ORDER BY order_time DESC
+    <if test="start!=null and size!=null">
+      limit #{start},#{size}
+    </if>
+
+  </select>
+
+  <select id="getTotal" parameterType="Map" resultType="Integer">
+    select
+    count(*) from order_basics
+    <where>
+      <if test="q!=null and q!=''">
+        and (order_number like #{q} )
+      </if>
+    </where>
+    ORDER BY order_time DESC
   </select>
 </mapper>

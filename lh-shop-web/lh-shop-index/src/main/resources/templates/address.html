@@ -39,8 +39,8 @@
 						<ul class="am-avg-sm-1 am-avg-md-3 am-thumbnails">
 
 							<li th:attr="class=${address.defaultAddress == 0 ? 'user-addresslist defaultAddr':'user-addresslist'}" th:each="address : ${addressList}">
-								<input type="hidden" id="addressId" name="addressId" th:value="${address.addressId}" >
-								<span class="new-option-r"><i class="am-icon-check-circle"></i>默认地址</span>
+
+								<span class="new-option-r" id="addressId" name="addressId" th:value="${address.addressId}"><i class="am-icon-check-circle"></i>默认地址</span>
 								<p class="new-tit new-p-re">
 									<span class="new-txt" th:text="${address.receiver}"></span>
 									<span class="new-txt-rd2" th:text="${address.phone}"></span>
@@ -123,8 +123,9 @@
 					<script type="text/javascript">
                         $(document).ready(function() {
 							$(".new-option-r").on('click', function () {
-							    console.log("=========")
-                                var addressId = document.getElementById("addressId").value;
+
+                                var addressId = $(this).attr("value");
+                                console.log(addressId+"=====地址主键====");
                                 $.ajax({
                                     url: '/user/addDefaultAddress',
                                     type: 'post',
@@ -132,7 +133,7 @@
                                     dataType: 'json',
                                     async: false,
                                     success: function (result) {
-                                        console.log(result.msg+"=========")
+                                        console.log(result.msg+"=========");
                                         if (!result.success) {
                                            layer.msg(result.msg, {time: 2000});
                                             return false;

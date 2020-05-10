@@ -49,6 +49,13 @@ public class PageController {
     public String toProduct(){
         return "/admin/productManage";
     }
+
+    //订单管理
+    @RequestMapping("/toOrders")
+    public String toOrders(){
+        return "/admin/orderManage";
+    }
+
     //快递公司管理
     @RequestMapping("/toCompany")
     public String toCompany(){

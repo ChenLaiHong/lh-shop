@@ -268,9 +268,10 @@ public class UserController {
     //设置默认地址
     @PostMapping("/addDefaultAddress")
     @ResponseBody
-    public Result addDefaultAddress(Integer addressId){
+    public Result addDefaultAddress(Integer addressId,HttpServletRequest request){
+        Person person = (Person) request.getSession().getAttribute("person");
         Result finalResult = new Result();
-        Integer result = addressService.updateById(addressId);
+        Integer result = addressService.updateById(person.getUserId(),addressId);
         if(result > 0){
             finalResult.setSuccess(true);
             finalResult.setMsg("设置成功");
@@ -308,6 +309,9 @@ public class UserController {
         redisTemplate.delete(redisKey.toString());
         return "index";
     }
+
+
+
     public String getPath(MultipartFile file) {
         //1.获取到文件对象，将文件对象上传FastDFS上
         String originalFilename = file.getOriginalFilename();

@@ -6,6 +6,7 @@ import com.lh.api.product.*;
 import com.lh.api.vo.OrderVO;
 import com.lh.entity.*;
 import com.lh.shop.common.pojo.ResultBean;
+import com.lh.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -14,8 +15,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.HashMap;
@@ -76,12 +80,70 @@ public class OrderController {
         List<ExpressCompany> companyList = companyService.getAll();
         //获取支付方式
         List<Payment> paymentList = paymentService.getAll();
+
         model.addAttribute("orderBasics",orderBasics);
         model.addAttribute("orderItemsList",orderItemsList);
         model.addAttribute("address",address);
         model.addAttribute("companyList",companyList);
         model.addAttribute("paymentList",paymentList);
         return "pay";
+    }
+
+    //一键支付跳转
+    @RequestMapping("onePay")
+    public String onePay(@RequestParam(value = "orderId", required = false) Integer orderId,
+                         HttpServletRequest request, Model model){
+
+        Person person = (Person) request.getSession().getAttribute("person");
+        //获取到数据库相应信息返回页面显示
+        OrderBasics orderBasics = orderService.findById(orderId);
+        List<OrderItems> orderItemsList = orderItemService.findByOrderId(orderId);
+        //获取当前用户默认收货地址
+        Address address = addressService.findByUserId(person.getUserId());
+        //获取物流公司
+        List<ExpressCompany> companyList = companyService.getAll();
+        //获取支付方式
+        List<Payment> paymentList = paymentService.getAll();
+
+        model.addAttribute("orderBasics",orderBasics);
+        model.addAttribute("orderItemsList",orderItemsList);
+        model.addAttribute("address",address);
+        model.addAttribute("companyList",companyList);
+        model.addAttribute("paymentList",paymentList);
+        return "pay";
+    }
+
+    //订单支付
+    @RequestMapping("pay")
+    @ResponseBody
+    public ResultData<OrderBasics> pay(@RequestParam(value = "street", required = false) String street,
+                          @RequestParam(value = "province", required = false) String province,
+                          HttpServletResponse response, Model model, OrderBasics orderBasics){
+        orderBasics.setReceiverAddress(province+" "+street);
+        int result = orderService.update(orderBasics);
+        ResultData<OrderBasics> resultData = new ResultData<>();
+        resultData.setData(orderBasics);
+        resultData.setCode(String.valueOf(result));
+
+        return resultData;
+    }
+
+    //订单支付成功页面
+    @RequestMapping("paySuc")
+    public ModelAndView pay(@RequestParam(value = "orderId", required = false) Integer orderId){
+
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("orderBasics", orderService.findById(orderId));
+        mav.setViewName("/success");
+        return mav;
+    }
+
+    //订单详情
+    @RequestMapping("detail")
+    public String detail(@RequestParam(value = "orderId", required = false) Integer orderId, Model model){
+        OrderBasics orderBasics = orderService.findByIdAndItems(orderId);
+        model.addAttribute("orderBasics",orderBasics);
+        return "orderInfo";
     }
 
     @RequestMapping("list")

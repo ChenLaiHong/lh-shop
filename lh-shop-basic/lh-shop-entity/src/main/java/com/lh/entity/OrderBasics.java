@@ -14,6 +14,8 @@ public class OrderBasics implements Serializable {
 
     private Integer userId;
 
+    private String receiverName;
+
     private String receiverPhone;
 
     private String receiverAddress;
@@ -30,6 +32,12 @@ public class OrderBasics implements Serializable {
     private String state;
 
     private String remarks;
+
+    private Person person;
+
+    private Payment payment;
+
+    private ExpressCompany company;
 
     private List<OrderItems> orderItemsList;
 
@@ -121,6 +129,14 @@ public class OrderBasics implements Serializable {
         this.remarks = remarks == null ? null : remarks.trim();
     }
 
+    public String getReceiverName() {
+        return receiverName;
+    }
+
+    public void setReceiverName(String receiverName) {
+        this.receiverName = receiverName;
+    }
+
     public List<OrderItems> getOrderItemsList() {
         return orderItemsList;
     }
@@ -129,13 +145,38 @@ public class OrderBasics implements Serializable {
         this.orderItemsList = orderItemsList;
     }
 
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    public ExpressCompany getCompany() {
+        return company;
+    }
+
+    public void setCompany(ExpressCompany company) {
+        this.company = company;
+    }
+
     public OrderBasics() {
     }
 
-    public OrderBasics(Integer orderId, String orderNumber, Integer userId, String receiverPhone, String receiverAddress, BigDecimal totalMoney, Date orderTime, Integer payId, Integer companyId, String state, String remarks, List<OrderItems> orderItemsList) {
+    public OrderBasics(Integer orderId, String orderNumber, Integer userId, String receiverName, String receiverPhone, String receiverAddress, BigDecimal totalMoney, Date orderTime, Integer payId, Integer companyId, String state, String remarks, Person person, Payment payment, ExpressCompany company, List<OrderItems> orderItemsList) {
         this.orderId = orderId;
         this.orderNumber = orderNumber;
         this.userId = userId;
+        this.receiverName = receiverName;
         this.receiverPhone = receiverPhone;
         this.receiverAddress = receiverAddress;
         this.totalMoney = totalMoney;
@@ -144,6 +185,9 @@ public class OrderBasics implements Serializable {
         this.companyId = companyId;
         this.state = state;
         this.remarks = remarks;
+        this.person = person;
+        this.payment = payment;
+        this.company = company;
         this.orderItemsList = orderItemsList;
     }
 }

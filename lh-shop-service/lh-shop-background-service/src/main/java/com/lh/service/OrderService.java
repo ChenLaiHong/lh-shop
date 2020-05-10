@@ -100,5 +100,33 @@ public class OrderService implements IOrderService {
         return resultList;
     }
 
+    @Override
+    public int update(OrderBasics orderBasics) {
+        orderBasics.setState("2");
+        return orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
+    }
+
+    @Override
+    public OrderBasics findByIdAndItems(Integer orderId) {
+
+        return orderBasicsMapper.findByIdAndItems(orderId);
+    }
+
+    @Override
+    public List<OrderBasics> pageList(Map<String, Object> map) {
+        return orderBasicsMapper.pageList(map);
+    }
+
+    @Override
+    public Integer getTotal(Map<String, Object> map) {
+        return orderBasicsMapper.getTotal(map);
+    }
+
+    @Override
+    public int sendGoods(OrderBasics orderBasics) {
+        orderBasics.setState("3");
+        return orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
+    }
+
 
 }

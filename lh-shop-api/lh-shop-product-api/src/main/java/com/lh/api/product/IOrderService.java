@@ -25,4 +25,14 @@ public interface IOrderService {
     List<OrderBasics> getAllNoReceive(List<OrderBasics> orderBasicsList);
 
     List<OrderBasics> getAllNoAssess(List<OrderBasics> orderBasicsList);
+
+    int update(OrderBasics orderBasics);
+
+    OrderBasics findByIdAndItems(Integer orderId);
+
+    List<OrderBasics> pageList(Map<String, Object> map);
+
+    Integer getTotal(Map<String, Object> map);
+
+    int sendGoods(OrderBasics orderBasics);
 }
