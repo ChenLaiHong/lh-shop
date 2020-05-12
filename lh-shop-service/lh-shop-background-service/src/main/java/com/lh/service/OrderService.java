@@ -128,5 +128,23 @@ public class OrderService implements IOrderService {
         return orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
     }
 
+    @Override
+    public int receOk(OrderBasics orderBasics) {
+        orderBasics.setState("4");
+        return orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
+    }
+
+    @Override
+    public int delOrder(OrderBasics orderBasics) {
+        orderBasics.setState("9");
+        return orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
+    }
+
+    @Override
+    public void comOver(OrderBasics orderBasics) {
+        orderBasics.setState("5");
+        orderBasicsMapper.updateByPrimaryKeySelective(orderBasics);
+    }
+
 
 }

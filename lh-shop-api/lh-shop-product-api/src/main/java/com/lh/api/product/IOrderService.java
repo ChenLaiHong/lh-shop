@@ -35,4 +35,10 @@ public interface IOrderService {
     Integer getTotal(Map<String, Object> map);
 
     int sendGoods(OrderBasics orderBasics);
+
+    int receOk(OrderBasics orderBasics);
+
+    int delOrder(OrderBasics orderBasics);
+
+    void comOver(OrderBasics orderBasics);
 }

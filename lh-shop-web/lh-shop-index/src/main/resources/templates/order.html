@@ -134,7 +134,7 @@
                                                                 等待卖家发货</p>
                                                             <p class="Mystatus"
                                                                th:if="${orderBasicsList.state == '1' || orderBasicsList.state == '2'}">
-                                                                <a href="orderInfo.html">取消订单</a></p>
+                                                                <a th:href="${'/orders/delOrder?orderId='+orderBasicsList.orderId}">取消订单</a></p>
                                                             <p class="Mystatus" th:if="${orderBasicsList.state == '3'}">
                                                                 卖家已发货</p>
                                                             <p class="Mystatus" th:if="${orderBasicsList.state == '4'}">
@@ -162,14 +162,14 @@
                                                         </a>
                                                     </li>
                                                     <li class="td td-change" th:if="${orderBasicsList.state == '3' }">
-                                                        <a href="commentlist.html">
+                                                        <a th:href="${'/orders/receOk?orderId='+orderBasicsList.orderId}">
                                                             <div class="am-btn am-btn-danger anniu">
                                                                 确认收货
                                                             </div>
                                                         </a>
                                                     </li>
                                                     <li class="td td-change" th:if="${orderBasicsList.state == '4' }">
-                                                        <a href="commentlist.html">
+                                                        <a th:href="${'/orders/comment?orderId='+orderBasicsList.orderId}">
                                                             <div class="am-btn am-btn-danger anniu">
                                                                 评价商品
                                                             </div>
@@ -271,13 +271,13 @@
                                                                th:if="${orderBasicsListNoPay.state == '1'}">等待买家付款</p>
                                                             <p class="Mystatus"
                                                                th:if="${orderBasicsListNoPay.state == '1' || orderBasicsListNoPay.state == '2'}">
-                                                                <a href="orderInfo.html">取消订单</a></p>
+                                                                <a th:href="${'/orders/delOrder?orderId='+orderBasicsListNoPay.orderId}">取消订单</a></p>
                                                             <p class="order-info"><a th:href="${'/orders/detail?orderId='+orderBasicsListNoPay.orderId}">订单详情</a></p>
                                                         </div>
                                                     </li>
                                                     <li class="td td-change"
                                                         th:if="${orderBasicsListNoPay.state == '1' || orderBasicsListNoPay.state == '2'}">
-                                                        <a href="commentlist.html">
+                                                        <a th:href="${'/orders/delOrder?orderId='+orderBasicsListNoPay.orderId}">
                                                             <div class="am-btn am-btn-danger anniu">
                                                                 取消订单
                                                             </div>
@@ -377,7 +377,7 @@
                                                                th:if="${orderBasicsListNoSend.state == '2'}">等待卖家发货</p>
                                                             <p class="Mystatus"
                                                                th:if="${orderBasicsListNoSend.state == '1' || orderBasicsListNoSend.state == '2'}">
-                                                                <a href="orderInfo.html">取消订单</a></p>
+                                                                <a th:href="${'/orders/delOrder?orderId='+orderBasicsListNoSend.orderId}">取消订单</a></p>
                                                             <p class="order-info"><a th:href="${'/orders/detail?orderId='+orderBasicsListNoSend.orderId}">订单详情</a></p>
                                                         </div>
                                                     </li>
@@ -498,7 +498,7 @@
                                                         </div>
                                                     </li>
                                                     <li class="td td-change">
-                                                        <a href="commentlist.html">
+                                                        <a th:href="${'/orders/receOk?orderId='+orderBasicsListNoReceive.orderId}">
                                                             <div class="am-btn am-btn-danger anniu">
                                                                 确认收货
                                                             </div>
@@ -555,15 +555,11 @@
                                                     th:each="itemsList:${orderBasicsListNoAssess.orderItemsList}">
                                                     <li class="td td-item">
                                                         <div class="item-pic">
-                                                            <a href="#" class="J_MakePoint">
                                                                 <img th:src="${itemsList.producrIcon}">
-                                                            </a>
                                                         </div>
                                                         <div class="item-info">
                                                             <div class="item-basic-info">
-                                                                <a href="#">
-                                                                    <span th:text="${itemsList.productName}"></span>
-                                                                </a>
+                                                                <span th:text="${itemsList.productName}"></span>
                                                             </div>
                                                         </div>
                                                     </li>
@@ -606,7 +602,7 @@
                                                     </li>
                                                     <li class="td td-change"
                                                         th:if="${orderBasicsListNoAssess.state == '4' }">
-                                                        <a href="commentlist.html">
+                                                        <a th:href="${'/orders/comment?orderId='+orderBasicsListNoAssess.orderId}">
                                                             <div class="am-btn am-btn-danger anniu">
                                                                 评价商品
                                                             </div>

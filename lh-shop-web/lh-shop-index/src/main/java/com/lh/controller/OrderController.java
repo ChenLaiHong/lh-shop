@@ -44,7 +44,8 @@ public class OrderController {
     private IPaymentService paymentService;
     @Reference
     private ICompanyService companyService;
-
+    @Reference
+    private ICommentService commentService;
     @Reference
     private IAddressService addressService;
     //生成订单
@@ -147,11 +148,10 @@ public class OrderController {
     }
 
     @RequestMapping("list")
-    public String getList(@CookieValue(name = "user_token",required = false) String userToken,
+    public String getList(HttpServletRequest request,
                           Model model){
-        StringBuilder redisKey = new StringBuilder("user:token:").append(userToken);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
+        Person user = (Person) request.getSession().getAttribute("person");
+//        Person user = (Person) redisTemplate.opsForValue().get(redisKey.toString());
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("userId", user.getUserId());
         //获取所有状态的订单
@@ -177,9 +177,51 @@ public class OrderController {
         return "order";
     }
 
+    //确认收货
+    @RequestMapping("receOk")
+    public String receOk(@RequestParam(value = "orderId", required = false) Integer orderId, HttpServletResponse response)
+            throws Exception {
+        Result finalResult = new Result();
+        OrderBasics orderBasics = orderService.findById(orderId);
+        int result = orderService.receOk(orderBasics);
 
+        return "redirect:/orders/list";
+    }
 
+    //取消订单
+    @RequestMapping("delOrder")
+    public String delOrder(@RequestParam(value = "orderId", required = false) Integer orderId, HttpServletResponse response)
+            throws Exception {
+        Result finalResult = new Result();
+        OrderBasics orderBasics = orderService.findById(orderId);
+        int result = orderService.delOrder(orderBasics);
 
+        return "redirect:/orders/list";
+    }
+
+    //评价商品
+    @RequestMapping("comment")
+    public String comment(@RequestParam(value = "orderId", required = false) Integer orderId, Model model)
+            throws Exception {
+
+        List<OrderItems> orderItemsList = orderItemService.findByOrderId(orderId);
+        model.addAttribute("orderItemsList",orderItemsList);
+        model.addAttribute("orderId",orderId);
+        return "commentlist";
+    }
+
+    //提交商品评价
+    @RequestMapping("addComment")
+    public String addComment(Comment comment, @RequestParam(value = "orderId", required = false) Integer orderId,HttpServletRequest request)
+            throws Exception {
+        Person person = (Person) request.getSession().getAttribute("person");
+        comment.setUserId(person.getUserId());
+        int result = commentService.add(comment);
+//        修改状态为已评价
+        OrderBasics orderBasics = orderService.findById(orderId);
+        orderService.comOver(orderBasics);
+        return "redirect:/orders/list";
+    }
     private void flushCookie(String uuid, HttpServletResponse response) {
         Cookie cookie = new Cookie("user_cart",uuid);
         cookie.setPath("/");

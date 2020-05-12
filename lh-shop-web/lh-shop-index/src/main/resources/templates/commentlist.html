@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=0">
+
+		<title>发表评论</title>
+		<base href="/"/>
+		<link href="AmazeUI-2.4.2/assets/css/admin.css" rel="stylesheet" type="text/css">
+		<link href="AmazeUI-2.4.2/assets/css/amazeui.css" rel="stylesheet" type="text/css">
+
+		<link href="css/personal.css" rel="stylesheet" type="text/css">
+		<link href="css/appstyle.css" rel="stylesheet" type="text/css">
+		<script type="text/javascript" src="js/jquery-1.7.2.min.js"></script>
+	</head>
+
+	<body>
+		<!--头 -->
+		<div th:replace="head2 :: heads2"></div>
+		<div th:replace="head2 :: nav2"></div>
+		<div class="center">
+			<div class="col-main">
+				<div class="main-wrap">
+
+					<div class="user-comment">
+						<!--标题 -->
+						<div class="am-cf am-padding">
+							<div class="am-fl am-cf"><strong class="am-text-danger am-text-lg">发表评论</strong> / <small>Make&nbsp;Comments</small></div>
+						</div>
+						<hr/>
+
+						<div class="comment-main">
+							<div class="comment-list" th:each="itemsList:${orderItemsList}">
+								<form  action="/orders/addComment" method="post">
+								    <input type="hidden" id="itemId" name="itemId" th:value="${itemsList.id}">
+									<input type="hidden" id="orderId" name="orderId" th:value="${orderId}">
+									<input type="hidden" id="commentLevel" name="commentLevel" >
+								<div class="item-pic">
+									<img th:src="${itemsList.producrIcon}">
+								</div>
+
+								<div class="item-title">
+
+									<div class="item-name">
+										<span th:text="${itemsList.productName}"></span>
+									</div>
+									<div class="item-info">
+										<div class="item-price">
+											价格：<strong><span th:text="${itemsList.productPrice}"></span></strong>
+										</div>										
+									</div>
+								</div>
+								<div class="clear"></div>
+								<div class="item-comment">
+									<textarea placeholder="请写下对宝贝的感受吧，对他人帮助很大哦！" name="comment"></textarea>
+								</div>
+
+								<div class="item-opinion" >
+									<li class="commentLevel2" name="commentLevel2" value="1"><i class="op1" ></i>好评</li>
+									<li class="commentLevel2" name="commentLevel2" value="2"><i class="op2" ></i>中评</li>
+									<li class="commentLevel2" name="commentLevel2" value="3"><i class="op3" ></i>差评</li>
+								</div>
+									<div class="info-btn">
+										<button class="am-btn am-btn-danger" type="submit">发表评论</button>
+									</div>
+								</form>
+							</div>
+							
+
+
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$(".comment-list .item-opinion li").click(function() {	
+								$(this).prevAll().children('i').removeClass("active");
+								$(this).nextAll().children('i').removeClass("active");
+//                                $(this).prevAll().attr("selected",false);
+//                                $(this).nextAll().attr("selected",false);
+								$(this).children('i').addClass("active");
+//                                $(this).attr("checked",true);
+
+
+							});
+				     })
+
+                        $(".commentLevel2").on('click',function(){
+                            console.log($(this)[0].value);
+                        $('#commentLevel').attr('value',$(this)[0].value);
+                        })
+					</script>					
+					
+												
+							
+						</div>
+
+					</div>
+
+				</div>
+				<!--底部-->
+			</div>
+
+			<div th:replace="head2 :: menu"></div>
+		</div>
+
+	</body>
+
+</html>
