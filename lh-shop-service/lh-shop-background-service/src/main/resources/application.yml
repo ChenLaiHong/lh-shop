@@ -6,7 +6,7 @@ dubbo:
     protocol: zookeeper
     address: 47.102.212.171:2181
 server:
-  port: 8080
+  port: 8888
 
 spring:
   data:

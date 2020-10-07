@@ -485,6 +485,66 @@ public class OrderItemsExample implements Serializable {
             addCriterion("order_id not between", value1, value2, "orderId");
             return (Criteria) this;
         }
+
+        public Criteria andSpecsIdIsNull() {
+            addCriterion("specs_id is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdIsNotNull() {
+            addCriterion("specs_id is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdEqualTo(Integer value) {
+            addCriterion("specs_id =", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdNotEqualTo(Integer value) {
+            addCriterion("specs_id <>", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdGreaterThan(Integer value) {
+            addCriterion("specs_id >", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdGreaterThanOrEqualTo(Integer value) {
+            addCriterion("specs_id >=", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdLessThan(Integer value) {
+            addCriterion("specs_id <", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdLessThanOrEqualTo(Integer value) {
+            addCriterion("specs_id <=", value, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdIn(List<Integer> values) {
+            addCriterion("specs_id in", values, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdNotIn(List<Integer> values) {
+            addCriterion("specs_id not in", values, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdBetween(Integer value1, Integer value2) {
+            addCriterion("specs_id between", value1, value2, "specsId");
+            return (Criteria) this;
+        }
+
+        public Criteria andSpecsIdNotBetween(Integer value1, Integer value2) {
+            addCriterion("specs_id not between", value1, value2, "specsId");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

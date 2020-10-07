@@ -175,6 +175,7 @@ public class ProductController {
                 }
             }
             resultTotal = productService.update(product);
+            //更新solr里面的数据
             searchService.updateById(productId);
         }
 

@@ -134,6 +134,8 @@ public class OrderController {
     public ModelAndView pay(@RequestParam(value = "orderId", required = false) Integer orderId){
 
         ModelAndView mav = new ModelAndView();
+        //修改相应商品的库存
+        int result = orderItemService.updateNum(orderId);
         mav.addObject("orderBasics", orderService.findById(orderId));
         mav.setViewName("/success");
         return mav;

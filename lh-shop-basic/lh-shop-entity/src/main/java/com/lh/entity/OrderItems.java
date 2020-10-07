@@ -16,6 +16,8 @@ public class OrderItems implements Serializable {
 
     private Integer orderId;
 
+    private Integer specsId;
+
     private OrderBasics orderBasics;
 
     public Integer getId() {
@@ -66,6 +68,14 @@ public class OrderItems implements Serializable {
         this.orderId = orderId;
     }
 
+    public Integer getSpecsId() {
+        return specsId;
+    }
+
+    public void setSpecsId(Integer specsId) {
+        this.specsId = specsId;
+    }
+
     public OrderBasics getOrderBasics() {
         return orderBasics;
     }
@@ -77,13 +87,14 @@ public class OrderItems implements Serializable {
     public OrderItems() {
     }
 
-    public OrderItems(Integer id, String productName, String producrIcon, Integer productNum, BigDecimal productPrice, Integer orderId, OrderBasics orderBasics) {
+    public OrderItems(Integer id, String productName, String producrIcon, Integer productNum, BigDecimal productPrice, Integer orderId, Integer specsId, OrderBasics orderBasics) {
         this.id = id;
         this.productName = productName;
         this.producrIcon = producrIcon;
         this.productNum = productNum;
         this.productPrice = productPrice;
         this.orderId = orderId;
+        this.specsId = specsId;
         this.orderBasics = orderBasics;
     }
 }

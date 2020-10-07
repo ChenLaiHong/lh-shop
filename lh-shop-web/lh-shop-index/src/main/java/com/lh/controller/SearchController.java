@@ -56,7 +56,7 @@ public class SearchController {
 
         List<HeadLines> headLinesList = headLinesService.getFive();
         PageResultBean<Product> productList = searchService.searchByKeyWord(keyWord,pageIndex,pageSize);
-//分类列表
+          //分类列表
         model.addAttribute("list",list);
         //Banner列表
         model.addAttribute("bannerList",bannerList);

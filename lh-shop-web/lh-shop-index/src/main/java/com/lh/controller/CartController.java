@@ -49,6 +49,7 @@ public class CartController {
     @Autowired
     private RedisTemplate redisTemplate;
 
+    //添加商品到购物车
     @RequestMapping("add")
     @ResponseBody
     public ResultBean add(@RequestParam(value = "productId", required = false) Integer productId,

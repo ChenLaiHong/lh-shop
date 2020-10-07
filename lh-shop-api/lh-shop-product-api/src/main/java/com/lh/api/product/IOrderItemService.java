@@ -11,4 +11,6 @@ public interface IOrderItemService {
     int add(String prices, String ids, String nums, int result);
 
     List<OrderItems> findByOrderId(Integer id);
+
+    int updateNum(Integer orderId);
 }

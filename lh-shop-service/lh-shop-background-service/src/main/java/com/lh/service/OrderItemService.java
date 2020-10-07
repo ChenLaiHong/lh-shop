@@ -46,6 +46,7 @@ public class OrderItemService implements IOrderItemService {
             orderItems.setProductNum(numList.get(i));
             orderItems.setProductPrice(new BigDecimal(pricesList.get(i)));
             orderItems.setOrderId(result);
+            orderItems.setSpecsId(productSpecs.getSpecsId());
             orderItemsMapper.insertSelective(orderItems);
         }
 
@@ -57,5 +58,20 @@ public class OrderItemService implements IOrderItemService {
         OrderItemsExample orderItemsExample = new OrderItemsExample();
         orderItemsExample.createCriteria().andOrderIdEqualTo(id);
         return orderItemsMapper.selectByExample(orderItemsExample);
+    }
+
+    @Override
+    public int updateNum(Integer orderId) {
+        OrderItemsExample orderItemsExample = new OrderItemsExample();
+        orderItemsExample.createCriteria().andOrderIdEqualTo(orderId);
+        List<OrderItems> orderItemsList = orderItemsMapper.selectByExample(orderItemsExample);
+        for (int i = 0; i < orderItemsList.size(); i++) {
+           int specId = orderItemsList.get(i).getSpecsId();
+           int num = orderItemsList.get(i).getProductNum();
+           ProductSpecs productSpecs = productSpecsMapper.selectByPrimaryKey(specId);
+           productSpecs.setSpecsStock(productSpecs.getSpecsStock()-num);
+           productSpecsMapper.updateByPrimaryKeySelective(productSpecs);
+        }
+        return 1;
     }
 }

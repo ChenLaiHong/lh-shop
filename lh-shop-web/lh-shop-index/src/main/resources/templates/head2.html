@@ -24,7 +24,6 @@
                         <div class="menu-hd">
                             <a href="/toLogin" th:if="${session.person == null}">亲！请登录</a><a th:if="${session.person != null}" th:text="${'欢迎 '+session.person.userName}"></a>
                             <a href="/toRegister" th:if="${session.person == null}">免费注册</a><a href="/user/logout" th:if="${session.person != null}">退出登录</a>
-
                         </div>
                     </div>
                 </ul>
@@ -114,7 +113,7 @@
         <li class="person">
             <p><i class="am-icon-tags"></i>我的收藏</p>
             <ul>
-                <li><a href="collection.html">收藏</a></li>
+                <li><a href="/user/collectList">收藏</a></li>
                 <li><a href="foot.html">足迹</a></li>
             </ul>
         </li>
