@@ -10,9 +10,7 @@ import org.springframework.context.annotation.Import;
 @EnableDubbo
 @Import({FdfsClientConfig.class})
 public class LhShopIndexApplication {
-
 	public static void main(String[] args) {
 		SpringApplication.run(LhShopIndexApplication.class, args);
 	}
-
 }
